@@ -1,0 +1,34 @@
+{
+  "task": "rag.answer",
+  "data": {
+    "text": "خالد سلمان مؤسس المشروع. التاريخ 2026-11-16.",
+    "generated_tokens": 42,
+    "input_tokens": 144,
+    "sources": [
+      {
+        "id": 1,
+        "source": "/tmp/tmp1ppknzdd/data/note.txt",
+        "start": 0,
+        "end": 117,
+        "text": "AlFarouq AI helps students use Python. Temperature sensors measure heat.\nخالد سلمان مؤسس المشروع. التاريخ 2026-11-16.",
+        "score": 0.5573979616165161
+      }
+    ],
+    "abstained": false
+  },
+  "backend": "transformers.local-causal-lm",
+  "warnings": [
+    "Generated content can be wrong. Default 135M model is English-first and limited; not a strongest-model or Arabic-quality claim. Input is truncated to 1024 tokens.",
+    "Citation presence and factual entailment are NOT guaranteed. Verify against returned sources."
+  ],
+  "provenance": {
+    "model_path": "/home/user/alfarouq-models/smollm2-135m",
+    "actual_weight_inference": true,
+    "device": "cpu",
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 4.071394,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

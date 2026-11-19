@@ -1,0 +1,1 @@
+{'task': 'nlp.predict', 'data': {'rows': [{'text': 'خدمة ممتازة رائعة', 'prediction': 'positive'}]}, 'backend': 'sklearn.tfidf-logistic', 'warnings': [], 'provenance': {}, 'schema_version': '1.0'}

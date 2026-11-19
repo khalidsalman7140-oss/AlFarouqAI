@@ -1,0 +1,25 @@
+{
+  "task": "document.read",
+  "data": {
+    "text": "AlFarouq AI extraction fixture\n",
+    "characters": 31,
+    "rows": [
+      {
+        "page": 1,
+        "text": "AlFarouq AI extraction fixture\n"
+      }
+    ]
+  },
+  "backend": "pypdf",
+  "warnings": [
+    "Text extraction only; scanned PDFs need OCR, formulas are not recalculated, complex layout may be lost."
+  ],
+  "provenance": {
+    "input_sha256": "69d643aeba21f356fa7a8374bcd1b06be2ed30e591453d8c463c423645e742f3",
+    "library_version": "0.1.0",
+    "elapsed_seconds": 0.050025,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

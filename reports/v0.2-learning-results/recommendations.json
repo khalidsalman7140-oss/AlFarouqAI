@@ -1,0 +1,26 @@
+{
+  "task": "data.recommend",
+  "data": {
+    "rows": [
+      {
+        "item": "c",
+        "score": 4.999999999993657
+      },
+      {
+        "item": "d",
+        "score": 0.0
+      }
+    ]
+  },
+  "backend": "numpy.user-cosine-collaborative-filtering",
+  "warnings": [
+    "Small-data collaborative baseline, no cold-start or fairness guarantees."
+  ],
+  "provenance": {
+    "library_version": "0.2.0",
+    "elapsed_seconds": 0.000273,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

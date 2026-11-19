@@ -1,0 +1,103 @@
+<!doctype html><html lang="ar" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>architecture | AlFarouq AI</title><style>body{font:17px/1.85 system-ui,sans-serif;max-width:1080px;margin:0 auto;padding:32px;background:#fafcff;color:#16243b}a{color:#075f94}pre,code{direction:ltr;text-align:left;font-family:monospace}pre{overflow:auto;padding:22px;border-radius:12px;background:#0d2235;color:#e0f4ff}code{font-size:.9em}table{border-collapse:collapse;width:100%;display:block;overflow:auto}td,th{border:1px solid #cbd5e1;padding:10px;text-align:start}th{background:#e2eef5}h1,h2{color:#073d57}img{max-width:100%}nav,footer{padding:16px 0;border-bottom:1px solid #cbd5e1}footer{font-size:13px;color:#475569}blockquote{border-inline-start:4px solid #079499;padding-inline-start:1em} @media print{body{font-size:12px}pre{white-space:pre-wrap}}</style><nav><a href="../index.html">AlFarouq AI — Documentation / التوثيق</a></nav><main><blockquote>
+<p>هذا المحتوى محفوظ من 0.1.0. الحالة الحالية في <a href="handbook-0.2.html">كتاب 0.2</a> و<a href="capabilities-0.2.html">مصفوفة 0.2</a>.</p>
+</blockquote>
+<h1 id="_1">التصور الهندسي المستقل وقرارات التصميم</h1>
+<p><a href="../en/architecture.html">English</a> · <a href="../research/SOURCES.html">مصادر البحث</a></p>
+<h2 id="_2">الرؤية مقابل حدود الإصدار</h2>
+<p>الرؤية منصة موحدة، لا مكتبة تعيد تنفيذ كل خوارزمية. التصميم يفصل واجهة المستخدم
+عن سياسات التشغيل وعن الأدوات والأوزان. الإصدار 0.1.0 إثبات هندسي تنفيذي، لا
+اكتمال عشرين مجالاً. يفضّل نتيجة محدودة قابلة للتتبع على ادعاء «نفذ كل شيء».</p>
+<pre><code class="language-text">Python / CLI / VS Code
+        |
+ AI(prompt, inputs) ---- Client.run(explicit_task)
+        |                         |
+ محافظ ثنائي اللغة              Registry + Capability
+        +-------------+-----------+
+                      |
+        تحقق مدخلات / Config / سياسة موافقة
+                      |
+   stdlib tools | optional local engines | Ollama opt-in
+                      |
+     Result(data, backend, warnings, provenance)
+                      |
+             JSON CSV MD HTML TXT
+
+AgentTeam -&gt; validate DAG -&gt; specialists -&gt; shared Result references -&gt; schema reviewer
+</code></pre>
+<h2 id="_3">مقارنة الخيارات والقرار</h2>
+<table>
+<thead>
+<tr>
+<th>القرار</th>
+<th>البدائل المدروسة</th>
+<th>الاختيار وسببه</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>واجهة موحدة</td>
+<td>تغليف API فقط / نواة تعيد كل شيء</td>
+<td>Registry وعقود Result وإضافات مستقلة؛ يحد التداخل</td>
+</tr>
+<tr>
+<td>الاعتماديات</td>
+<td>تنزيل الكل / تثبيت أثناء import</td>
+<td>extras واستيراد كسول، وتثبيت منفصل بموافقة في venv</td>
+</tr>
+<tr>
+<td>التخطيط</td>
+<td>LLM إلزامي / قواعد صريحة</td>
+<td>قواعد محافظة الآن؛ مخطط LLM مقيد مستقبلاً، لتعمل النواة دون أوزان</td>
+</tr>
+<tr>
+<td>الوكلاء</td>
+<td>منظومة LLM كبيرة / DAG محدود</td>
+<td>DAG حقيقي قابل للاختبار بلا تكلفة API؛ ليس ذكاءً ذاتياً عاماً</td>
+</tr>
+<tr>
+<td>جدولي</td>
+<td>كتابة تدريب من الصفر / scikit-learn</td>
+<td>Pipeline مع تقسيم قبل المعالجة، هدف ونوع واضحان</td>
+</tr>
+<tr>
+<td>حفظ نماذج</td>
+<td>pickle/joblib / skops / ONNX</td>
+<td>skops اختياري للحفظ؛ لا تحميل غير موثوق، ONNX مستقبلاً</td>
+</tr>
+<tr>
+<td>رؤية</td>
+<td>YOLO افتراضي / OpenCV / Transformers</td>
+<td>OpenCV للوجوه والحركة، موصل محلي عام منفصل؛ لا YOLO افتراضي</td>
+</tr>
+<tr>
+<td>بحث</td>
+<td>قاعدة متجهات إلزامية / ذاكرة نصية</td>
+<td>JSON + TF-IDF للنواة، SentenceTransformers اختياري للدلالي</td>
+</tr>
+<tr>
+<td>LLM</td>
+<td>خدمة مدفوعة إلزامية / محلي</td>
+<td>Ollama محلي باختيار النموذج والموافقة الصريحة</td>
+</tr>
+<tr>
+<td>بيانات الإعداد</td>
+<td>متغيرات سرية تلقائية / ملف صريح</td>
+<td>dataclass وJSON دون تجميع خفي لبيئة الجهاز</td>
+</tr>
+<tr>
+<td>الهوية والترخيص</td>
+<td>رخصة مفتوحة تُخالف شرط المالك / محفوظ الحقوق</td>
+<td>محفوظ الحقوق مؤقتاً؛ يمنع وصفه بأنه OSI open source</td>
+</tr>
+</tbody>
+</table>
+<p>بنيت extras وentry points على معيار Python، وحظر تحميل pickle على تحذيرات
+scikit-learn الرسمية، وسياسة YOLO على شروطه المنشورة. روابط الأدلة في ملف
+المصادر. لم أعتبر أن ترخيص مكتبة ما هو ترخيص الأوزان المستخدمة معها.</p>
+<h2 id="_4">تحسينات مطلوبة قبل إنتاج واسع</h2>
+<p>عزل العمليات مع CPU/RAM/timeouts، تثبيت hash-lock لكل منصة، اختبارات خصائص وفَزّ
+للمحللات، كشف بيانات حساسة، نموذج تهديد، تقييم عربي مستقل، مراقبة تكلفة/زمن،
+إلغاء المهام، async، تتبع نماذج وتجارب، cache مدروس، اختيار محرك حسب العتاد،
+تنقيح بيانات وسجلات، تصدير ONNX، وتصميم manifest موثّق للأوزان والتراخيص.
+لا يكفي اختيار «أقوى نموذج»؛ نحتاج معيار مهمة مرجعي وأجهزة معروفة ثم مقارنة
+جودة/زمن/RAM/ترخيص. لم تتوفر في هذه الجلسة مقارنة استدلال بين نماذج كبيرة.</p></main><footer>© 2026 Khalid Salman — Original code Apache-2.0. Identity and third-party rights are separate. Local alpha; not published.</footer></html>

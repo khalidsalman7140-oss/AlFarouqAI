@@ -1,0 +1,236 @@
+<!doctype html><html lang="en" dir="ltr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>handbook-0.2 | AlFarouq AI</title><style>body{font:17px/1.85 system-ui,sans-serif;max-width:1080px;margin:0 auto;padding:32px;background:#fafcff;color:#16243b}a{color:#075f94}pre,code{direction:ltr;text-align:left;font-family:monospace}pre{overflow:auto;padding:22px;border-radius:12px;background:#0d2235;color:#e0f4ff}code{font-size:.9em}table{border-collapse:collapse;width:100%;display:block;overflow:auto}td,th{border:1px solid #cbd5e1;padding:10px;text-align:start}th{background:#e2eef5}h1,h2{color:#073d57}img{max-width:100%}nav,footer{padding:16px 0;border-bottom:1px solid #cbd5e1}footer{font-size:13px;color:#475569}blockquote{border-inline-start:4px solid #079499;padding-inline-start:1em} @media print{body{font-size:12px}pre{white-space:pre-wrap}}</style><nav><a href="../index.html">AlFarouq AI — Documentation / التوثيق</a></nav><main><h1 id="alfarouq-ai-020-practical-handbook">AlFarouq AI 0.2.0 — practical handbook</h1>
+<p><a href="../../README.html">Home</a> · <a href="guide.html">Preserved 0.1 guide</a> · <a href="../ar/handbook-0.2.html">العربية</a></p>
+<h2 id="1-incremental-not-a-rewrite">1. Incremental, not a rewrite</h2>
+<p>The original API, tools, tests, examples and founder identity remain. New engines
+add trained local inference, neural training, persistent vectors, model-guided
+agents and consent-gated device transports. No benchmark establishes superiority
+over every library. This is an accessible facade over specialized libraries, not
+a replacement for their algorithms, documentation or licenses.</p>
+<h2 id="2-lightweight-installation-and-explicit-preparation">2. Lightweight installation and explicit preparation</h2>
+<p>Create/activate a virtual environment, then install this checkout or supplied wheel:</p>
+<pre><code class="language-bash">python -m pip install .
+python -m pip install '.[local]'
+python -m pip install '.[torchvision,vision]'
+python -m pip install '.[speech]'
+python -m pip install '.[vector]'
+python -m pip install '.[deep,iot]'
+</code></pre>
+<p>Select extras, not all engines. CPU users can install matching CPU-only PyTorch
+wheels from the official PyTorch index first to avoid unnecessary CUDA downloads.
+Use platform-specific official installation guidance. reports/verified-requirements-0.2.txt
+records the tested environment, not a portable hash lock or universal support claim.</p>
+<p><code>Client.prepare('vision.detect', '.alfarouq-env')</code> returns a dependency plan;
+<code>consent=True</code> runs the existing dedicated-managed-venv installer. Install this
+project inside that venv afterwards and select its interpreter. A running process
+cannot magically import another venv. Imports/ordinary calls never install packages.
+The installer's real network success path was tested for the iot extra in a dedicated managed venv, followed by imports using that venv's interpreter.
+Tesseract/language packs, espeak-ng and an MQTT broker are independent optional OS
+programs, never silently installed by the library or bundled in the original code.</p>
+<h2 id="3-reviewed-model-cache-and-consent">3. Reviewed model cache and consent</h2>
+<pre><code class="language-python">from alfarouqai import Client, Config
+ai = Client(Config(allow_network=True, allow_model_download=True))
+</code></pre>
+<p>This explicitly approves downloading curated models at first use. Afterwards,
+<code>Client()</code> can run cached weights offline. The default cache is
+<code>~/.cache/alfarouqai/models</code>; the documented ALFAROUQ_MODEL_HOME variable changes it.
+<code>model_inventory()</code> lists models; <code>prepare_model(name, ..., consent=True)</code> prepares
+one. Downloads record immutable Hugging Face revision or official TorchVision URL
+plus file SHA-256 values. Ordinary cache-presence checks are not continuous full
+cryptographic revalidation or a signed publisher authenticity guarantee.</p>
+<table>
+<thead>
+<tr>
+<th>Model key</th>
+<th>Executed trained model</th>
+<th>Boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>smollm2-135m</td>
+<td>SmolLM2-135M-Instruct</td>
+<td>English-first, small and fallible; no advanced Arabic claim</td>
+</tr>
+<tr>
+<td>minilm-multilingual</td>
+<td>multilingual MiniLM-L12-v2</td>
+<td>384-dimensional semantic search, Arabic/English tested</td>
+</tr>
+<tr>
+<td>whisper-tiny</td>
+<td>CTranslate2 Whisper tiny</td>
+<td>actual CPU/int8 recognition on synthesized English audio</td>
+</tr>
+<tr>
+<td>mobilenet-v3</td>
+<td>ImageNet MobileNet V3 Small</td>
+<td>limited ImageNet vocabulary</td>
+</tr>
+<tr>
+<td>ssdlite320</td>
+<td>COCO SSDlite</td>
+<td>limited COCO detections, no identity recognition</td>
+</tr>
+<tr>
+<td>lraspp</td>
+<td>LRASPP/VOC labels</td>
+<td>21-class semantic mask, not instance segmentation</td>
+</tr>
+</tbody>
+</table>
+<p>About 847 MB of weights were downloaded for verification, intentionally NOT placed
+in the source ZIP. This keeps delivery lightweight; the model sources need no paid
+inference API. Review each exact model/data license and any commercial restrictions
+before use/redistribution. A framework license is not blanket model/data clearance.</p>
+<h2 id="4-one-or-two-inference-lines-after-setup">4. One or two inference lines after setup</h2>
+<pre><code class="language-python">r = ai.run('vision.detect', image='photo.jpg')
+r.export('objects.json')
+</code></pre>
+<p>Or use task-name shorthand:</p>
+<pre><code class="language-python">from alfarouqai import AI
+r = AI('vision.classify', image='photo.jpg')
+</code></pre>
+<p>The original conservative bilingual descriptions remain supported. For free text
+with an explicitly chosen model engine:</p>
+<pre><code class="language-python">r = ai('Explain gravity briefly.', task='local.generate')
+</code></pre>
+<p>The short call does not erase package installation, hardware requirements or
+license/device approval. Arbitrary requests to arbitrary libraries are not claimed.</p>
+<h2 id="5-nlp-content-and-code">5. NLP, content and code</h2>
+<pre><code class="language-python">ai.run('local.generate', prompt='Explain a neural network in two sentences.')
+ai.run('nlp.classify', text='This book is wonderful.', labels=['positive','negative'])
+ai.run('code.generate', prompt='Write a Python function add(a,b).')
+ai.run('code.repair', code='def add(a,b)\n return a+b', error='missing colon')
+</code></pre>
+<p>Candidate classification uses local LM label likelihood, not a task-finetuned
+sentiment classifier; relative scores are not calibrated probabilities. Generation
+is genuine but can be incorrect. The default small English model is not a best-model
+or Arabic-quality claim. A reviewed local Transformers-compatible model_path can
+be supplied, with potentially much larger RAM needs. Local files only, no remote
+custom code, safetensors required. Input is capped at 1024 tokens; output is bounded.</p>
+<p>Code is a suggestion, not proven correct and not automatically executed or applied
+to source files. Use the original code.analyze for static AST review. For TRUSTED
+unittest projects only: <code>ai.run('code.test', path='trusted_tests', consent=True)</code>.
+A child process, -I and timeout are NOT a security sandbox; filesystem/network
+privileges remain. Never auto-run unknown/generated code on a host with secrets.</p>
+<h2 id="6-vision-ocr-and-video">6. Vision, OCR and video</h2>
+<pre><code class="language-python">ai.run('vision.detect', image='photo.jpg', threshold=0.4)
+ai.run('vision.classify', image='photo.jpg', top_k=5)
+ai.run('vision.segment', image='photo.jpg', output='mask.png')
+ai.run('vision.ocr', image='scan.png', language='ara+eng')
+ai.run('video.track', video='clip.mp4', max_frames=30)
+</code></pre>
+<p>The saved PNG contains numeric semantic class IDs, not a retouched photograph.
+The tracker combines actual pretrained detections with greedy centroid association
+and temporary IDs; crossings/occlusion can swap IDs. No biometric identity or action
+understanding is inferred. Tesseract needs relevant system language packs. English
+and Arabic printed-fixture OCR ran successfully; this is not a handwriting or
+poor-scan accuracy benchmark. Original image.analyze/video.motion remain available.</p>
+<h2 id="7-speech-in-both-directions">7. Speech in both directions</h2>
+<pre><code class="language-python">ai.run('speech.synthesize', text='Hello world.', output='speech.wav', voice='en-us')
+ai.run('speech.recognize', audio='speech.wav', language='en')
+</code></pre>
+<p>TTS is actual classical espeak-ng synthesis, NOT neural voice cloning. STT is real
+Whisper inference. The test transcription misrecognized the start of the synthetic
+utterance: execution success does not mean perfect accuracy. Arabic speech accuracy
+still needs dedicated tests/human evaluation. PyAV 19 was found incompatible with
+the tested faster-whisper path; speech now declares av&gt;=11,&lt;16 and was rerun.</p>
+<h2 id="8-actual-deeptabular-learning">8. Actual deep/tabular learning</h2>
+<p>The original sklearn pipeline remains. New CPU PyTorch MLP training:</p>
+<pre><code class="language-python">model = ai.deep_train(data='numeric.csv', target='label', problem='classification')
+model.predict([{'x':1.0, 'y':2.0}]).export('prediction.json')
+</code></pre>
+<p>The feature names are YOUR dataset schema. Inputs must be finite numeric values,
+with explicit classification/regression. Training-only scaling follows held-out
+splitting. hidden and epochs control the network. This is an actual multilayer
+network, not generic CNN/Transformer training or LLM finetuning. Save to a new
+directory with model.save(...); restore with NeuralModel.load(...,config=Config()).
+Weights use safetensors plus JSON. Small synthetic-fixture metrics are not research
+generalization evidence. Temporal/grouped data still need domain-aware evaluation.</p>
+<h2 id="9-forecasting-recommendation-and-defensive-anomalies">9. Forecasting, recommendation and defensive anomalies</h2>
+<pre><code class="language-python">ai.run('data.forecast', data='series.csv', column='temperature', horizon=5)
+ai.run('data.recommend', data='ratings.csv', user='u1', user_column='user', item_column='item', rating_column='rating')
+ai.run('security.anomalies', data='metrics.csv', columns=['bytes','connections'])
+</code></pre>
+<p>Forecasting is a linear-trend baseline with chronological 80/20 validation, not ARIMA,
+seasonality or causality. Recommendations use small-data user-cosine collaborative
+filtering and have no cold-start/fairness guarantee. IsolationForest anomalies do
+not prove an attack. The defensive log/AST tools remain, with no automatic network
+scanning or offensive exploitation capability.</p>
+<h2 id="10-documents-semantic-memory-and-rag">10. Documents, semantic memory and RAG</h2>
+<pre><code class="language-python">ai.run('rag.index', document='notes.pdf', store='knowledge.sqlite')
+ai.run('rag.answer', question='What measures temperature?', store='knowledge.sqlite')
+</code></pre>
+<p>For control use VectorStore directly:</p>
+<pre><code class="language-python">from alfarouqai import VectorStore
+with VectorStore('knowledge.sqlite') as db:
+    db.add('المستشعر يقيس درجة الحرارة.', source='lesson')
+    hits = db.search('measuring temperature')
+</code></pre>
+<p>Trained multilingual embeddings, real FAISS IndexFlatIP and persistent SQLite store
+source names/offsets. Index reconstruction uses JSON vectors, not pickle object
+loading. The limit is 10000 chunks, not a distributed billion-vector database.
+Embedding identity follows model revision/digest, not the cache's machine-specific
+path. RAG returns evidence and can abstain below a retrieval threshold, but factual
+entailment/citation correctness is NOT guaranteed. Source instructions remain
+untrusted. document.summarize reads only a bounded excerpt; no complete long-book
+comprehension is claimed. Automatic OCR of scanned PDF is not implemented. Original
+KnowledgeBase/SemanticIndex are preserved.</p>
+<h2 id="11-model-guided-agents-and-durable-caller-driven-jobs">11. Model-guided agents and durable caller-driven jobs</h2>
+<pre><code class="language-python">from alfarouqai import LLMAgent
+r = LLMAgent(client=ai).run('Analyze this text', inputs_by_task={'text.analyze':{'text':'Hello world.'}})
+</code></pre>
+<p>The planner ranks only caller-supplied safe tools; a specialist actually executes
+the selection; an LLM reviewer comments. Roles share one model, not independent
+minds/models. The model cannot invent executable code, tool names, paths or shell
+commands. Maximum four steps; abstention is valid. Deterministic AgentTeam remains
+better suited to reproducible DAG workflows. Reviews can be wrong.</p>
+<pre><code class="language-python">from alfarouqai import Scheduler
+s = Scheduler('jobs.sqlite'); s.add('job1','text.analyze',{'text':'Hello'},run_at=0)
+s.tick()
+</code></pre>
+<p>No work happens without tick; no hidden daemon or uptime claim. SQLite preserves
+states; claims are at-most-once, not exactly-once crash recovery. Running jobs can
+remain unresolved after a crash. Network/device tools are excluded. Call s.close().</p>
+<h2 id="12-real-transports-not-physical-robot-claims">12. Real transports, not physical-robot claims</h2>
+<pre><code class="language-python">ai.run('iot.mqtt.read', host='127.0.0.1', topic='sensors/temperature')
+ai.run('robotics.serial', port='/dev/ttyUSB0', command='STATUS\n', read_bytes=128, consent=True)
+</code></pre>
+<p>MQTT needs allow_network. Remote brokers also need allow_remote and TLS; publish
+needs consent=True because messages may trigger actuators. Autonomous defaults
+cannot publish/control hardware. Verification used a real local Mosquitto broker
+and an actual Linux kernel pseudo-terminal for Serial reads/writes, not physical
+sensors or robots. No wiring, actuation, SLAM, navigation or safety certification is
+claimed. Review the actual device protocol and safety controls before connecting.</p>
+<h2 id="13-imagevideo-synthesis-stays-experimental">13. Image/video synthesis stays experimental</h2>
+<p>image.generate wraps StableDiffusionPipeline; video.generate wraps CogVideoX.
+Only parameter/consent gates were tested: <strong>no actual-weight diffusion inference</strong>
+ran for these adapters. They require user-reviewed local model_path, explicit
+consent=True and much larger resources. No random-weight output is passed off as
+useful generation. Not every Diffusers version/architecture/performance combination
+is verified; do not rely on these as production-tested features.</p>
+<h2 id="14-verification-exports-and-portability">14. Verification, exports and portability</h2>
+<p>Run pytest for ordinary regressions. Actual-weight tests require
+ALFAROUQ_RUN_MODELS=1 and prepared model caches. Full local results are in
+reports/pytest-0.2.xml and the delivery report. Do not confuse local testing with
+remote GitHub Actions, Colab or Kaggle execution: those platforms were NOT run.
+Notebook sources and a Hugging Face demo template are prepared for user-approved
+upload; no fictional repository URL or automatic publication is included.</p>
+<p>All ordinary capabilities return exportable Result objects. Actual outputs under
+reports/v0.2-model-results include audio, segmentation mask and model reports.
+Model provenance is copied to reports/model-manifests without weight binaries.
+Close a SQLite store or use a consistent backup before copying an active database.</p>
+<h2 id="15-ownership-adoption-and-scientific-reporting">15. Ownership, adoption and scientific reporting</h2>
+<p>All original project work/identity is proprietary to Khalid Salman of Yemen. No
+public rights to copying, quotation, reuse, modification, derivatives or distribution
+are granted without written permission. External frameworks/weights retain separate
+licenses. Nothing was publicly published during this task.
+This restriction is a material barrier to frictionless worldwide library adoption;
+we cannot simultaneously forbid public use and claim a freely reusable ecosystem.
+The owner may issue written educational/commercial permissions without surrendering
+ownership; the assistant cannot issue permissions on his behalf.</p>
+<p>Measure cold-start and warm-inference time separately, publish reproducible task
+benchmarks after approval, build Arabic teaching examples, document limitations,
+and respect original model citations/data rights. No library can credibly guarantee
+first place globally or rapid adoption. In research record model revision/digest,
+seed, environment, dataset and evaluation boundaries, not just this wrapper's name.</p></main><footer>© 2026 Khalid Salman — Original code Apache-2.0. Identity and third-party rights are separate. Local alpha; not published.</footer></html>

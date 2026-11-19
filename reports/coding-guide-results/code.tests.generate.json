@@ -1,0 +1,24 @@
+{
+  "task": "code.tests.generate",
+  "data": {
+    "text": "```python\ndef add(a,b):\n    return a+b\n```\n\nThis function takes two arguments `a` and `b`, adds them together, and returns the result. It does not execute the function.",
+    "generated_tokens": 48,
+    "input_tokens": 58,
+    "syntax_valid": true
+  },
+  "backend": "transformers.local-causal-lm",
+  "warnings": [
+    "Generated content can be wrong. Default 135M model is English-first and limited; not a strongest-model or Arabic-quality claim. Input is truncated to 1024 tokens.",
+    "LLM-generated test suggestions, not validated test coverage or guaranteed assertions. Never execute untrusted suggestions automatically."
+  ],
+  "provenance": {
+    "model_path": "/home/user/alfarouq-models/smollm2-135m",
+    "actual_weight_inference": true,
+    "device": "cpu",
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 5.267522,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

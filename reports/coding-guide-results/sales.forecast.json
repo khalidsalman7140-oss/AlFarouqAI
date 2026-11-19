@@ -1,0 +1,126 @@
+{
+  "task": "sales.forecast",
+  "data": {
+    "date_column": "date",
+    "value_column": "sales",
+    "history_months": 24,
+    "holdout_months": 3,
+    "holdout_mae": 0.0,
+    "selected_baseline": "linear-trend",
+    "history": [
+      {
+        "month": "2024-01",
+        "total": 100.0
+      },
+      {
+        "month": "2024-02",
+        "total": 110.0
+      },
+      {
+        "month": "2024-03",
+        "total": 120.0
+      },
+      {
+        "month": "2024-04",
+        "total": 130.0
+      },
+      {
+        "month": "2024-05",
+        "total": 140.0
+      },
+      {
+        "month": "2024-06",
+        "total": 150.0
+      },
+      {
+        "month": "2024-07",
+        "total": 160.0
+      },
+      {
+        "month": "2024-08",
+        "total": 170.0
+      },
+      {
+        "month": "2024-09",
+        "total": 180.0
+      },
+      {
+        "month": "2024-10",
+        "total": 190.0
+      },
+      {
+        "month": "2024-11",
+        "total": 200.0
+      },
+      {
+        "month": "2024-12",
+        "total": 210.0
+      },
+      {
+        "month": "2025-01",
+        "total": 220.0
+      },
+      {
+        "month": "2025-02",
+        "total": 230.0
+      },
+      {
+        "month": "2025-03",
+        "total": 240.0
+      },
+      {
+        "month": "2025-04",
+        "total": 250.0
+      },
+      {
+        "month": "2025-05",
+        "total": 260.0
+      },
+      {
+        "month": "2025-06",
+        "total": 270.0
+      },
+      {
+        "month": "2025-07",
+        "total": 280.0
+      },
+      {
+        "month": "2025-08",
+        "total": 290.0
+      },
+      {
+        "month": "2025-09",
+        "total": 300.0
+      },
+      {
+        "month": "2025-10",
+        "total": 310.0
+      },
+      {
+        "month": "2025-11",
+        "total": 320.0
+      },
+      {
+        "month": "2025-12",
+        "total": 330.0
+      }
+    ],
+    "rows": [
+      {
+        "month": "2026-01",
+        "forecast": 340.0
+      }
+    ]
+  },
+  "backend": "pandas.monthly-aggregation+numpy.temporal-baseline",
+  "warnings": [
+    "Forecasts are estimates, not guaranteed revenue. No calibrated uncertainty interval, promotion/exogenous or causal model. Negative forecasts are not silently clipped."
+  ],
+  "provenance": {
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.239919,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

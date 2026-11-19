@@ -1,0 +1,40 @@
+{
+  "task": "video.motion",
+  "data": {
+    "fps": 5.0,
+    "processed_frames": 3,
+    "truncated": false,
+    "rows": [
+      {
+        "frame": 0,
+        "time_seconds": 0.0,
+        "changed_fraction": 0.0,
+        "boxes": []
+      },
+      {
+        "frame": 1,
+        "time_seconds": 0.2,
+        "changed_fraction": 0.0,
+        "boxes": []
+      },
+      {
+        "frame": 2,
+        "time_seconds": 0.4,
+        "changed_fraction": 0.0,
+        "boxes": []
+      }
+    ]
+  },
+  "backend": "opencv.frame-difference",
+  "warnings": [
+    "Motion regions only, not action understanding, person identification or persistent tracking. Camera movement can trigger detections."
+  ],
+  "provenance": {
+    "input_sha256": "a96a9da7f7ecc3c82e8790ac0a74a26113d13e4ae536dcce00db74f9e6bbd260",
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.016926,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

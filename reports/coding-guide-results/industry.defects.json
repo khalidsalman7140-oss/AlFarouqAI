@@ -1,0 +1,29 @@
+{
+  "task": "industry.defects",
+  "data": {
+    "candidate_count": 1,
+    "changed_fraction": 0.05865478515625,
+    "rows": [
+      {
+        "x": 35,
+        "y": 45,
+        "width": 31,
+        "height": 31
+      }
+    ],
+    "mask_path": "/tmp/tmpmz8qvmm3/outputs/difference.png"
+  },
+  "backend": "opencv.aligned-reference-difference",
+  "warnings": [
+    "Difference candidates, NOT a semantic defect diagnosis or validated factory acceptance rule. Lighting, pose and alignment changes can cause false alarms. Requires a representative known-good reference."
+  ],
+  "provenance": {
+    "image_sha256": "6911fb52847313078da43e08ebacb0b6bdefa9dc26cf6ed2e7ec9fd7ce4b2462",
+    "reference_sha256": "654ca623e95ef88d485f41afbdcb0085a04fbe615d335d1adcfae64e25e30d10",
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.013167,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

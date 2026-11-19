@@ -1,0 +1,690 @@
+<!doctype html><html lang="ar" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>USER_GUIDE_AR | AlFarouq AI</title><style>body{font:17px/1.85 system-ui,sans-serif;max-width:1080px;margin:0 auto;padding:32px;background:#fafcff;color:#16243b}a{color:#075f94}pre,code{direction:ltr;text-align:left;font-family:monospace}pre{overflow:auto;padding:22px;border-radius:12px;background:#0d2235;color:#e0f4ff}code{font-size:.9em}table{border-collapse:collapse;width:100%;display:block;overflow:auto}td,th{border:1px solid #cbd5e1;padding:10px;text-align:start}th{background:#e2eef5}h1,h2{color:#073d57}img{max-width:100%}nav,footer{padding:16px 0;border-bottom:1px solid #cbd5e1}footer{font-size:13px;color:#475569}blockquote{border-inline-start:4px solid #079499;padding-inline-start:1em} @media print{body{font-size:12px}pre{white-space:pre-wrap}}</style><nav><a href="docs/index.html">AlFarouq AI — Documentation / التوثيق</a></nav><main><h1 id="alfarouq-ai-030a1">دليل المستخدم والمطور — AlFarouq AI 0.3.0a1</h1>
+<p>© 2026 خالد سلمان — اليمن — هندسة حلول الذكاء الاصطناعي.
+البريد: khalidsalman7140@gmail.com. بيانات المؤسس كما قدمها، وصورته الأصلية محفوظة.</p>
+<h2 id="1">1. ما هي المكتبة؟</h2>
+<p>واجهة Python محلية أولاً توحّد خدمات نصوص وصور وصوت ومستندات وبيانات وتعلم آلي
+وواجهات نماذج ووكلاء وأدوات صناعية ودفاعية. هدفها تقليل الأكواد المتكررة وإظهار
+المحرك والنتيجة والتحذيرات. ليست نموذجاً واحداً يعرف كل شيء ولا ضماناً لدقة
+بحثية أو أمان إنتاجي أو قدرة تشغيل أكبر النماذج على أي جهاز.</p>
+<p>المسار للمبتدئ: تثبيت النواة، تحليل نص، تصدير النتيجة، ثم تثبيت إضافة لمشروعه.
+المحترف يستطيع تحديد task والمحرك والنموذج والحدود وكتابة plugin دون استبدال النواة.</p>
+<h2 id="2">2. المتطلبات والتثبيت من النسخة المرفقة</h2>
+<p>Python 3.10 أو أحدث؛ الاختبار الفعلي هنا Python 3.12/Linux/CPU فقط. تنزيل ZIP
+وفكّه، ثم افتح Terminal في المجلد الذي يحتوي pyproject.toml. لا تختَر أي حزمة
+مشابهة على PyPI قبل التحقق من رابط النشر الرسمي؛ لم ينشر الإصدار في هذه المهمة.</p>
+<pre><code class="language-bash">python -m venv .venv
+# Windows PowerShell: .\.\.venv\Scripts\Activate.ps1
+# Linux/macOS: source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install .
+python -m alfarouqai --version
+</code></pre>
+<p>بدلاً من تثبيت المصدر، ثبّت wheel داخل dist بالأمر <code>python -m pip install dist/alfarouqai-0.3.0a1-py3-none-any.whl</code>.
+لا تثبت المصدر والـwheel معاً في خطوة التحقق نفسها. النواة بلا تبعيات إلزامية؛
+التبعيات الاختيارية في pyproject.toml. لتصنيف نصوص <code>python -m pip install '.[nlp,ml]'</code>؛
+للرؤية <code>'.[torchvision,vision]'</code>، وللنماذج النصية <code>'.[local]'</code> وللبحث <code>'.[vector]'</code>.
+Tesseract OCR وespeak-ng ووسيط MQTT برامج نظام مستقلة، وليست pip packages مضمونة.
+لا يتم تنزيل وزن أو تثبيت dependency أو تنفيذ network عند import.</p>
+<h2 id="3">3. أول برنامج وعرض النتيجة</h2>
+<p>احفظ النص في app.py وشغّل <code>python app.py</code>:</p>
+<pre><code class="language-python">from alfarouqai import AI, Client, Config
+result = AI(&quot;حلل هذا النص&quot;, text=&quot;الذكاء الاصطناعي يساعد الطلاب.&quot;)
+print(result.to_dict())
+result.export(&quot;text-report.json&quot;)
+client = Client(Config(verbose=True))
+print(client.capabilities())
+</code></pre>
+<p>Result.data هي البيانات، backend يبين المحرك، warnings حدود النتيجة، provenance
+وقت التنفيذ وإصدار المكتبة ومعلومات المصدر حيث يتاح. export يرفض استبدال ملف
+قائم إلا overwrite=True، ويدعم JSON/CSV/Markdown/HTML/TXT. لا يفترض عرض النتائج
+تلقائياً داخل كل notebook؛ استخدم print أو display. verbose يعرض بداية/نهاية
+وأخطاء التنفيذ في stderr ولا يخفي تحذيرات المحركات.</p>
+<h2 id="4">4. الوصف المختصر مقابل الخدمة الصريحة</h2>
+<p><code>AI("حلل هذا الملف واستخرج أهم المعلومات", file="report.txt")</code> يختار document.insights.
+<code>AI("حلل المبيعات وتوقع الشهر القادم", data="sales.csv", date_column="date", value_column="sales")</code>
+يستخدم sales.forecast إذا طابقت الأعمدة الصيغة. استعمل <code>Client().plan(...)</code> للمراجعة
+قبل التنفيذ و<code>Client().run("اسم.الخدمة", ...)</code> لتجنب الغموض. لا يختار target لتدريب
+تصنيف، ولا صورة مرجعية للعيوب، ولا كلمة مرور أو منفذ جهاز من عنده. prompt عام بلا
+ملف يذهب للنموذج النصي المحلي مع الموافقات/الأوزان؛ هذه ليست برمجة آلية مفتوحة
+لتنفيذ أي أمر طبيعي. المرجع الكامل يشرح المدخلات الدقيقة لكل خدمة بأمثلة منفذة.</p>
+<h2 id="5">5. النماذج والموارد</h2>
+<pre><code class="language-python">from alfarouqai import AI, Config, prepare_model, environment, model_plan, Model
+print(environment())
+print(model_plan(70, precision_bits=4).to_dict())
+# Explicitly approves network + weights download; review license/storage first.
+cfg = Config(allow_network=True, allow_model_download=True)
+prepare_model(&quot;smollm2-135m&quot;, config=cfg)
+result = AI(&quot;What is the capital of France?&quot;, model=&quot;smollm2-135m&quot;, device=&quot;auto&quot;, config=cfg)
+print(result.to_dict())
+# A reusable model avoids reloading for every call.
+with Model(&quot;smollm2-135m&quot;, config=cfg, device=&quot;cpu&quot;) as model:
+    print(model(&quot;Explain Python briefly.&quot;).data)
+</code></pre>
+<p>التنزيل في هذا المقطع يتطلب اتصالاً وموافقة صريحة؛ التحقق السابق استخدم أوزاناً
+محلية حقيقية، ولا يعيد المثال هنا ادعاء نجاح كل اتصال بالمستودع. النموذج التجريبي
+135M إنجليزي محدود؛ لا تصفه بأنه نموذج عربي قوي. لا حدود اصطناعية لأسماء خادمك،
+لكن تشغيل مجلد محلي مقيد بعمارة causal LM تدعمها Transformers وبـsafetensors دون
+remote code. device=auto يختار CUDA المتاح للمحرك أو CPU؛ لم يتوفر GPU لاختباره.
+model_plan تقدير وزن/هامش لا يضمن fit ولا يحسب KV cache أو كل التكميم والتوازي.
+لا تنزيل تلقائي لنموذج 70B لمجرد أن حساب حجمه ممكن.</p>
+<h2 id="6-ollama-vllm">6. Ollama وvLLM والخدمات الخارجية</h2>
+<pre><code class="language-python">from alfarouqai import AI, Config
+# Requires your already running compatible inference server. Not a live-service test.
+r = AI(&quot;Explain Python briefly.&quot;, model=&quot;YOUR_SERVER_MODEL&quot;,
+       backend=&quot;compatible&quot;, endpoint=&quot;http://127.0.0.1:8000/v1&quot;,
+       config=Config(allow_network=True))
+print(r.data)
+</code></pre>
+<p>backend="ollama" يوجّه إلى Ollama مع endpoint صريح أو localhost الافتراضي.
+اختبرت بروتوكولات Ollama/OpenAI-compatible بخادم مرجعي يستخدم نموذجاً حقيقياً؛
+لم يشغّل daemon Ollama أو vLLM الأصلي هنا. للخادم البعيد استخدم HTTPS و
+Config(allow_network=True, allow_remote=True)، وapi_key_env="YOUR_API_KEY_VARIABLE"
+بعد وضع المفتاح في secrets/متغير البيئة خارج الكود. لا تشارك المفتاح في notebook.
+تنصيب خادم ضخم وتوزيع GPU والتكميم مسؤولية بيئة الاستدلال، لا وعد من البوابة.</p>
+<h2 id="7">7. البيئات والهاتف</h2>
+<p>VS Code: افتح المجلد ثم Python: Select Interpreter واختر .venv. PyCharm: اختر
+Existing Interpreter نفسه. Terminal وdebugger يجب أن يستعملا المفسر نفسه.
+Jupyter: ثبّت ipykernel في البيئة واختر kernel الصحيح. Colab/Kaggle: ارفع ZIP
+أو wheel وفكّه داخل runtime ثم <code>%pip install /path/to/wheel.whl</code>، غيّر current
+working directory إلى جذر المصدر لأمثلة guide_support. أسرار الحساب من Secrets
+لا من النص. storage المؤقت يزول؛ نزّل النتائج. تفعيل accelerator لا يعني أن كل
+خدمة تستعمل GPU؛ التحقق المحلي لا يثبت تشغيل كل منصة أو Windows/macOS.
+Hugging Face Spaces: راجع deploy/huggingface؛ الأمر يحتاج حساباً وتراخيص وموارد.
+GitHub Codespaces: شغل نفس بيئة Python مع مراعاة حدود ومسؤولية تكلفة المزود.
+الهاتف لقراءة HTML/Markdown وتنزيل ZIP وفكّه؛ للحساب استعمل متصفح Colab أو خادمك.
+Python+PyTorch على Android ليس مساراً مختبراً ولا نوعد بتثبيت CUDA أو TensorFlow فيه.</p>
+<h2 id="8">8. الخدمات والمشروعات العملية</h2>
+<p>مرجع ALFAROUQ_AI_COMPLETE_CODING_GUIDE.md يتضمن جميع القدرات المسجلة، تهيئة بيانات
+تعليمية، لكل خدمة كود نُفذ فعلياً ومقتطف ناتج ومحرك. شغّل من جذر المشروع
+<code>python examples/guide/arabic_process.py</code> مثلاً، ثم بدّل المدخلات ببياناتك.
+مجموعة الأمثلة ليست قياس جودة مستقل. المراجع/الfixtures بيانات تعليمية مصطنعة
+إلا صورة المؤسس ومعلومات النماذج. المشروعات المقترحة:
+1. مقرر NLP عربي: تنظيف وتطبيع وISRI واستخراج خصائص، تدريب Pipeline TF-IDF+LogisticRegression
+وتقييم واختبار نصوص جديدة وحفظ النموذج. المواضيع LDA والتشابه اللفظي ليسا embeddings.
+2. مشروع مبيعات: CSV بتواريخ ISO وأشهر مكتملة، تنبؤ زمني مع baseline وحدود. راجع
+الأشهر المفقودة ولا تستخدم التقسيم العشوائي لتقرير أداء السلاسل الزمنية.
+3. مصنع: حساسات وSPC وإنتاجية ومقارنة مرجعية للصور وصيانة مسماة؛ لا كاشف عيوب شامل،
+لا سلامة تشغيل آلي، لا RUL، ولا اختبار PLC مادي. MQTT/Modbus/Serial بموافقة فقط.
+4. مطور: مراجعة AST وملخص SQLite وتوليد كود/اختبارات غير موثوقين ومراجعتهم يدوياً.
+code.test يشغل كوداً يملك المستخدم ثقته؛ subprocess ليس عزلاً أمنياً.
+5. باحث: قراءة ملفات وRAG ومصادر وتصدير وتقارير؛ تحقق من إجابات النموذج والحقوق.
+6. مؤسسة: تجميع CSV ومطابقة دفاتر مالية وإخفاء أنماط بيانات تقريبياً؛ لا اعتماد
+طبي/مصرفي/تشريعي ولا ادعاء امتثال شامل.</p>
+<h2 id="9">9. المشاكل والأمان</h2>
+<p>MissingDependency: ثبّت extra في نفس البيئة. ConsentRequired: راجع سبب طلب الشبكة
+أو النموذج أو الأجهزة، ثم وافق قصداً. UnsupportedTask: عين task صريحاً أو Inputs.
+ValidationError: اقرأ الأعمدة والحدود والملفات. نفاد الذاكرة: أغلق Model واستعمل
+عمليات معزولة أو نموذجاً أصغر أو endpoint؛ لا تشغّل جميع النماذج معاً على 2GB RAM.
+لا تحفظ مفاتيح أو بيانات مرضى في Git. لا تفك pickle مجهولاً، استخدم safetensors
+لشبكات PyTorch وskops بمراجعة trusted types. RAG قد يتلقى prompt injection من
+المستند؛ المصدر غير الموثوق بيانات لا تعليمات. API يحتاج TLS ومراجعة أمان وحدود
+حمل قبل الإنتاج. النماذج تولد أخطاء وقد تكون منحازة؛ الإنسان صاحب القرار.</p>
+<h2 id="10">10. التطوير والتحقق والترخيص</h2>
+<p>اقرأ CONTRIBUTING.md، استخدم venv وpytest، ولا تغير اسم خدمة قديمة دون migration.
+run_verification.py ينفذ عمالاً معزولة؛ --installed يتحقق من wheel دون src path.
+verify_coding_guide.py يعيد تنفيذ نصوص الدليل مع أوزان وبرامج النظام الجاهزة.
+الترخيص الحالي للكود الأصلي Apache-2.0 تنفيذاً لطلب المصدر المفتوح الأحدث، مع بقاء
+حقوق التأليف لخالد سلمان. هذا يمنح حقوق استعمال/تعديل وفق الرخصة ولا يعني منع
+الجمهور من النسخ؛ هوية وصورة المؤسس محفوظتان بشروط مستقلة. تراخيص أوزان/بيانات
+المكتبات لا تنتقل تلقائياً إلى رخصة المشروع. لم يتم نشر شيء علناً. دليل المالك
+خاص ويستبعد من staging النشر. شروط «لا نسخ مطلقاً» لا تجتمع مع source open OSI.</p>
+<h2 id="11">11. فهرس القدرات وأمثلة النسخ</h2>
+<p>التهيئة المشتركة ثم كتل الخدمات التالية مطابقة لكتالوج الاختبار؛ تفاصيل نواتجها في المرجع الشامل.</p>
+<pre><code class="language-python">from pathlib import Path
+import tempfile, threading
+from alfarouqai import AI, Client, Config, Scheduler, prepare_model
+from examples.guide_support import make_fixtures, media_fixtures, model_server, broker, modbus_server, create_onnx
+ROOT = Path.cwd()  # run from the unpacked AlFarouqAI directory
+PHOTO = ROOT/'identity/founder/khalid-salman-original.jpg'
+workspace = tempfile.TemporaryDirectory()
+DATA, OUT = make_fixtures(workspace.name)
+ai = Client()
+
+</code></pre>
+<h3 id="textanalyze"><code>text.analyze</code></h3>
+<p>Extractive Arabic/English text statistics and summary</p>
+<p>Extra: <code>core/system</code>. Required: <code>text</code>.</p>
+<pre><code class="language-python">text_analyze(*, text, config: 'Config', **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('text.analyze', text='الذكاء الاصطناعي يساعد الطلاب. Python helps researchers.')
+</code></pre>
+<h3 id="dataprofile"><code>data.profile</code></h3>
+<p>Profile a UTF-8 CSV with missing values and numeric statistics</p>
+<p>Extra: <code>core/system</code>. Required: <code>data</code>.</p>
+<pre><code class="language-python">data_profile(*, data, config, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('data.profile', data=DATA/'numeric.csv')
+</code></pre>
+<h3 id="mltrain"><code>ml.train</code></h3>
+<p>Train/test a RandomForest with explicit target/problem</p>
+<p>Extra: <code>ml</code>. Required: <code>data, target, problem</code>.</p>
+<pre><code class="language-python">train_report(*, data, target, problem, config, test_size=0.25, seed=42)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('ml.train', data=DATA/'numeric.csv', target='target', problem='classification')
+</code></pre>
+<h3 id="imageanalyze"><code>image.analyze</code></h3>
+<p>Local image statistics and frontal face detection</p>
+<p>Extra: <code>vision</code>. Required: <code>image</code>.</p>
+<pre><code class="language-python">image_analyze(*, image, config, detect_faces=True, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('image.analyze', image=PHOTO)
+</code></pre>
+<h3 id="imageobjects"><code>image.objects</code></h3>
+<p>General object detection using reviewed local model weights</p>
+<p>Extra: <code>objects</code>. Required: <code>image, model_path</code>.</p>
+<pre><code class="language-python">objects_detect(*, image, model_path, config, **kwargs)
+</code></pre>
+<p><strong>Experimental / actual-weight inference not verified:</strong> Legacy local object adapter; use tested vision.detect when appropriate.</p>
+<h3 id="videomotion"><code>video.motion</code></h3>
+<p>Bounded frame-difference motion regions</p>
+<p>Extra: <code>vision</code>. Required: <code>video</code>.</p>
+<pre><code class="language-python">video_motion(*, video, config, min_area=300, max_frames=None, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.run('video.motion', video=DATA/'clip.avi', max_frames=3)
+</code></pre>
+<h3 id="audioinfo"><code>audio.info</code></h3>
+<p>PCM WAV metadata</p>
+<p>Extra: <code>core/system</code>. Required: <code>audio</code>.</p>
+<pre><code class="language-python">audio_info(*, audio, config, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.run('audio.info', audio=DATA/'silence.wav')
+</code></pre>
+<h3 id="speechtranscribe"><code>speech.transcribe</code></h3>
+<p>Whisper transcription with an explicit local model</p>
+<p>Extra: <code>speech</code>. Required: <code>audio</code>.</p>
+<pre><code class="language-python">transcribe(*, audio, config, model_path=None, language=None, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">ai.run('speech.synthesize', text='Hello world. A speech recognition test.', output=OUT/'speech.wav')
+result = ai.run('speech.transcribe', audio=OUT/'speech.wav', model_path=str(prepare_model('whisper-tiny')), language='en')
+</code></pre>
+<h3 id="documentread"><code>document.read</code></h3>
+<p>Extract text from TXT/PDF/DOCX/XLSX</p>
+<p>Extra: <code>documents</code>. Required: <code>document</code>.</p>
+<pre><code class="language-python">document_read(*, document, config, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('document.read', document=DATA/'note.txt')
+</code></pre>
+<h3 id="codeanalyze"><code>code.analyze</code></h3>
+<p>Non-executing Python AST and project review</p>
+<p>Extra: <code>core/system</code>. Required: <code>see signature</code>.</p>
+<pre><code class="language-python">code_analyze(*, path=None, code=None, config, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('code.analyze', code='import os\nos.system(command)\n')
+</code></pre>
+<h3 id="securitylogs"><code>security.logs</code></h3>
+<p>Defensive authentication log analysis</p>
+<p>Extra: <code>core/system</code>. Required: <code>path</code>.</p>
+<pre><code class="language-python">security_logs(*, path, config, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('security.logs', path=DATA/'auth.log')
+</code></pre>
+<h3 id="iotanalyze"><code>iot.analyze</code></h3>
+<p>Offline sensor time-series z-score anomaly flags</p>
+<p>Extra: <code>core/system</code>. Required: <code>data, column</code>.</p>
+<pre><code class="language-python">sensor_analyze(*, data, column, threshold=3.0, config, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('iot.analyze', data=DATA/'sensors.csv', column='temperature')
+</code></pre>
+<h3 id="llmchat"><code>llm.chat</code></h3>
+<p>Opt-in Ollama text and supported vision chat</p>
+<p>Extra: <code>core/system</code>. Required: <code>prompt</code>.</p>
+<pre><code class="language-python">chat(*, prompt, config, system=None, image=None, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">with model_server() as origin:
+    result = Client(Config(allow_network=True, ollama_url=origin, model='reference-smollm')).run('llm.chat', prompt='What is the capital of France?')
+</code></pre>
+<h3 id="localgenerate"><code>local.generate</code></h3>
+<p>Generate text with a local trained causal language model</p>
+<p>Extra: <code>local</code>. Required: <code>prompt</code>.</p>
+<pre><code class="language-python">generate(*, prompt, config, model_path=None, max_new_tokens=96)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai('Explain Python briefly.', task='local.generate', max_new_tokens=40)
+</code></pre>
+<h3 id="nlpclassify"><code>nlp.classify</code></h3>
+<p>Classify supplied text by model likelihood of candidate labels</p>
+<p>Extra: <code>local</code>. Required: <code>text, labels</code>.</p>
+<pre><code class="language-python">classify(*, text, labels, config, model_path=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('nlp.classify', text='The service was excellent.', labels=['positive','negative'])
+</code></pre>
+<h3 id="codegenerate"><code>code.generate</code></h3>
+<p>Generate untrusted Python code suggestions with a local LLM</p>
+<p>Extra: <code>local</code>. Required: <code>prompt</code>.</p>
+<pre><code class="language-python">code_generate(*, prompt, config, model_path=None, max_new_tokens=160)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('code.generate', prompt='Write a Python function add(a,b).', max_new_tokens=60)
+</code></pre>
+<h3 id="coderepair"><code>code.repair</code></h3>
+<p>Suggest a code repair from supplied code and error</p>
+<p>Extra: <code>local</code>. Required: <code>code, error</code>.</p>
+<pre><code class="language-python">code_repair(*, code, error, config, model_path=None, max_new_tokens=160)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('code.repair', code='def add(a,b)\n return a+b', error='missing colon', max_new_tokens=60)
+</code></pre>
+<h3 id="codetest"><code>code.test</code></h3>
+<p>Run trusted unittest files with explicit OS-execution consent</p>
+<p>Extra: <code>core/system</code>. Required: <code>path</code>.</p>
+<pre><code class="language-python">code_test(*, path, config, consent=False)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('code.test', path=DATA/'trusted_tests', consent=True)
+</code></pre>
+<h3 id="documentsummarize"><code>document.summarize</code></h3>
+<p>Summarize extracted document text with a local trained LLM</p>
+<p>Extra: <code>local</code>. Required: <code>document</code>.</p>
+<pre><code class="language-python">summarize_document(*, document, config, model_path=None, max_new_tokens=128)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('document.summarize', document=DATA/'note.txt', max_new_tokens=50)
+</code></pre>
+<h3 id="visiondetect"><code>vision.detect</code></h3>
+<p>Detect COCO objects with pretrained TorchVision SSDlite</p>
+<p>Extra: <code>torchvision</code>. Required: <code>image</code>.</p>
+<pre><code class="language-python">detect(*, image, config, threshold=0.4)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('vision.detect', image=PHOTO)
+</code></pre>
+<h3 id="visionclassify"><code>vision.classify</code></h3>
+<p>Classify images with pretrained MobileNet V3</p>
+<p>Extra: <code>torchvision</code>. Required: <code>image</code>.</p>
+<pre><code class="language-python">classify(*, image, config, top_k=5)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('vision.classify', image=PHOTO, top_k=3)
+</code></pre>
+<h3 id="visionsegment"><code>vision.segment</code></h3>
+<p>Export a semantic class mask with pretrained LRASPP</p>
+<p>Extra: <code>torchvision</code>. Required: <code>image, output</code>.</p>
+<pre><code class="language-python">segment(*, image, config, output)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('vision.segment', image=PHOTO, output=OUT/'mask.png')
+</code></pre>
+<h3 id="visionocr"><code>vision.ocr</code></h3>
+<p>Recognize printed text with installed Tesseract language models</p>
+<p>Extra: <code>core/system</code>. Required: <code>image</code>.</p>
+<pre><code class="language-python">ocr(*, image, config, language='eng', psm=6)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.run('vision.ocr', image=DATA/'ocr.png', language='eng')
+</code></pre>
+<h3 id="videotrack"><code>video.track</code></h3>
+<p>Detect objects and associate temporary track IDs across video</p>
+<p>Extra: <code>torchvision</code>. Required: <code>video</code>.</p>
+<pre><code class="language-python">track(*, video, config, max_frames=30, threshold=0.4)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.run('video.track', video=DATA/'clip.avi', max_frames=3)
+</code></pre>
+<h3 id="speechrecognize"><code>speech.recognize</code></h3>
+<p>Transcribe speech with local CTranslate2 Whisper weights</p>
+<p>Extra: <code>speech</code>. Required: <code>audio</code>.</p>
+<pre><code class="language-python">recognize(*, audio, config, language=None, model_path=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">ai.run('speech.synthesize', text='Hello world. A speech recognition test.', output=OUT/'speech.wav')
+result = ai.run('speech.recognize', audio=OUT/'speech.wav', language='en')
+</code></pre>
+<h3 id="speechsynthesize"><code>speech.synthesize</code></h3>
+<p>Synthesize an audible WAV using external espeak-ng</p>
+<p>Extra: <code>core/system</code>. Required: <code>text, output</code>.</p>
+<pre><code class="language-python">synthesize(*, text, output, config, voice='en-us', speed=150)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('speech.synthesize', text='Hello world.', output=OUT/'speech.wav', voice='en-us')
+</code></pre>
+<h3 id="deeptrain"><code>deep.train</code></h3>
+<p>Train and evaluate a real multilayer PyTorch network</p>
+<p>Extra: <code>deep</code>. Required: <code>data, target, problem</code>.</p>
+<pre><code class="language-python">neural_report(*, data, target, problem, config, epochs=80, hidden=(32, 16), seed=42)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('deep.train', data=DATA/'numeric.csv', target='target', problem='classification', epochs=30)
+</code></pre>
+<h3 id="dataforecast"><code>data.forecast</code></h3>
+<p>Fit a linear time trend with chronological validation</p>
+<p>Extra: <code>ml</code>. Required: <code>data, column</code>.</p>
+<pre><code class="language-python">forecast(*, data, column, config, horizon=5)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('data.forecast', data=DATA/'sensors.csv', column='temperature', horizon=3)
+</code></pre>
+<h3 id="datarecommend"><code>data.recommend</code></h3>
+<p>Recommend unseen items using collaborative cosine similarity</p>
+<p>Extra: <code>ml</code>. Required: <code>data, user, user_column, item_column, rating_column</code>.</p>
+<pre><code class="language-python">recommend(*, data, user, user_column, item_column, rating_column, config, k=5)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('data.recommend', data=DATA/'ratings.csv', user='u1', user_column='user', item_column='item', rating_column='rating')
+</code></pre>
+<h3 id="securityanomalies"><code>security.anomalies</code></h3>
+<p>Detect multivariate anomalies with IsolationForest</p>
+<p>Extra: <code>ml</code>. Required: <code>data, columns</code>.</p>
+<pre><code class="language-python">anomalies(*, data, columns, config, contamination=0.1)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('security.anomalies', data=DATA/'sensors.csv', columns=['time','temperature'])
+</code></pre>
+<h3 id="ragindex"><code>rag.index</code></h3>
+<p>Extract a document and persist multilingual semantic embeddings</p>
+<p>Extra: <code>vector</code>. Required: <code>document, store</code>.</p>
+<pre><code class="language-python">rag_index(*, document, store, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('rag.index', document=DATA/'note.txt', store=OUT/'knowledge.sqlite')
+</code></pre>
+<h3 id="ragsearchsemantic"><code>rag.search.semantic</code></h3>
+<p>Search persisted semantic vectors with FAISS and source offsets</p>
+<p>Extra: <code>vector</code>. Required: <code>query, store</code>.</p>
+<pre><code class="language-python">rag_search(*, query, store, config, k=4)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">ai.run('rag.index', document=DATA/'note.txt', store=OUT/'knowledge.sqlite')
+result = ai.run('rag.search.semantic', query='measuring temperature', store=OUT/'knowledge.sqlite')
+</code></pre>
+<h3 id="raganswer"><code>rag.answer</code></h3>
+<p>Generate a source-returning answer from semantic retrieval</p>
+<p>Extra: <code>vector</code>. Required: <code>question, store</code>.</p>
+<pre><code class="language-python">rag_answer(*, question, store, config, model_path=None, k=3, min_score=0.2)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">ai.run('rag.index', document=DATA/'note.txt', store=OUT/'knowledge.sqlite')
+result = ai.run('rag.answer', question='What measures heat?', store=OUT/'knowledge.sqlite', min_score=.1)
+</code></pre>
+<h3 id="agentsllm"><code>agents.llm</code></h3>
+<p>Use a local LLM to rank allowed tools and review actual results</p>
+<p>Extra: <code>local</code>. Required: <code>goal, inputs_by_task</code>.</p>
+<pre><code class="language-python">llm_agent(*, goal, inputs_by_task, config, model_path=None, max_steps=1)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('agents.llm', goal='Analyze text statistics.', inputs_by_task={'text.analyze':{'text':'Python helps students.'}})
+</code></pre>
+<h3 id="automationtick"><code>automation.tick</code></h3>
+<p>Run due persisted local jobs once when the caller ticks</p>
+<p>Extra: <code>core/system</code>. Required: <code>store</code>.</p>
+<pre><code class="language-python">tick(*, store, config, now=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">scheduler = Scheduler(OUT/'jobs.sqlite')
+scheduler.add('one','text.analyze',{'text':'Hello'},run_at=0)
+scheduler.close()
+result = ai.run('automation.tick', store=OUT/'jobs.sqlite')
+</code></pre>
+<h3 id="iotmqttpublish"><code>iot.mqtt.publish</code></h3>
+<p>Publish an explicitly approved MQTT message and await broker ACK</p>
+<p>Extra: <code>iot</code>. Required: <code>host, topic, message</code>.</p>
+<pre><code class="language-python">mqtt_publish(*, host, topic, message, config, port=1883, consent=False)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">with broker() as port:
+    result = Client(Config(allow_network=True)).run('iot.mqtt.publish', host='127.0.0.1', port=port, topic='demo/readings', message={'temperature':24}, consent=True)
+</code></pre>
+<h3 id="iotmqttread"><code>iot.mqtt.read</code></h3>
+<p>Read real MQTT messages from an explicitly configured broker</p>
+<p>Extra: <code>iot</code>. Required: <code>host, topic</code>.</p>
+<pre><code class="language-python">mqtt_read(*, host, topic, config, port=1883, max_messages=1, duration=3)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">with broker() as port:
+    def publish():
+        import time
+        time.sleep(.5)
+        Client(Config(allow_network=True)).run('iot.mqtt.publish', host='127.0.0.1', port=port, topic='demo/readings', message='24', consent=True)
+    thread = threading.Thread(target=publish); thread.start()
+    result = Client(Config(allow_network=True)).run('iot.mqtt.read', host='127.0.0.1', port=port, topic='demo/readings', duration=4)
+    thread.join()
+</code></pre>
+<h3 id="roboticsserial"><code>robotics.serial</code></h3>
+<p>Exchange bounded data on a caller-approved local serial port</p>
+<p>Extra: <code>iot</code>. Required: <code>port</code>.</p>
+<pre><code class="language-python">serial_exchange(*, port, config, baudrate=9600, read_bytes=128, command=None, consent=False)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">import os, select
+master, slave = os.openpty()
+def device_side():
+    if select.select([master],[],[],4)[0]:
+        os.read(master,128); os.write(master,b'PONG')
+thread=threading.Thread(target=device_side); thread.start()
+try:
+    result=Client(Config(timeout=2)).run('robotics.serial',port=os.ttyname(slave),command='PING',read_bytes=4,consent=True)
+    thread.join()
+finally:
+    os.close(master); os.close(slave)
+</code></pre>
+<h3 id="imagegenerate"><code>image.generate</code></h3>
+<p>Experimental local Stable Diffusion integration</p>
+<p>Extra: <code>diffusion</code>. Required: <code>prompt, model_path, output</code>.</p>
+<pre><code class="language-python">image_generate(*, prompt, model_path, output, config, steps=20, seed=42, consent=False)
+</code></pre>
+<p><strong>Experimental / actual-weight inference not verified:</strong> Diffusers Stable Diffusion adapter only; actual generation not tested.</p>
+<h3 id="videogenerate"><code>video.generate</code></h3>
+<p>Experimental local CogVideoX integration</p>
+<p>Extra: <code>diffusion</code>. Required: <code>prompt, model_path, output</code>.</p>
+<pre><code class="language-python">video_generate(*, prompt, model_path, output, config, frames=17, steps=20, seed=42, consent=False)
+</code></pre>
+<p><strong>Experimental / actual-weight inference not verified:</strong> CogVideoX adapter only; actual generation not tested.</p>
+<h3 id="arabicprocess"><code>arabic.process</code></h3>
+<p>Normalize, tokenize and optionally stem Arabic text</p>
+<p>Extra: <code>nlp</code>. Required: <code>text</code>.</p>
+<pre><code class="language-python">process(*, text, config, stem=True)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.ar('يكتب الطلاب دروس اللغة العربية في المدارس')
+</code></pre>
+<h3 id="nlptrain"><code>nlp.train</code></h3>
+<p>Train and evaluate a labeled Arabic/multilingual text classifier</p>
+<p>Extra: <code>ml</code>. Required: <code>data, text_column, target</code>.</p>
+<pre><code class="language-python">train_report(*, data, text_column, target, config, seed=42)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">model = ai.text_train(data=DATA/'corpus.csv', text_column='text', target='label')
+result = model.report
+print(model.predict(['خدمة ممتازة رائعة']).to_dict())
+</code></pre>
+<h3 id="nlptopics"><code>nlp.topics</code></h3>
+<p>Discover exploratory corpus topics using LDA</p>
+<p>Extra: <code>ml</code>. Required: <code>data, text_column</code>.</p>
+<pre><code class="language-python">topics(*, data, text_column, config, n_topics=3, top_words=8)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('nlp.topics', data=DATA/'corpus.csv', text_column='text', n_topics=2)
+</code></pre>
+<h3 id="nlpsimilarity"><code>nlp.similarity</code></h3>
+<p>Rank text passages by lexical character TF-IDF similarity</p>
+<p>Extra: <code>ml</code>. Required: <code>texts, query</code>.</p>
+<pre><code class="language-python">similarity(*, texts, query, config, k=5)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('nlp.similarity', texts=['تعلم بايثون','صيانة مضخة'], query='بايثون')
+</code></pre>
+<h3 id="salesforecast"><code>sales.forecast</code></h3>
+<p>Aggregate calendar months and forecast sales using temporal baselines</p>
+<p>Extra: <code>ml</code>. Required: <code>data</code>.</p>
+<pre><code class="language-python">sales_forecast(*, data, config, date_column=None, value_column=None, horizon=1)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.sales(DATA/'sales.csv', horizon=1)
+</code></pre>
+<h3 id="dataclean"><code>data.clean</code></h3>
+<p>Trim fields and remove exact duplicate CSV rows for review</p>
+<p>Extra: <code>core/system</code>. Required: <code>data</code>.</p>
+<pre><code class="language-python">clean(*, data, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('data.clean', data=DATA/'appointments.csv')
+</code></pre>
+<h3 id="datagroup"><code>data.group</code></h3>
+<p>Aggregate operational records by an explicit grouping column</p>
+<p>Extra: <code>core/system</code>. Required: <code>data, group_column</code>.</p>
+<pre><code class="language-python">group_data(*, data, group_column, config, value_column=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('data.group', data=DATA/'appointments.csv', group_column='department', value_column='waiting_minutes')
+</code></pre>
+<h3 id="privacyredact"><code>privacy.redact</code></h3>
+<p>Mask email/phone patterns without pretending full anonymization</p>
+<p>Extra: <code>core/system</code>. Required: <code>text</code>.</p>
+<pre><code class="language-python">redact(*, text, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('privacy.redact', text='Contact person@example.org +967 700 123 456')
+</code></pre>
+<h3 id="financereconcile"><code>finance.reconcile</code></h3>
+<p>Reconcile two keyed ledgers using exact decimal amounts</p>
+<p>Extra: <code>core/system</code>. Required: <code>left, right, key, amount_column</code>.</p>
+<pre><code class="language-python">reconcile(*, left, right, key, amount_column, config, tolerance=0.01)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('finance.reconcile', left=DATA/'left.csv', right=DATA/'right.csv', key='id', amount_column='amount')
+</code></pre>
+<h3 id="industrysensors"><code>industry.sensors</code></h3>
+<p>Extract vibration/sensor statistics and explicitly sampled spectra</p>
+<p>Extra: <code>ml</code>. Required: <code>data, columns</code>.</p>
+<pre><code class="language-python">sensors(*, data, columns, config, sample_rate=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('industry.sensors', data=DATA/'sensors.csv', columns=['temperature'], sample_rate=1)
+</code></pre>
+<h3 id="industrycontrol"><code>industry.control</code></h3>
+<p>Screen measurements against separate baseline control limits</p>
+<p>Extra: <code>core/system</code>. Required: <code>data, column, baseline</code>.</p>
+<pre><code class="language-python">control(*, data, column, baseline, config, sigma=3.0)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('industry.control', data=DATA/'sensors.csv', baseline=DATA/'baseline.csv', column='temperature')
+</code></pre>
+<h3 id="industryproduction"><code>industry.production</code></h3>
+<p>Compute production yield, rejects and optional hourly throughput</p>
+<p>Extra: <code>core/system</code>. Required: <code>data, total_column, good_column</code>.</p>
+<pre><code class="language-python">production(*, data, total_column, good_column, config, operating_hours=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('industry.production', data=DATA/'production.csv', total_column='total', good_column='good', operating_hours=3)
+</code></pre>
+<h3 id="industrymaintenance"><code>industry.maintenance</code></h3>
+<p>Evaluate a supervised maintenance-label classifier on historical data</p>
+<p>Extra: <code>ml</code>. Required: <code>data, target</code>.</p>
+<pre><code class="language-python">maintenance(*, data, target, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('industry.maintenance', data=DATA/'numeric.csv', target='target')
+</code></pre>
+<h3 id="industrydefects"><code>industry.defects</code></h3>
+<p>Locate aligned-reference image differences for quality screening</p>
+<p>Extra: <code>vision</code>. Required: <code>image, reference</code>.</p>
+<pre><code class="language-python">defects(*, image, reference, config, threshold=25, min_area=20, output=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.inspect(DATA/'bad.png', reference=DATA/'good.png', output=OUT/'difference.png')
+</code></pre>
+<h3 id="databaseprofile"><code>database.profile</code></h3>
+<p>Read SQLite schema and row counts without modifying the database</p>
+<p>Extra: <code>core/system</code>. Required: <code>database</code>.</p>
+<pre><code class="language-python">database_profile(*, database, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('database.profile', database=DATA/'factory.sqlite')
+</code></pre>
+<h3 id="codetestsgenerate"><code>code.tests.generate</code></h3>
+<p>Generate untrusted unittest suggestions with syntax diagnostics</p>
+<p>Extra: <code>local</code>. Required: <code>code</code>.</p>
+<pre><code class="language-python">tests_generate(*, code, config, model_path=None, max_new_tokens=160)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('code.tests.generate', code='def add(a,b):\n    return a+b\n', max_new_tokens=80)
+</code></pre>
+<h3 id="apischema"><code>api.schema</code></h3>
+<p>Build the authenticated text API OpenAPI schema</p>
+<p>Extra: <code>api</code>. Required: <code>see signature</code>.</p>
+<pre><code class="language-python">api_schema(*, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('api.schema')
+</code></pre>
+<h3 id="onnxpredict"><code>onnx.predict</code></h3>
+<p>Run reviewed local ONNX tensors with the CPU runtime</p>
+<p>Extra: <code>onnx</code>. Required: <code>model_path, inputs</code>.</p>
+<pre><code class="language-python">onnx_predict(*, model_path, inputs, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">create_onnx(DATA/'double.onnx')
+result = ai.run('onnx.predict', model_path=DATA/'double.onnx', inputs={'x':[[2.],[3.]]})
+</code></pre>
+<h3 id="tensorflowpredict"><code>tensorflow.predict</code></h3>
+<p>Run a reviewed local single-output Keras model</p>
+<p>Extra: <code>tensorflow</code>. Required: <code>model_path, inputs</code>.</p>
+<pre><code class="language-python">tensorflow_predict(*, model_path, inputs, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">import tensorflow as tf
+model=tf.keras.Sequential([tf.keras.layers.Input(shape=(1,)),tf.keras.layers.Dense(1)])
+import numpy as np
+model.layers[0].set_weights([np.array([[2.]],dtype='float32'),np.array([1.],dtype='float32')])
+model.save(DATA/'linear.keras')
+result = ai.run('tensorflow.predict', model_path=DATA/'linear.keras', inputs=[[2.]])
+</code></pre>
+<h3 id="llmcompatible"><code>llm.compatible</code></h3>
+<p>Call an explicitly approved OpenAI-compatible optional inference endpoint</p>
+<p>Extra: <code>core/system</code>. Required: <code>prompt, endpoint, model</code>.</p>
+<pre><code class="language-python">compatible_chat(*, prompt, endpoint, model, config, api_key_env=None, max_tokens=80)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">with model_server() as origin:
+    result = Client(Config(allow_network=True)).run('llm.compatible', prompt='What is the capital of France?', endpoint=origin+'/v1', model='reference-smollm')
+</code></pre>
+<h3 id="iotmodbusread"><code>iot.modbus.read</code></h3>
+<p>Read bounded holding registers from an approved local gateway</p>
+<p>Extra: <code>industrial</code>. Required: <code>host, address, count</code>.</p>
+<pre><code class="language-python">modbus_read(*, host, address, count, config, port=502, device_id=1)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">with modbus_server() as port:
+    result = Client(Config(allow_network=True)).run('iot.modbus.read', host='127.0.0.1', port=port, address=0, count=2)
+</code></pre>
+<h3 id="documentinsights"><code>document.insights</code></h3>
+<p>Extract text, keywords, dates and an extractive summary from a file</p>
+<p>Extra: <code>documents</code>. Required: <code>document</code>.</p>
+<pre><code class="language-python">document_insights(*, document, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = AI('حلل هذا الملف واستخرج أهم المعلومات', file=DATA/'note.txt')
+</code></pre>
+<h3 id="documentsearch"><code>document.search</code></h3>
+<p>Search document passages lexically with source references</p>
+<p>Extra: <code>documents</code>. Required: <code>document, query</code>.</p>
+<pre><code class="language-python">document_search(*, document, query, config, k=3)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('document.search', document=DATA/'note.txt', query='Python')
+</code></pre>
+<h3 id="aisearch"><code>ai.search</code></h3>
+<p>Solve a bounded unit-cost grid shortest path with A-star</p>
+<p>Extra: <code>core/system</code>. Required: <code>grid, start, goal</code>.</p>
+<pre><code class="language-python">search(*, grid, start, goal, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = AI('astar', grid=[[0,0,0],[0,1,0]], start=[0,0], goal=[1,2])
+</code></pre></main><footer>© 2026 Khalid Salman — Original code Apache-2.0. Identity and third-party rights are separate. Local alpha; not published.</footer></html>

@@ -1,0 +1,94 @@
+{
+  "task": "agents.llm",
+  "data": {
+    "results": {
+      "text.analyze": {
+        "task": "text.analyze",
+        "data": {
+          "characters": 47,
+          "words": 7,
+          "sentences": 2,
+          "keywords": [
+            [
+              "students",
+              2
+            ],
+            [
+              "local",
+              1
+            ],
+            [
+              "ai",
+              1
+            ],
+            [
+              "helps",
+              1
+            ],
+            [
+              "learn",
+              1
+            ],
+            [
+              "python",
+              1
+            ]
+          ],
+          "extractive_summary": "Local AI helps students. Students learn Python."
+        },
+        "backend": "stdlib.frequency",
+        "warnings": [
+          "Extractive statistics only; not an LLM or sentiment model."
+        ],
+        "provenance": {
+          "library_version": "0.3.0a1",
+          "elapsed_seconds": 0.000719,
+          "network_policy": "explicit opt-in",
+          "executed": true
+        },
+        "schema_version": "1.0"
+      }
+    },
+    "trace": [
+      {
+        "role": "llm-planner",
+        "ranking": {
+          "label": "Extractive Arabic/English text statistics and summary",
+          "rows": [
+            {
+              "label": "Extractive Arabic/English text statistics and summary",
+              "relative_score": 0.4910704493522644,
+              "mean_log_likelihood": -6.045217514038086
+            },
+            {
+              "label": "Finish without using another tool",
+              "relative_score": 0.35824719071388245,
+              "mean_log_likelihood": -6.360581874847412
+            },
+            {
+              "label": "Non-executing Python AST and project review",
+              "relative_score": 0.15068234503269196,
+              "mean_log_likelihood": -7.226631164550781
+            }
+          ]
+        },
+        "step": 0
+      },
+      {
+        "role": "specialist",
+        "task": "text.analyze",
+        "executed": true
+      }
+    ],
+    "review": "\"Text.analyze\" analyzes and summarizes the results of the given text.\n\n\"Text.analyze\" analyzes and summarizes the results of the given text.\n\n\"Text.analyze\" analyzes and summarizes the results of the given text.\n\n\"Text.analyze\" analyzes and summarizes the results of the given text.\n\n\"Text.analyze\" analyzes and",
+    "completed_tools": 1
+  },
+  "backend": "local-llm-constrained-planner+tools+reviewer",
+  "warnings": [
+    "Planner and reviewer share one small local model. Roles are not independent trained agents. No arbitrary tool generation/execution; review can be wrong."
+  ],
+  "provenance": {
+    "actual_weight_inference": true
+  },
+  "schema_version": "1.0"
+}

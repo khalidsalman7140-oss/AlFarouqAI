@@ -1,0 +1,18 @@
+{
+  "model": "lraspp",
+  "source": {
+    "torchvision": "LRASPP_MobileNet_V3_Large_Weights",
+    "license": "Review TorchVision weight/COCO/VOC terms",
+    "purpose": "21-class semantic image segmentation",
+    "extra": "torchvision"
+  },
+  "revision": "https://download.pytorch.org/models/lraspp_mobilenet_v3_large-d234d4ea.pth",
+  "files": [
+    {
+      "name": "weights.pth",
+      "bytes": 13097061,
+      "sha256": "d234d4eae9d55d5f76de18b77cf0dc62c66fe5c5482758209d00f950c92bb280"
+    }
+  ],
+  "note": "Downloaded by explicit consent, not bundled. SHA256 records bytes, not a guarantee of model safety or legal clearance."
+}

@@ -1,0 +1,22 @@
+{
+  "task": "industry.production",
+  "data": {
+    "total_units": 300.0,
+    "good_units": 285.0,
+    "rejected_units": 15.0,
+    "yield_fraction": 0.95,
+    "reject_fraction": 0.05,
+    "units_per_operating_hour": 100.0
+  },
+  "backend": "stdlib.production-accounting",
+  "warnings": [
+    "No OEE is claimed without planned time, availability, ideal cycle time and consistent definitions. Check units, duplicate shifts and count provenance."
+  ],
+  "provenance": {
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.000462,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

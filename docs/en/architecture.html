@@ -1,0 +1,93 @@
+<!doctype html><html lang="en" dir="ltr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>architecture | AlFarouq AI</title><style>body{font:17px/1.85 system-ui,sans-serif;max-width:1080px;margin:0 auto;padding:32px;background:#fafcff;color:#16243b}a{color:#075f94}pre,code{direction:ltr;text-align:left;font-family:monospace}pre{overflow:auto;padding:22px;border-radius:12px;background:#0d2235;color:#e0f4ff}code{font-size:.9em}table{border-collapse:collapse;width:100%;display:block;overflow:auto}td,th{border:1px solid #cbd5e1;padding:10px;text-align:start}th{background:#e2eef5}h1,h2{color:#073d57}img{max-width:100%}nav,footer{padding:16px 0;border-bottom:1px solid #cbd5e1}footer{font-size:13px;color:#475569}blockquote{border-inline-start:4px solid #079499;padding-inline-start:1em} @media print{body{font-size:12px}pre{white-space:pre-wrap}}</style><nav><a href="../index.html">AlFarouq AI — Documentation / التوثيق</a></nav><main><blockquote>
+<p>Preserved 0.1.0 documentation. Current status: <a href="handbook-0.2.html">0.2 handbook</a> and <a href="capabilities-0.2.html">0.2 matrix</a>.</p>
+</blockquote>
+<h1 id="architecture-and-independent-engineering-decisions">Architecture and independent engineering decisions</h1>
+<p><a href="../ar/architecture.html">العربية</a> · <a href="../research/SOURCES.html">Research sources</a></p>
+<pre><code class="language-text">Python / CLI / VS Code
+       |
+AI conservative router ---- Client.run(explicit_task)
+       +-------------------+
+                           |
+              Registry + Capability contracts
+                           |
+              Config / validation / consent policy
+                           |
+    stdlib tools | lazy optional engines | opt-in Ollama
+                           |
+           Result + warnings + backend provenance
+                           |
+                 JSON CSV MD HTML TXT
+
+AgentTeam: validate DAG -&gt; specialist levels -&gt; Ref data flow -&gt; schema reviewer
+</code></pre>
+<p>The goal is a stable facade, not rewriting every external engine or hiding material
+choices. Optional dependencies and plugin entry points follow Python packaging
+standards. Every capability declares inputs and returns an auditable Result.
+A conservative router is cheaper, lighter and easier to test than making an LLM
+mandatory; unrestricted natural-language planning is deliberately not claimed.</p>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>Alternatives considered</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Packaging</td>
+<td>monolith; auto-install on import; extras</td>
+<td>dependency-free core + explicit extras + consent-only dedicated venv installer</td>
+</tr>
+<tr>
+<td>Planning</td>
+<td>mandatory agent framework/LLM; rules</td>
+<td>explainable bilingual rules now; schema-constrained LLM planner later</td>
+</tr>
+<tr>
+<td>Agents</td>
+<td>opaque autonomy; bounded graph</td>
+<td>real DAG execution, budget/allowlist, specialist tools and schema review</td>
+</tr>
+<tr>
+<td>Tabular ML</td>
+<td>custom algorithms; established pipelines</td>
+<td>scikit-learn pipelines, explicit target/problem, split before preprocessing</td>
+</tr>
+<tr>
+<td>Persistence</td>
+<td>pickle/joblib; skops; ONNX</td>
+<td>optional skops save only; no untrusted load; ONNX later</td>
+</tr>
+<tr>
+<td>Vision</td>
+<td>YOLO default; OpenCV; Transformers</td>
+<td>OpenCV 4.x for tested face/motion; separate local detection adapter; no default AGPL integration</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>mandatory vector DB; lexical index; embeddings</td>
+<td>core JSON/TF-IDF; optional local SentenceTransformers</td>
+</tr>
+<tr>
+<td>LLM</td>
+<td>mandatory cloud API; local server</td>
+<td>explicit model + Ollama opt-in, no paid service required</td>
+</tr>
+<tr>
+<td>Licensing</td>
+<td>call restrictive code open source; reserve rights</td>
+<td>current original source Apache-2.0, founder assets separately reserved</td>
+</tr>
+</tbody>
+</table>
+<p>Security is a policy boundary, not process isolation. No runtime installation,
+no generated-code execution, no auto plugin import, no default network and no model
+weights in the release. Hostile files/plugins still need OS-level isolation.</p>
+<p>Before production: process resource limits, task cancellation/timeouts, async,
+platform hash-locks, Arabic benchmark suites, data/privacy controls, telemetry
+that is off by default, experiment/model provenance, domain-aware splits, model
+license manifests, security review and robust parser fuzzing. Compare local model
+quality/latency/RAM/license on a defined benchmark; no strongest-model comparison
+was performed during this delivery. See linked sources for evidence, not claims
+that one library license also licenses its model weights.</p></main><footer>© 2026 Khalid Salman — Original code Apache-2.0. Identity and third-party rights are separate. Local alpha; not published.</footer></html>

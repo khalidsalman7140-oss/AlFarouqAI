@@ -1,0 +1,222 @@
+{
+  "task": "industry.control",
+  "data": {
+    "mean": 21.975,
+    "baseline_std": 0.83166499665831,
+    "lower_control_limit": 19.48000501002507,
+    "upper_control_limit": 24.469994989974932,
+    "rows": [
+      {
+        "row": 0,
+        "value": 21.0,
+        "out_of_control": false
+      },
+      {
+        "row": 1,
+        "value": 22.0,
+        "out_of_control": false
+      },
+      {
+        "row": 2,
+        "value": 23.0,
+        "out_of_control": false
+      },
+      {
+        "row": 3,
+        "value": 21.0,
+        "out_of_control": false
+      },
+      {
+        "row": 4,
+        "value": 22.0,
+        "out_of_control": false
+      },
+      {
+        "row": 5,
+        "value": 23.0,
+        "out_of_control": false
+      },
+      {
+        "row": 6,
+        "value": 21.0,
+        "out_of_control": false
+      },
+      {
+        "row": 7,
+        "value": 22.0,
+        "out_of_control": false
+      },
+      {
+        "row": 8,
+        "value": 23.0,
+        "out_of_control": false
+      },
+      {
+        "row": 9,
+        "value": 21.0,
+        "out_of_control": false
+      },
+      {
+        "row": 10,
+        "value": 22.0,
+        "out_of_control": false
+      },
+      {
+        "row": 11,
+        "value": 23.0,
+        "out_of_control": false
+      },
+      {
+        "row": 12,
+        "value": 21.0,
+        "out_of_control": false
+      },
+      {
+        "row": 13,
+        "value": 22.0,
+        "out_of_control": false
+      },
+      {
+        "row": 14,
+        "value": 23.0,
+        "out_of_control": false
+      },
+      {
+        "row": 15,
+        "value": 21.0,
+        "out_of_control": false
+      },
+      {
+        "row": 16,
+        "value": 22.0,
+        "out_of_control": false
+      },
+      {
+        "row": 17,
+        "value": 23.0,
+        "out_of_control": false
+      },
+      {
+        "row": 18,
+        "value": 21.0,
+        "out_of_control": false
+      },
+      {
+        "row": 19,
+        "value": 22.0,
+        "out_of_control": false
+      },
+      {
+        "row": 20,
+        "value": 23.0,
+        "out_of_control": false
+      },
+      {
+        "row": 21,
+        "value": 21.0,
+        "out_of_control": false
+      },
+      {
+        "row": 22,
+        "value": 22.0,
+        "out_of_control": false
+      },
+      {
+        "row": 23,
+        "value": 23.0,
+        "out_of_control": false
+      },
+      {
+        "row": 24,
+        "value": 21.0,
+        "out_of_control": false
+      },
+      {
+        "row": 25,
+        "value": 80.0,
+        "out_of_control": true
+      },
+      {
+        "row": 26,
+        "value": 23.0,
+        "out_of_control": false
+      },
+      {
+        "row": 27,
+        "value": 21.0,
+        "out_of_control": false
+      },
+      {
+        "row": 28,
+        "value": 22.0,
+        "out_of_control": false
+      },
+      {
+        "row": 29,
+        "value": 23.0,
+        "out_of_control": false
+      },
+      {
+        "row": 30,
+        "value": 21.0,
+        "out_of_control": false
+      },
+      {
+        "row": 31,
+        "value": 22.0,
+        "out_of_control": false
+      },
+      {
+        "row": 32,
+        "value": 23.0,
+        "out_of_control": false
+      },
+      {
+        "row": 33,
+        "value": 21.0,
+        "out_of_control": false
+      },
+      {
+        "row": 34,
+        "value": 22.0,
+        "out_of_control": false
+      },
+      {
+        "row": 35,
+        "value": 23.0,
+        "out_of_control": false
+      },
+      {
+        "row": 36,
+        "value": 21.0,
+        "out_of_control": false
+      },
+      {
+        "row": 37,
+        "value": 22.0,
+        "out_of_control": false
+      },
+      {
+        "row": 38,
+        "value": 23.0,
+        "out_of_control": false
+      },
+      {
+        "row": 39,
+        "value": 21.0,
+        "out_of_control": false
+      }
+    ]
+  },
+  "backend": "statistics.phase-II-shewhart",
+  "warnings": [
+    "Baseline-estimated statistical control limits are NOT engineering specification limits. Check baseline stability, autocorrelation, stationarity and sampling before action."
+  ],
+  "provenance": {
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.00076,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

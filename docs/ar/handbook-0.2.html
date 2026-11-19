@@ -1,0 +1,224 @@
+<!doctype html><html lang="ar" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>handbook-0.2 | AlFarouq AI</title><style>body{font:17px/1.85 system-ui,sans-serif;max-width:1080px;margin:0 auto;padding:32px;background:#fafcff;color:#16243b}a{color:#075f94}pre,code{direction:ltr;text-align:left;font-family:monospace}pre{overflow:auto;padding:22px;border-radius:12px;background:#0d2235;color:#e0f4ff}code{font-size:.9em}table{border-collapse:collapse;width:100%;display:block;overflow:auto}td,th{border:1px solid #cbd5e1;padding:10px;text-align:start}th{background:#e2eef5}h1,h2{color:#073d57}img{max-width:100%}nav,footer{padding:16px 0;border-bottom:1px solid #cbd5e1}footer{font-size:13px;color:#475569}blockquote{border-inline-start:4px solid #079499;padding-inline-start:1em} @media print{body{font-size:12px}pre{white-space:pre-wrap}}</style><nav><a href="../index.html">AlFarouq AI — Documentation / التوثيق</a></nav><main><h1 id="alfarouq-ai-020-alpha">كتاب الاستخدام والتعلم — AlFarouq AI 0.2.0 Alpha</h1>
+<p><a href="../../README.ar.html">الرئيسية</a> · <a href="guide.html">الدليل السابق المحفوظ</a> · <a href="../en/handbook-0.2.html">English</a></p>
+<h2 id="1">1. ماذا تغير، وما الذي لا ندّعيه</h2>
+<p>هذا تطوير إضافي للإصدار 0.1.0، وليس مشروعاً جديداً. بقيت واجهاته واختباراته
+الأصلية. أضيفت محركات ونماذج مدربة محلية، وتدريب عصبي، وقاعدة متجهات، ووكلاء
+مدعومة بنموذج، وتكاملات أجهزة محكومة بالموافقة. لا يوجد دليل أن المكتبة أفضل
+من كل مكتبة أخرى؛ الأدق أنها تختصر استعمال أدوات متخصصة وتوضح مصدر نتائجها.
+لا يمكن لواجهة موحدة أن تلغي قيود العتاد والترخيص وجودة البيانات.</p>
+<h2 id="2">2. تثبيت خفيف ثم إضافة ما تحتاجه</h2>
+<p>أنشئ بيئة افتراضية وفعلها كما في الدليل الأصلي، ثم من المجلد المفكوك:</p>
+<pre><code class="language-bash">python -m pip install .
+# اختر الإضافات المطلوبة فقط، لا تثبت الجميع:
+python -m pip install '.[local]'
+python -m pip install '.[torchvision,vision]'
+python -m pip install '.[speech]'
+python -m pip install '.[vector]'
+python -m pip install '.[deep,iot]'
+</code></pre>
+<p>لأجهزة CPU يمكن تثبيت إصدار PyTorch المناسب من فهرس CPU الرسمي أولاً، بدلاً من
+تنزيل حزم CUDA غير المطلوبة. اتبع إرشادات PyTorch الخاصة بنظامك، ولا تفترض أن
+عجلات Linux التي اختبرت هنا مناسبة لكل جهاز. راجع reports/verified-requirements-0.2.txt
+لإصدارات بيئة التحقق؛ هذا جرد اختبار، وليس lock محمولاً مضموناً لكل منصة.</p>
+<p><code>Client.prepare('vision.detect', '.alfarouq-env')</code> يعرض خطة الاعتماديات. إضافة
+<code>consent=True</code> تنفذها داخل بيئة مخصصة وفق حواجز الإصدار السابق. بعدها ثبّت
+المكتبة داخل تلك البيئة واختر مفسرها؛ لا تستطيع العملية الحالية استيراد بيئة
+أخرى آلياً. لا يثبّت import أو الاستدعاء المعتاد شيئاً خفياً.
+Tesseract وحزم لغاته وespeak-ng ووسيط MQTT برامج نظام اختيارية مستقلة لا يحاول
+pip تثبيتها. اختبر الآن مسار تثبيت إضافة iot الشبكي في بيئة مخصصة، ثم استوردت الحزم بمفسرها دون تعديل البيئة الحالية.</p>
+<h2 id="3">3. النماذج: تنزيل مرة بموافقة ثم عمل محلي</h2>
+<pre><code class="language-python">from alfarouqai import Client, Config
+ai = Client(Config(allow_network=True, allow_model_download=True))
+</code></pre>
+<p>هذان الخياران موافقة صريحة على تنزيل النماذج المعروفة عند أول احتياج. بعدها
+يمكن استعمال <code>Client()</code> دون شبكة إذا بقيت الأوزان في cache. المسار الافتراضي
+<code>~/.cache/alfarouqai/models</code>، ويغيره المتغير المعلن <code>ALFAROUQ_MODEL_HOME</code>.
+<code>model_inventory()</code> يعرض الأسماء، و<code>prepare_model(name, ..., consent=True)</code>
+يهيئ نموذجاً بعينه. لكل تنزيل سجل مراجعة مصدر وإصدار immutable وبصمات SHA-256.
+فحص الوجود أثناء الاستعمال ليس تدقيق سلامة تشفيرياً دائماً ولا توقيع ناشر.</p>
+<table>
+<thead>
+<tr>
+<th>الاسم</th>
+<th>الوظيفة</th>
+<th>ما شُغّل</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>smollm2-135m</td>
+<td>نصوص وكود وتخطيط محدود</td>
+<td>SmolLM2-135M-Instruct؛ إنجليزي أساساً</td>
+</tr>
+<tr>
+<td>minilm-multilingual</td>
+<td>تضمين وبحث متعدد اللغات</td>
+<td>MiniLM-L12-v2؛ بحث عربي/إنجليزي فعلي</td>
+</tr>
+<tr>
+<td>whisper-tiny</td>
+<td>تعرف الكلام</td>
+<td>CTranslate2 CPU/int8؛ عينة إنجليزية مولدة صوتياً</td>
+</tr>
+<tr>
+<td>mobilenet-v3</td>
+<td>تصنيف صور</td>
+<td>MobileNet V3 Small / ImageNet</td>
+</tr>
+<tr>
+<td>ssdlite320</td>
+<td>كشف أشياء</td>
+<td>SSDlite / COCO</td>
+</tr>
+<tr>
+<td>lraspp</td>
+<td>تقسيم دلالي</td>
+<td>LRASPP / أصناف VOC</td>
+</tr>
+</tbody>
+</table>
+<p>الأوزان ليست داخل ZIP عمداً: حجمها المجمع نحو 847 ميجابايت في التحقق. إبقاء
+الحزمة صغيرة يقلل صعوبات التنزيل؛ مصادر النماذج مستقلة ولا تتطلب اشتراك API
+مدفوعاً. لا تُعد رخصة إطار العمل ترخيصاً لكل وزن أو بيانات تدريبه؛ راجع السجل
+وبطاقة النموذج قبل الاستخدام التجاري أو إعادة التوزيع.</p>
+<h2 id="4">4. سطر أو سطران للاستخدام بعد الإعداد</h2>
+<pre><code class="language-python">r = ai.run('vision.detect', image='photo.jpg')
+r.export('objects.json')
+</code></pre>
+<p>ويمكن الاختصار:</p>
+<pre><code class="language-python">from alfarouqai import AI
+r = AI('vision.classify', image='photo.jpg')
+</code></pre>
+<p>الاستدعاء بالاسم متعمد لأنه لا يخمن نوع المهمة. الأوصاف العربية/الإنجليزية
+القديمة ما زالت تعمل ضمن حدود الموجه القديم. للكتابة الحرة مع اختيار محرك صريح:</p>
+<pre><code class="language-python">r = ai('Explain gravity briefly.', task='local.generate')
+</code></pre>
+<p>البساطة تخص الاستدعاء بعد تثبيت الإضافة والموافقة على النموذج؛ لا نخفي متطلبات
+العتاد أو تثبيت النظام أو موافقات الأجهزة داخل سطر سحري.</p>
+<h2 id="5-nlp">5. النصوص وNLP وتوليد المحتوى والكود</h2>
+<pre><code class="language-python">ai.run('local.generate', prompt='Explain a neural network in two sentences.')
+ai.run('nlp.classify', text='This book is wonderful.', labels=['positive','negative'])
+</code></pre>
+<p>التصنيف يرتب تسمياتك باستخدام احتمالية النموذج، وليس نموذج مشاعر متخصصاً،
+ودرجة relative_score غير معايرة. المولد الافتراضي 135M صغير، وليس إثبات جودة
+عربية متقدمة. يمكنك تمرير model_path محلياً لنموذج Transformers متوافق ومدقق؛
+قد تحتاج ذاكرة أكبر. لا كود remote موثوق تلقائياً، ولا تحميل pickle لغوي.
+المدخل يقتطع عند 1024 token، والإخراج مقيد؛ لا يصلح كملخص شامل لكتاب طويل.</p>
+<pre><code class="language-python">ai.run('code.generate', prompt='Write a Python function add(a,b).')
+ai.run('code.repair', code='def add(a,b)\n return a+b', error='missing colon')
+</code></pre>
+<p>هذه اقتراحات حقيقية يولدها النموذج، وليست دليلاً على صحة البرنامج. الملفات
+الأصلية لا تعدل تلقائياً. لتحليلها دون تشغيل: <code>code.analyze</code>. لتشغيل اختبارات
+unittest لمشروع موثوق فقط:</p>
+<pre><code class="language-python">ai.run('code.test', path='trusted_tests', consent=True)
+</code></pre>
+<p>العملية الفرعية والمهلة ليستا sandbox أمنياً؛ الاختبارات تملك صلاحيات المستخدم.
+لا تشغّل كوداً مجهولاً أو مولداً تلقائياً في جهاز يحمل أسراراً.</p>
+<h2 id="6-ocr">6. الرؤية والـOCR والفيديو</h2>
+<pre><code class="language-python">ai.run('vision.detect', image='photo.jpg', threshold=0.4)
+ai.run('vision.classify', image='photo.jpg', top_k=5)
+ai.run('vision.segment', image='photo.jpg', output='mask.png')
+ai.run('vision.ocr', image='scan.png', language='ara+eng')
+ai.run('video.track', video='clip.mp4', max_frames=30)
+</code></pre>
+<p>الكشف أصناف COCO، والتصنيف أصناف ImageNet؛ ليسا تعريف هوية. mask.png صورة
+قيمها الرقمية معرّفات أصناف، وليست صورة فوتوغرافية محسنة أو تقسيم instances.
+الفيديو يجمع كشفاً مدرباً مع ربط مراكز مؤقت؛ قد تتبدل المعرفات عند التداخل.
+لا تحليل أفعال أو مشاعر أو هوية أشخاص. OCR يحتاج tesseract وحزمة ara للعربية؛
+اختبر على نص مطبوع مصطنع واضح، لا ضمان للخط اليدوي أو الصور الرديئة.</p>
+<h2 id="7">7. الكلام: من صوت إلى نص ومن نص إلى صوت</h2>
+<pre><code class="language-python">ai.run('speech.synthesize', text='Hello world.', output='speech.wav', voice='en-us')
+ai.run('speech.recognize', audio='speech.wav', language='en')
+</code></pre>
+<p>الأول نطق تقليدي فعلي عبر espeak-ng وليس استنساخ صوت عصبي؛ الثاني Whisper
+مدرب فعلي. في التحقق أخطأ التفريغ في بداية العينة، رغم التقاطه بقية كلماتها.
+نجاح تشغيل النموذج لا يساوي دقة 100%. اختبارات العربية الصوتية والتقييم البشري
+ما زالت مطلوبة. عولج تعارض PyAV 19 مع faster-whisper بتقييد av&gt;=11,&lt;16.</p>
+<h2 id="8">8. تعلم آلة وشبكات عصبية</h2>
+<p>التدريب الجدولي القديم scikit-learn محفوظ. أضيف PyTorch MLP بطبقتين مخفيتين:</p>
+<pre><code class="language-python">model = ai.deep_train(data='numeric.csv', target='label', problem='classification')
+model.predict([{'x':1.0, 'y':2.0}]).export('prediction.json')
+</code></pre>
+<p>الأعمدة هنا مثال لملفك؛ كلها عددية دون نقص. تصنيف أو انحدار صريح، وتقسيم قبل
+تعلم التحجيم، وتقييم held-out. البيانات التعليمية لا تثبت تعميماً بحثياً.
+<code>model.save('new-model-directory')</code> يحفظ safetensors وJSON دون pickle، والاستعادة
+عبر <code>NeuralModel.load(directory, config=Config())</code>. ليس تدريب CNN/Transformer
+عاماً ولا fine-tuning للنموذج اللغوي. التحكم بهندسة النموذج يتم عبر hidden وepochs.</p>
+<h2 id="9">9. بيانات وتنبؤ وتوصيات وأمن دفاعي</h2>
+<pre><code class="language-python">ai.run('data.forecast', data='series.csv', column='temperature', horizon=5)
+ai.run('data.recommend', data='ratings.csv', user='u1', user_column='user', item_column='item', rating_column='rating')
+ai.run('security.anomalies', data='metrics.csv', columns=['bytes','connections'])
+</code></pre>
+<p>التنبؤ خط اتجاه خطي مع تحقق زمني 80/20، لا ARIMA أو موسمية أو سببية.
+التوصية user-cosine collaborative filtering صغيرة البيانات، لا حل cold start.
+IsolationForest يكشف شذوذاً لا يثبت هجوماً. التحليل الدفاعي القديم للسجلات
+والكود محفوظ، ولا توجد أدوات استغلال أو مسح شبكات تلقائي.</p>
+<h2 id="10-rag">10. المستندات وRAG والذاكرة المتجهية</h2>
+<pre><code class="language-python">ai.run('rag.index', document='notes.pdf', store='knowledge.sqlite')
+ai.run('rag.answer', question='What measures temperature?', store='knowledge.sqlite')
+</code></pre>
+<p>البديل القابل للتحكم:</p>
+<pre><code class="language-python">from alfarouqai import VectorStore
+with VectorStore('knowledge.sqlite') as db:
+    db.add('المستشعر يقيس درجة الحرارة.', source='lesson')
+    hits = db.search('measuring temperature')
+</code></pre>
+<p>تضمين متعدد اللغات مدرب، FAISS IndexFlatIP فعلي، وتخزين دائم SQLite مع مصادر
+وإزاحات. يعاد بناء الفهرس من المتجهات، فلا تحميل كائنات pickle. السقف 10000
+مقطع، وليس قاعدة موزعة للمليارات. هوية الأوزان ثابتة عبر نقل مسار cache.
+RAG يعيد المصادر ويستطيع الامتناع عند نقص الاسترجاع، لكن صدق الإجابة وصحة
+الاقتباس غير مضمونين؛ لم تنفذ آلية إثبات entailment. <code>document.summarize</code> يقرأ
+جزءاً محدوداً ثم يلخصه؛ لا يدّعي فهم كل صفحات كتاب. OCR لا يعمل تلقائياً على
+PDF مصور بعد. KnowledgeBase وSemanticIndex القديمان لم يحذفا.</p>
+<h2 id="11">11. الوكلاء والأتمتة</h2>
+<pre><code class="language-python">from alfarouqai import LLMAgent
+r = LLMAgent(client=ai).run('Analyze this text', inputs_by_task={'text.analyze':{'text':'Hello world.'}})
+</code></pre>
+<p>مخطط لغوي يرتب خيارات محددة باحتمالية النموذج، ينفذ أداة من قائمة آمنة، ثم
+مراجع لغوي. الأدوار تشترك في النموذج، وليست عقولاً مستقلة متفوقة. لا يسمح
+بتوليد اسم أداة جديد أو مسار أو أمر shell؛ المدخلات من المستخدم فقط. أقصى أربع
+خطوات، ويمكن أن يمتنع. AgentTeam القديم مناسب لخطط DAG الحتمية والأوضح للأبحاث.</p>
+<pre><code class="language-python">from alfarouqai import Scheduler
+s = Scheduler('jobs.sqlite'); s.add('job1','text.analyze',{'text':'Hello'},run_at=0)
+s.tick()  # لا يعمل شيء في الخلفية دون تشغيل tick
+</code></pre>
+<p>SQLite يحتفظ بالحالة؛ المهام مطالَبة مرة واحدة، لا exactly-once بعد انهيار نظام.
+لا daemon خفي ولا ادعاء جدولة دائمة أثناء إغلاق Python. الشبكة والأجهزة محظورة
+في قائمة هذا المجدول. أغلقه عبر s.close().</p>
+<h2 id="12-iot">12. IoT والروبوتات: ما اختبر وما لم يختبر</h2>
+<pre><code class="language-python">ai.run('iot.mqtt.read', host='127.0.0.1', topic='sensors/temperature')
+ai.run('robotics.serial', port='/dev/ttyUSB0', command='STATUS\n', read_bytes=128, consent=True)
+</code></pre>
+<p>تحتاج موافقة الشبكة لـMQTT، وallow_remote مع TLS للخادم البعيد. النشر يمكن
+أن يشغّل محركات ولذلك يتطلب consent=True، ولا يتاح للوكلاء الافتراضيين.
+اختبر وسيط Mosquitto حقيقي محلياً، وقراءة/كتابة Serial على pseudo-terminal
+حقيقي في نواة Linux. لا يوجد حساس أو روبوت مادي في البيئة؛ لا نثبت الحركة أو
+الأسلاك أو السلامة أو kinematics/SLAM. لا ترسل أوامر عتاد قبل مراجعة بروتوكوله.</p>
+<h2 id="13">13. التوليد الصوري والمرئي: تجريبي غير مؤكد التشغيل</h2>
+<p><code>image.generate</code> موصل StableDiffusionPipeline، و<code>video.generate</code> موصل CogVideoX.
+كُتب مسارهما وتحققت حواجز المدخلات والموافقة فقط؛ <strong>لم يُشغّلا بأوزان فعلية</strong>.
+يلزمان model_path محلياً مدققاً وconsent=True وموارد أكبر بكثير. لا أوزان عشوائية
+تحت اسم اختبار نجاح، ولا نعد النتيجة الفيديوية مكتملة. لم يثبت توافق كل نسخ
+Diffusers أو المعماريات أو الأداء. لا تعتمد عليهما إنتاجياً قبل اختبارات عتادك.</p>
+<h2 id="14">14. الاختبارات والتصدير والعمل في بيئات مختلفة</h2>
+<p>شغّل <code>python -m pytest</code> لاختبارات الانحدار؛ الاختبارات ذات الأوزان لا تعمل إلا
+<code>ALFAROUQ_RUN_MODELS=1</code> وبعد تهيئة cache. النجاح الكامل المحلي وتفاصيله في
+reports/pytest-0.2.xml والتقرير النهائي، لا تخلط ذلك بتشغيل GitHub Actions أو
+Colab/Kaggle: لم تشغل تلك المنصات خلال التسليم. Notebook وتعليمات رفع wheel
+في notebooks/، وقالب Hugging Face في deploy/. لا روابط مستودع وهمية ولا نشر تلقائي.</p>
+<p>كل قدرة تعيد Result قابل التصدير بالصيغ الخمس السابقة. الملفات الناتجة الفعلية
+في reports/v0.2-model-results تشمل الصوت والـmask وتقارير النماذج، ومعها بصمات
+الأوزان ومصادرها في reports/model-manifests. لا تنقل ملفات SQLite مفتوحة أثناء
+الكتابة دون إغلاقها أو أخذ نسخة احتياطية متسقة.</p>
+<h2 id="15">15. الملكية، الانتشار، والأبحاث</h2>
+<p>جميع الأعمال الأصلية والهوية حقوق خاصة لخالد سلمان من اليمن، ولا إذن للجمهور
+بالنسخ أو التعديل أو الاقتباس أو الاشتقاق أو إعادة التوزيع دون موافقة كتابية.
+الأطر والأوزان الخارجية تحت تراخيصها وحدها. لا نشر خارجي قبل موافقة المالك.
+هذا الاختيار يمنع تبني المشروع كمكتبة عامة حرة الاستخدام تلقائياً؛ لا يمكن
+الجمع بين منع الاستخدام العام وادعاء سهولة تبنٍّ مفتوح بلا إذن. يمكن للمالك
+إصدار أذونات خاصة أو عقود تعليمية مكتوبة دون تغيير ملكيته؛ لا أصدرها نيابة عنه.</p>
+<p>لزيادة القيمة: وثّق زمن التهيئة منفصلاً عن الاستدلال، انشر اختبارات قابلة
+للإعادة بعد الموافقة، قارن جودة مهام حقيقية، وفر أمثلة عربية ودفاتر دراسية،
+وأعلن حدود كل نموذج. لا يعد اسم المكتبة أو عدد المحركات وحدهما سبباً للتفوق.
+استشهد بالنموذج الأصلي، نسخته وبصمته، البيانات، البذرة، البيئة، وحدود التقييم
+في بحثك. لا تعتبر درجات عينات الاختبار الصغيرة نتائج مقارنة علمية.</p></main><footer>© 2026 Khalid Salman — Original code Apache-2.0. Identity and third-party rights are separate. Local alpha; not published.</footer></html>

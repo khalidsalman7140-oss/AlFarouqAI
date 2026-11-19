@@ -1,0 +1,21 @@
+{
+  "task": "privacy.redact",
+  "data": {
+    "text": "Contact [EMAIL] [PHONE]",
+    "counts": {
+      "EMAIL": 1,
+      "PHONE": 1
+    }
+  },
+  "backend": "stdlib.regex",
+  "warnings": [
+    "Limited email/phone masking, not comprehensive PII anonymization or HIPAA/GDPR compliance. Numbers can be false positives; names/medical identifiers may remain."
+  ],
+  "provenance": {
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.000339,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

@@ -1,0 +1,30 @@
+{
+  "release": "0.1.0",
+  "date": "2026-11-14",
+  "status": "local alpha, not externally published",
+  "tests": {
+    "tests": 79,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "installed_wheel_verified": true,
+  "core_dependencies": [],
+  "registered_capabilities": 13,
+  "real_result_artifacts": 20,
+  "local_examples_executed": 8,
+  "model_weight_inference_executed": false,
+  "public_repository_created": false,
+  "public_package_published": false,
+  "licenses": "all rights reserved for original works; not OSI open source",
+  "fixture_metrics_not_generalization_claims": {
+    "classification": {
+      "accuracy": 1.0,
+      "f1_weighted": 1.0
+    },
+    "regression": {
+      "mae": 1.3899999999999992,
+      "r2": 0.9994260470360056
+    }
+  }
+}

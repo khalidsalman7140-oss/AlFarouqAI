@@ -1,0 +1,80 @@
+{
+  "task": "nlp.train",
+  "data": {
+    "classes": [
+      "negative",
+      "positive"
+    ],
+    "train_rows": 36,
+    "test_rows": 12,
+    "duplicates_removed": 0,
+    "accuracy": 1.0,
+    "f1_macro": 1.0,
+    "confusion_matrix": [
+      [
+        6,
+        0
+      ],
+      [
+        0,
+        6
+      ]
+    ],
+    "rows": [
+      {
+        "actual": "negative",
+        "prediction": "negative"
+      },
+      {
+        "actual": "negative",
+        "prediction": "negative"
+      },
+      {
+        "actual": "negative",
+        "prediction": "negative"
+      },
+      {
+        "actual": "negative",
+        "prediction": "negative"
+      },
+      {
+        "actual": "positive",
+        "prediction": "positive"
+      },
+      {
+        "actual": "negative",
+        "prediction": "negative"
+      },
+      {
+        "actual": "positive",
+        "prediction": "positive"
+      },
+      {
+        "actual": "negative",
+        "prediction": "negative"
+      },
+      {
+        "actual": "positive",
+        "prediction": "positive"
+      },
+      {
+        "actual": "positive",
+        "prediction": "positive"
+      },
+      {
+        "actual": "positive",
+        "prediction": "positive"
+      },
+      {
+        "actual": "positive",
+        "prediction": "positive"
+      }
+    ]
+  },
+  "backend": "sklearn.char-tfidf+logistic",
+  "warnings": [
+    "Character n-gram baseline for labeled Arabic/multilingual text. No pretrained sentiment/medical model. Exact duplicates are removed, but author/topic/group leakage still needs domain-aware splitting."
+  ],
+  "provenance": {},
+  "schema_version": "1.0"
+}

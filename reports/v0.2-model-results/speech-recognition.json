@@ -1,0 +1,26 @@
+{
+  "task": "speech.recognize",
+  "data": {
+    "language": "en",
+    "text": "The Long World. This is my speech recognition test.",
+    "rows": [
+      {
+        "start": 0.0,
+        "end": 3.6,
+        "text": " The Long World. This is my speech recognition test."
+      }
+    ]
+  },
+  "backend": "faster-whisper.cpu-int8",
+  "warnings": [],
+  "provenance": {
+    "input_sha256": "3eea482e0c982ea55b0fb7af268b8fdc2a88bdd19ae2394a8831034f4f646fe8",
+    "model": "/home/user/alfarouq-models/whisper-tiny",
+    "actual_weight_inference": true,
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 1.7001,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

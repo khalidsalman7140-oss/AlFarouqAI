@@ -1,0 +1,19 @@
+include README.md README.ar.md LICENSE NOTICE THIRD_PARTY_NOTICES.md CHANGELOG.md CONTRIBUTING.md SECURITY.md
+recursive-include docs *.md *.html *.css
+recursive-include examples *.py *.csv *.txt *.log
+recursive-include tests *.py
+recursive-include identity *.jpg *.json *.md
+recursive-include scripts *.py
+include pyproject.toml
+
+recursive-include notebooks *.ipynb *.md
+recursive-include deploy *.py *.md Dockerfile
+
+
+
+# python -m pytest -q
+include ALFAROUQ_AI_COMPLETE_CODING_GUIDE.md PUBLICATION_GUIDE.ar.md LICENSING.md PUBLISH_WINDOWS.bat PUBLISH.sh
+recursive-include identity LICENSE
+
+include USER_GUIDE_AR.md USER_GUIDE_EN.md
+exclude ALFAROUQ_AI_OWNER_MASTER_GUIDE_AR.md

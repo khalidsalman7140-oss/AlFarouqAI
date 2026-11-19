@@ -1,0 +1,1505 @@
+<!doctype html><html lang="ar" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>دليل المالك الخاص — AlFarouq AI</title><style>body{font:17px/1.9 system-ui;max-width:1000px;margin:auto;padding:24px;color:#123}pre{direction:ltr;text-align:left;overflow:auto;background:#edf3f5;padding:16px}code{direction:ltr}table{display:block;overflow:auto}h1,h2{color:#075c65}</style><body><h1>دليل المالك الهندسي والتشغيلي — AlFarouq AI 0.3.0a1</h1>
+<p><strong>خاص بخالد سلمان؛ ليس للنشر العام.</strong> © 2026 Khalid Salman — اليمن.
+هذا الملف ضمن تسليمك الخاص، وتستبعده أداة publish.py من staging العام. لا يحتوي
+مفاتيح حقيقية. لا تجعل كامل ZIP الخاص مستودعاً عاماً قبل مراجعة جميع مكوناته.</p>
+<h2>1. الرؤية والواقع</h2>
+<p>واجهة موحدة خفيفة مع محركات اختيارية، خدمات جاهزة تحتاجها الدراسة والعمل، ونتائج
+وتتبع مصادر قابلين للتصدير. الرؤية واسعة؛ التنفيذ الحالي مجموعة محدودة معلنة من
+القدرات لا «كل AI»، ولم تُثبت الأفضلية أو دقة سوقية/سريرية/صناعية. حافظ على
+مبدأ: لا adapter يسمى استدلالاً مختبراً إلا بعد تشغيل أوزان وبيانات فعلية.</p>
+<h2>2. مسار التنفيذ والواجهات</h2>
+<p>AI يمر إلى Client أو model_call حين model صريح؛ Client.plan يختار عبر قواعد محافظة
+بالعربية/الإنجليزية، Client.run يتحقق من Capability والحدود وينفذ handler ثم
+Result(data/backend/warnings/provenance). النموذج الافتراضي للنصوص صغير ومحلي؛ لا
+وكيل غير محدود للأوامر. Model جلسة إعادة استخدام. Config حاوية إعدادات؛
+مررها صراحة، ولا تعدّل حقولها بالتوازي بين المهام دون ضبط التزامن ومراجعة core.py.
+Registry نقطة إضافة القدرات، وentry-point plugins كود موثوق لا يُحمّل عشوائياً.
+مثال خدمة: دالة keyword-only تستقبل config وتعيد Result؛ سجلها في services أو
+extensions واكتب اختبارات واضحة. Registry.register وCapability توقيعاتهما أدناه.
+كل الملفات الحالية وتعليقات وحدات الكود وتواقيعها موضحة لاحقاً من AST الحقيقي.</p>
+<h2>3. الأمان والموارد والتخزين</h2>
+<p>افتراضات Config: no network، no remote، no model download. الموافقة لا تعني
+صلاحية استخدام البيانات. endpoints في providers/engines تضبط HTTP والهوست؛ راجع
+أي توسعة ضد SSRF وredirect وتسريب المفاتيح. لا اعتبار run trusted code كـsandbox.
+Atomic writes ترفض overwrite افتراضياً؛ راقب الملفات الحساسة وأذونات SQLite.
+VectorStore يخزن النصوص والembeddings في SQLite ويبحث FAISS، وليس تشفيراً أو
+إخفاء بيانات. RAG قد يهلوس؛ لا ضمان لصحة citation. لا ترسل document content
+إلى remote دون موافقة المستخدم. Model cache يسجل revision والأحجام والهاش؛
+إعادة استخدام cache يتحقق من وجود/حجم لا full hash لكل استدعاء؛ راجع checksum
+خارجياً قبل الاعتماد على تحميل غير موثوق. لا remote Python code تلقائياً.
+resources.environment يقرأ system/cgroup/nvidia-smi إذا وجد. model_plan هامش تقريبي
+لا توزيع GPU أو تكميم أو budget KV cache. لم يجر قياس إنتاجي أو اختبار حمل.</p>
+<h2>4. البناء والتحقق وتكرار الإصدار</h2>
+<p>أنشئ venv مستقل ثم pip install '.[dev]' والإضافات المطلوبة حسب اختباراتك.
+نفذ <code>python -m build</code> و<code>python -m twine check dist/*</code> ثم ثبّت wheel في بيئة نظيفة.
+<code>python scripts/wheel_smoke.py --output ...</code> من خارج checkout يفحص النواة.
+لتحقق النماذج والأجهزة البرمجية جهز ستة caches وTesseract eng/ara وespeak-ng و
+Mosquitto، ثم <code>ALFAROUQ_MODEL_HOME=/your/cache python scripts/run_verification.py --installed</code>.
+Windows env syntax يختلف؛ الاختبار هنا Linux فقط. لا تستعمل .venv ضخماً داخل ZIP.
+<code>python scripts/verify_coding_guide.py --installed</code> ينفذ نص كل مثال ويقارن task.
+<code>python scripts/build_complete_guide.py</code> يولد المرجع من نفس النص ونتيجة الاختبار.
+<code>python scripts/build_docs.py</code> يولد HTML أوفلاين. <code>python scripts/prepublish_check.py</code>
+فحص heuristic للأسرار والبنية لا ضمان تدقيق أمان؛ لا ترفع .git قديمة أو creds.
+<code>python scripts/package_delivery.py</code> ينشئ manifest وZIP ثم CRC/هاش؛
+<code>python scripts/validate_project.py --archive /path/to.zip</code> يفك ويتحقق من كل ملف.
+أسماء الإصدارات في pyproject وcore.<strong>version</strong> يجب أن تتطابق. احتفظ بالمدخل الأصلي
+كأرشيف احتياطي منفصل، وليس رجوعاً فوق الكود الحالي. increment PEP440 قبل كل إصدار.</p>
+<h2>5. النشر الحقيقي والمسؤوليات</h2>
+<p>لم تتوفر مصادقة GitHub/Google/PyPI في جلسة التسليم، ولم ينشر مستودع أو wheel عام.
+موافقتك العامة بالنشر عندما تتوفر الصلاحية لا تلغي ضرورة مراجعة هوية المستودع
+والترخيص. scripts/publish.py --repo OWNER/REPO dry run؛ --approve-publication فعل
+حقيقي و--public يغير الرؤية. لن يكتب فوق remote موجود. لا يطبع token. سجل دخولك
+بنفسك gh auth login. PyPI Trusted Publishing يتطلب إنشاء/امتلاك المشروع وإعداد
+بيئة GitHub وصلاحيات OIDC؛ اختبر TestPyPI أولاً بعد موافقتك. راجع PUBLICATION_GUIDE.
+Hugging Face/Colab/Kaggle قوالب إعداد، وليست منصات مرفوعة أو مصدقة الاختبار.
+Google Drive: scripts/upload_to_google_drive.py --help ثم OAuth Desktop credentials
+من حسابك ونطاق أقل صلاحية؛ لا تعطي مساعداً كلمة المرور. لا token.json في المصدر.
+AI Drive خدمة مختلفة؛ تحقق من رابط المستخدم لا temporary readable URL. لا يمكن
+تجاوز شاشة اشتراك مزود ببرمجة محلية. تسليم الهاتف يحتاج ملفاً صغيراً ورابطاً متاحاً.</p>
+<h2>6. الملكية والتراخيص</h2>
+<p>الطلب الأحدث يطلب النشر مفتوح المصدر، لذلك LICENSE الأصلي الحالي Apache-2.0؛
+النسبة وNOTICE لخالد سلمان. لا يجتمع مع حظر مطلق لإعادة الاستخدام؛ إذا أردت
+العودة إلى proprietary لنسخة مستقبلية استشر قانونياً وافصل المساهمات والرخص
+السارية سابقاً. لا تمحو حقوق المكتبات أو بيانات الأوزان. هوية المؤسس وصورته تحت
+identity/founder/LICENSE مستقلة ولا يمنح ترخيص الكود حق انتحال الهوية أو العلامة. راجع
+THIRD_PARTY_NOTICES وdocs/research وmodel manifests. أطر MIT/Apache/BSD لا تعني
+أن كل dataset/model يسمح تجارياً. أدوات GPL مستقلة مستدعاة عبر subprocess يجب
+احترام شروطها عند توزيع binaries؛ هذا التسليم لا يرفقها. النص ليس رأياً قانونياً.</p>
+<h2>7. اكتمال وحدود وخطة تطوير</h2>
+<p>النواة القديمة والميزات الإضافية مستمرة، والعد النهائي في reports/RELEASE_REPORT.ar.md.
+اختبارات حقيقية بأوزان صغيرة وقنوات برمجية لا تثبت دقة كل مجال أو مصنع أو corpus
+عربي واسع. توليد الصور/الفيديو وimage.objects القديم adapter-only غير مختبرين
+بأوزان في هذا الإصدار. استخدام compatible protocol لا يثبت vLLM/Ollama الأصليين.
+لا روبوت أو PLC مادي، لا ASR accuracy benchmark، لا fine-tuning ضخم، لا multimodal
+عام، لا dynamic automatic arbitrary-model downloading، ولا اختبار GPU/كل منصات cloud.
+المرحلة التالية: golden Arabic dataset، grouped/time split تقييم صيانة، قياس
+GPU/context وquantization، streaming/cancellation، اختبارات أحمال API، allowlist
+أقوى وremote isolation، تقييم RAG ضد prompt injection، regression للplatforms،
+وتثبيت الإصدارات المراجعة حسب مصفوفة كل نظام. لا توسع القائمة أسرع من قابلية
+اختبارها. عند خطأ قارن wheel/source/version والبيئة والـcache وسجل backend ثم
+أضف failing test قبل الإصلاح. limits ليست sandbox؛ لا تجعل مستخدمين غير موثوقين
+يشغّلون الخدمة على خادم ببيانات حساسة بلا عزل حقيقي.</p>
+<h2>8. نماذج الكتالوج الفعلية</h2>
+<pre><code class="language-json">{
+  &quot;smollm2-135m&quot;: {
+    &quot;repo&quot;: &quot;HuggingFaceTB/SmolLM2-135M-Instruct&quot;,
+    &quot;license&quot;: &quot;Apache-2.0&quot;,
+    &quot;purpose&quot;: &quot;English-first instruction LLM; not a strong Arabic model&quot;,
+    &quot;extra&quot;: &quot;local&quot;
+  },
+  &quot;minilm-multilingual&quot;: {
+    &quot;repo&quot;: &quot;sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2&quot;,
+    &quot;license&quot;: &quot;Apache-2.0&quot;,
+    &quot;purpose&quot;: &quot;Multilingual sentence embeddings, 384 dimensions&quot;,
+    &quot;extra&quot;: &quot;semantic&quot;
+  },
+  &quot;whisper-tiny&quot;: {
+    &quot;repo&quot;: &quot;Systran/faster-whisper-tiny&quot;,
+    &quot;license&quot;: &quot;MIT (original Whisper); review conversion notices&quot;,
+    &quot;purpose&quot;: &quot;Multilingual speech recognition, CTranslate2&quot;,
+    &quot;extra&quot;: &quot;speech&quot;
+  },
+  &quot;mobilenet-v3&quot;: {
+    &quot;torchvision&quot;: &quot;MobileNet_V3_Small_Weights&quot;,
+    &quot;license&quot;: &quot;Review TorchVision weight/dataset terms&quot;,
+    &quot;purpose&quot;: &quot;ImageNet classification&quot;,
+    &quot;extra&quot;: &quot;torchvision&quot;
+  },
+  &quot;ssdlite320&quot;: {
+    &quot;torchvision&quot;: &quot;SSDLite320_MobileNet_V3_Large_Weights&quot;,
+    &quot;license&quot;: &quot;Review TorchVision weight/COCO data terms&quot;,
+    &quot;purpose&quot;: &quot;COCO object detection&quot;,
+    &quot;extra&quot;: &quot;torchvision&quot;
+  },
+  &quot;lraspp&quot;: {
+    &quot;torchvision&quot;: &quot;LRASPP_MobileNet_V3_Large_Weights&quot;,
+    &quot;license&quot;: &quot;Review TorchVision weight/COCO/VOC terms&quot;,
+    &quot;purpose&quot;: &quot;21-class semantic image segmentation&quot;,
+    &quot;extra&quot;: &quot;torchvision&quot;
+  }
+}
+</code></pre>
+<h2>9. التبعيات الاختيارية ومعايير الاختيار</h2>
+<p>الأطر الناضجة خلف lazy imports: sklearn للـpipelines، TorchVision لأوزان رؤية صغيرة، Transformers للنص، faster-whisper للصوت، FAISS للمقارنة وSQLite للاستمرار؛ اختيارها عملي وليس إثبات الأفضل عالمياً. النواة stdlib. قيود الإصدارات الفعلية:</p>
+<pre><code class="language-toml">
+ml = [&quot;scikit-learn&gt;=1.5,&lt;2&quot;, &quot;pandas&gt;=2.2,&lt;4&quot;]
+vision = [&quot;opencv-python-headless&gt;=4.10,&lt;5&quot;]
+documents = [&quot;pypdf&gt;=5,&lt;7&quot;, &quot;python-docx&gt;=1.1,&lt;2&quot;, &quot;openpyxl&gt;=3.1,&lt;4&quot;]
+speech = [&quot;faster-whisper&gt;=1.1,&lt;2&quot;, &quot;av&gt;=11,&lt;16&quot;]
+semantic = [&quot;sentence-transformers&gt;=3,&lt;6&quot;]
+objects = [&quot;transformers&gt;=4.45,&lt;6&quot;, &quot;torch&gt;=2.5,&lt;3&quot;, &quot;Pillow&gt;=10.4,&lt;14&quot;, &quot;safetensors&gt;=0.4,&lt;1&quot;]
+persistence = [&quot;skops&gt;=0.11,&lt;1&quot;]
+local = [&quot;transformers&gt;=4.46,&lt;5&quot;, &quot;torch&gt;=2.6,&lt;3&quot;, &quot;safetensors&gt;=0.4,&lt;1&quot;]
+torchvision = [&quot;torch&gt;=2.6,&lt;3&quot;, &quot;torchvision&gt;=0.21,&lt;1&quot;, &quot;Pillow&gt;=10.4,&lt;14&quot;]
+deep = [&quot;torch&gt;=2.6,&lt;3&quot;, &quot;safetensors&gt;=0.4,&lt;1&quot;, &quot;scikit-learn&gt;=1.5,&lt;2&quot;, &quot;pandas&gt;=2.2,&lt;4&quot;]
+vector = [&quot;sentence-transformers&gt;=3.3,&lt;6&quot;, &quot;faiss-cpu&gt;=1.8,&lt;2&quot;]
+iot = [&quot;pyserial&gt;=3.5,&lt;4&quot;, &quot;paho-mqtt&gt;=2,&lt;3&quot;]
+diffusion = [&quot;diffusers&gt;=0.31,&lt;1&quot;, &quot;transformers&gt;=4.46,&lt;5&quot;, &quot;torch&gt;=2.6,&lt;3&quot;, &quot;accelerate&gt;=1,&lt;2&quot;, &quot;safetensors&gt;=0.4,&lt;1&quot;, &quot;imageio-ffmpeg&gt;=0.5,&lt;1&quot;]
+nlp = [&quot;nltk&gt;=3.9,&lt;4&quot;, &quot;scikit-learn&gt;=1.5,&lt;2&quot;]
+api = [&quot;fastapi&gt;=0.115,&lt;1&quot;, &quot;uvicorn&gt;=0.30,&lt;1&quot;, &quot;httpx&gt;=0.27,&lt;1&quot;]
+onnx = [&quot;onnx&gt;=1.17,&lt;2&quot;, &quot;onnxruntime&gt;=1.20,&lt;2&quot;]
+tensorflow = [&quot;tensorflow-cpu&gt;=2.20,&lt;3&quot;]
+industrial = [&quot;pymodbus&gt;=3.11,&lt;4&quot;]
+gdrive = [&quot;google-api-python-client&gt;=2,&lt;3&quot;, &quot;google-auth-oauthlib&gt;=1,&lt;2&quot;]
+dev = [&quot;pytest&gt;=8,&lt;10&quot;, &quot;build&gt;=1.2,&lt;2&quot;, &quot;twine&gt;=6,&lt;7&quot;]
+
+
+</code></pre>
+<h2>10. كل وحدة ووظائفها من المصدر الحقيقي</h2>
+<h3><code>src/alfarouqai/__init__.py</code></h3>
+<p>AlFarouq AI: explicit, lightweight, local-first AI orchestration.</p>
+<h3><code>src/alfarouqai/__main__.py</code></h3>
+<p>وحدة تهيئة/تصدير؛ راجع التعريفات التالية.</p>
+<h3><code>src/alfarouqai/agents.py</code></h3>
+<p>Bounded cooperative tool agents: planner, specialists, schema reviewer.</p>
+<p>This is a deterministic DAG executor, not an autonomous general intelligence.
+References are structured Ref objects, not evaluated strings or generated code.</p>
+<ul>
+<li>Class <code>Ref</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li>Class <code>Step</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>references(value)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>resolve(value, results)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li>Class <code>AgentTeam</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>plan(self, steps)</code></li>
+<li><code>run(self, steps)</code></li>
+</ul>
+<h3><code>src/alfarouqai/api.py</code></h3>
+<p>Optional authenticated text-only FastAPI facade. No API server on import.</p>
+<ul>
+<li><code>create_app(*, client=None, token=None)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>schema(*, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/arabic.py</code></h3>
+<p>Arabic-first NLP coursework without hidden corpus or model downloads.</p>
+<ul>
+<li><code>normalize(text, *, alef=True, diacritics=True)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>process(*, text, config, stem=True)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li>Class <code>TextModel</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>predict(self, texts)</code></li>
+<li><code>train_text(*, data, text_column, target, config, seed=42)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>train_report(*, data, text_column, target, config, seed=42)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>topics(*, data, text_column, config, n_topics=3, top_words=8)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>similarity(*, texts, query, config, k=5)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/automation.py</code></h3>
+<p>Persisted local jobs and restricted LLM-guided specialist execution.</p>
+<ul>
+<li>Class <code>Scheduler</code>: Caller-driven tick scheduler; no hidden service, thread or remote workflow.</li>
+<li><code>add(self, id, task, inputs, *, run_at)</code></li>
+<li><code>tick(self, *, now=None)</code></li>
+<li><code>jobs(self)</code></li>
+<li><code>cancel(self, id)</code></li>
+<li><code>close(self)</code></li>
+<li>Class <code>LLMAgent</code>: One real local model with planner/specialist/reviewer roles, not separate minds.</li>
+</ul>
+<p>The LLM ranks a bounded candidate set; model output can never create code,
+file paths or new tool names. Inputs are caller-supplied and immutable by LLM.
+  - <code>run(self, goal, *, inputs_by_task, max_steps=1)</code></p>
+<h3><code>src/alfarouqai/business.py</code></h3>
+<p>Practical business services with explicit units, periods and baseline limits.</p>
+<ul>
+<li><code>infer_column(columns, requested, candidates)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>sales_forecast(*, data, config, date_column=None, value_column=None, horizon=1)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>clean(*, data, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>redact(*, text, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>reconcile(*, left, right, key, amount_column, config, tolerance=0.01)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/cli.py</code></h3>
+<p>Small cross-platform command-line interface. JSON inputs are data, never code.</p>
+<ul>
+<li><code>main(argv=None)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/client.py</code></h3>
+<p>Unified high-level API with explainable, conservative bilingual routing.</p>
+<ul>
+<li><code>default_registry()</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li>Class <code>Client</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>capabilities(self)</code></li>
+<li><code>run(self, task, *, verbose=None, **inputs)</code></li>
+<li><code>ar(self, text, **kwargs)</code></li>
+<li><code>sales(self, data, **kwargs)</code></li>
+<li><code>inspect(self, image, reference, **kwargs)</code></li>
+<li><code>file(self, document, **kwargs)</code></li>
+<li><code>text_train(self, **kwargs)</code></li>
+<li><code>train(self, *, data, target, problem, **kwargs)</code></li>
+<li><code>deep_train(self, **kwargs)</code></li>
+<li><code>prepare(self, task, environment, *, consent=False)</code></li>
+<li><code>plan(self, prompt, **inputs)</code></li>
+<li><code>AI(prompt, *, config=None, model=None, backend='auto', endpoint=None, api_key_env=None, device='auto', **inputs)</code>: One-call services or explicit model gateway; no hidden installs or hardware promises.</li>
+</ul>
+<h3><code>src/alfarouqai/core.py</code></h3>
+<p>Public contracts, bounded inputs, explicit configuration and portable exports.</p>
+<ul>
+<li>Class <code>AlFarouqError</code>: Actionable base exception; never converted to a fake success.</li>
+<li>Class <code>ValidationError</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li>Class <code>MissingDependency</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li>Class <code>ConsentRequired</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li>Class <code>UnsupportedTask</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>require(module: str, extra: str)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li>Class <code>Config</code>: Local-only defaults. Model locations must be supplied explicitly.</li>
+<li><code>load(cls, path)</code></li>
+<li><code>save(self, path)</code></li>
+<li><code>atomic_write(path, text: str, *, overwrite=False)</code>: Exclusive creation by default; existing user files are never silently replaced.</li>
+<li><code>input_file(path, config: Config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>fingerprint(path)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>clean_json(value)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li>Class <code>Result</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>to_dict(self)</code></li>
+<li><code>export(self, path, *, overwrite=False)</code></li>
+<li>Class <code>Capability</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li>Class <code>Registry</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>register(self, capability: Capability)</code></li>
+<li><code>get(self, name)</code></li>
+<li><code>list(self)</code></li>
+<li><code>load_plugins(self, *, consent=False)</code></li>
+<li><code>timed_result(capability, inputs, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/coursework.py</code></h3>
+<p>Classical AI coursework: real shortest-path search, not a robot controller.</p>
+<ul>
+<li><code>search(*, grid, start, goal, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/dependencies.py</code></h3>
+<p>Inspect dependencies without importing heavy engines; install only in owned venvs.</p>
+<ul>
+<li><code>doctor()</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>installation_plan(extra, environment)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>install_extra(extra, environment, *, consent=False, timeout=600)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/developer.py</code></h3>
+<p>Read-only DB inspection, safe API scaffolding, and untrusted test suggestions.</p>
+<ul>
+<li><code>database_profile(*, database, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>tests_generate(*, code, config, model_path=None, max_new_tokens=160)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/documents.py</code></h3>
+<p>Text extraction, lexical retrieval and optional local semantic retrieval.</p>
+<ul>
+<li><code>document_read(*, document, config, **kwargs)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li>Class <code>KnowledgeBase</code>: Bounded lexical TF-IDF/cosine search. Stored documents are data, not commands.</li>
+<li><code>add(self, text, *, source='inline')</code></li>
+<li><code>search(self, query, *, k=4)</code></li>
+<li><code>save(self, path)</code></li>
+<li><code>load(cls, path, *, config=None)</code></li>
+<li>Class <code>SemanticIndex</code>: Optional CPU embeddings from a reviewed LOCAL SentenceTransformer model.</li>
+<li><code>add(self, text, *, source='inline')</code></li>
+<li><code>search(self, query, *, k=4)</code></li>
+</ul>
+<h3><code>src/alfarouqai/engines.py</code></h3>
+<p>Optional local ONNX/Keras inference and explicitly approved HTTP inference.</p>
+<ul>
+<li><code>onnx_predict(*, model_path, inputs, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>tensorflow_predict(*, model_path, inputs, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>compatible_chat(*, prompt, endpoint, model, config, api_key_env=None, max_tokens=80)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/extensions.py</code></h3>
+<p>Additive 0.2 registry; original 0.1 handlers are preserved.</p>
+<ul>
+<li><code>rag_index(*, document, store, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>rag_search(*, query, store, config, k=4)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>rag_answer(*, question, store, config, model_path=None, k=3, min_score=0.2)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>llm_agent(*, goal, inputs_by_task, config, model_path=None, max_steps=1)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>tick(*, store, config, now=None)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>register_extensions(registry)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/generative.py</code></h3>
+<p>Experimental diffusion adapters. Actual-weight inference NOT verified in 0.2.0.</p>
+<p>The release report must not count validation-only tests as image/video inference.
+Large local models are user-supplied; no downloads or cloud service are hidden.</p>
+<ul>
+<li><code>_validate(model_path, output, extension, consent)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>image_generate(*, prompt, model_path, output, config, steps=20, seed=42, consent=False)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>video_generate(*, prompt, model_path, output, config, frames=17, steps=20, seed=42, consent=False)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/industrial_io.py</code></h3>
+<p>Bounded read-only local Modbus TCP. No discovery, writes or actuation.</p>
+<ul>
+<li><code>modbus_read(*, host, address, count, config, port=502, device_id=1)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/industry.py</code></h3>
+<p>Industrial decision-support baselines; never imply equipment safety certification.</p>
+<ul>
+<li><code>sensors(*, data, columns, config, sample_rate=None)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>control(*, data, column, baseline, config, sigma=3.0)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>production(*, data, total_column, good_column, config, operating_hours=None)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>maintenance(*, data, target, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>defects(*, image, reference, config, threshold=25, min_area=20, output=None)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/integrations.py</code></h3>
+<p>Explicitly approved MQTT/serial I/O and tests of trusted user projects.</p>
+<ul>
+<li><code>_network(host, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>mqtt_publish(*, host, topic, message, config, port=1883, consent=False)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>mqtt_read(*, host, topic, config, port=1883, max_messages=1, duration=3)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>serial_exchange(*, port, config, baudrate=9600, read_bytes=128, command=None, consent=False)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>code_test(*, path, config, consent=False)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/language.py</code></h3>
+<p>Local trained LLM generation, label likelihood and grounded document summaries.</p>
+<ul>
+<li>Class <code>LocalLanguageModel</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>close(self)</code></li>
+<li><code>generate(self, prompt, *, max_new_tokens=96, system='You are a helpful assistant. Be concise and accurate.')</code></li>
+<li><code>rank(self, text, candidates)</code></li>
+<li><code>generate(*, prompt, config, model_path=None, max_new_tokens=96)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>classify(*, text, labels, config, model_path=None)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>code_generate(*, prompt, config, model_path=None, max_new_tokens=160)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>code_repair(*, code, error, config, model_path=None, max_new_tokens=160)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>summarize_document(*, document, config, model_path=None, max_new_tokens=128)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/learning.py</code></h3>
+<p>Actual CPU neural-network training, forecasting, recommendations and anomalies.</p>
+<ul>
+<li><code>_network(torch, n_inputs, n_outputs, hidden)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li>Class <code>NeuralModel</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>predict(self, rows)</code></li>
+<li><code>save(self, directory)</code></li>
+<li><code>load(cls, directory, *, config)</code></li>
+<li><code>train_neural(*, data, target, problem, config, epochs=80, hidden=(32, 16), seed=42)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>neural_report(*, data, target, problem, config, epochs=80, hidden=(32, 16), seed=42)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>forecast(*, data, column, config, horizon=5)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>recommend(*, data, user, user_column, item_column, rating_column, config, k=5)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>anomalies(*, data, columns, config, contamination=0.1)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/local.py</code></h3>
+<p>Dependency-free text, CSV, source-code, defensive log and sensor analytics.</p>
+<ul>
+<li><code>tokens(text)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>text_analyze(*, text, config: Config, **kwargs)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>read_csv(data, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>finite_number(value)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>data_profile(*, data, config, **kwargs)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>sensor_analyze(*, data, column, threshold=3.0, config, **kwargs)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li>Class <code>SourceVisitor</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>add(self, node, rule, message)</code></li>
+<li><code>visit_Import(self, node)</code></li>
+<li><code>visit_ImportFrom(self, node)</code></li>
+<li><code>visit_FunctionDef(self, node)</code></li>
+<li><code>visit_ClassDef(self, node)</code></li>
+<li><code>visit_Call(self, node)</code></li>
+<li><code>visit_ExceptHandler(self, node)</code></li>
+<li><code>visit_Assign(self, node)</code></li>
+<li><code>code_analyze(*, path=None, code=None, config, **kwargs)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>security_logs(*, path, config, **kwargs)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/media.py</code></h3>
+<p>Local media analysis; no silent model downloads or image generation.</p>
+<ul>
+<li><code>image_analyze(*, image, config, detect_faces=True, **kwargs)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>video_motion(*, video, config, min_area=300, max_frames=None, **kwargs)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>audio_info(*, audio, config, **kwargs)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>transcribe(*, audio, config, model_path=None, language=None, **kwargs)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>objects_detect(*, image, model_path, config, **kwargs)</code>: User-provided local Transformers model; remote custom code is always disabled.</li>
+</ul>
+<h3><code>src/alfarouqai/ml.py</code></h3>
+<p>Leakage-aware tabular training with explicit target and problem type.</p>
+<ul>
+<li>Class <code>TrainedModel</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>predict(self, rows)</code></li>
+<li><code>save(self, path, *, consent=False)</code></li>
+<li><code>train(*, data, target, problem, config, test_size=0.25, seed=42, **kwargs)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>train_report(*, data, target, problem, config, test_size=0.25, seed=42)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/models.py</code></h3>
+<p>Explicit-consent, revision-recorded model cache. No weights ship in the wheel.</p>
+<ul>
+<li><code>cache_root()</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>inventory()</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>_hash(path)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>prepare(name, *, config=None, consent=False)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/providers.py</code></h3>
+<p>Opt-in local Ollama transport. No network calls on import.</p>
+<ul>
+<li>Class <code>NoRedirect</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>redirect_request(self, req, fp, code, msg, headers, newurl)</code></li>
+<li><code>ollama_request(config, endpoint, payload)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>chat(*, prompt, config, system=None, image=None, **kwargs)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/resources.py</code></h3>
+<p>Dependency-free resource inspection and explicitly approximate model planning.</p>
+<ul>
+<li><code>environment()</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>model_plan(parameters_billion, *, precision_bits=16)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/retrieval.py</code></h3>
+<p>Persistent multilingual embeddings in SQLite; exact cosine search through FAISS.</p>
+<ul>
+<li>Class <code>VectorStore</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>add(self, text, *, source='inline', chunk_size=700, overlap=100)</code></li>
+<li><code>search(self, query, *, k=4)</code></li>
+<li><code>answer(self, question, *, model_path=None, k=3, min_score=0.2)</code></li>
+<li><code>close(self)</code></li>
+<li><code>semantic_search(*, text, query, config, store, source='inline')</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/services.py</code></h3>
+<p>Value-oriented service additions; original capability names remain stable.</p>
+<ul>
+<li><code>document_insights(*, document, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>document_search(*, document, query, config, k=3)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>group_data(*, data, group_column, config, value_column=None)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>register_services(registry)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>api_schema(*, config)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/shortcut.py</code></h3>
+<p>One-call model gateway; convenience does not create RAM, GPU, or model support.</p>
+<ul>
+<li>Class <code>Model</code>: A reusable callable local model or a caller-approved inference endpoint.</li>
+</ul>
+<p>Local backend supports reviewed Transformers causal-LM directories and the
+curated SmolLM2 model. Arbitrary remote model names are passed to your server,
+which must already support/load them and satisfy its own hardware/license needs.
+  - <code>close(self)</code>
+- <code>model_call(prompt, *, model='smollm2-135m', backend='auto', endpoint=None, config=None, api_key_env=None, max_new_tokens=96, device='auto')</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</p>
+<h3><code>src/alfarouqai/speech.py</code></h3>
+<p>Local Whisper recognition and explicit system-executable speech synthesis.</p>
+<ul>
+<li><code>recognize(*, audio, config, language=None, model_path=None)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>synthesize(*, text, output, config, voice='en-us', speed=150)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h3><code>src/alfarouqai/vision.py</code></h3>
+<p>Reviewed official TorchVision weights, OCR and temporary object track IDs.</p>
+<ul>
+<li>Class <code>VisionEngine</code>: عقد/حاوية أو واجهة تشغيل حسب الاسم والكود.</li>
+<li><code>image(self, image)</code></li>
+<li><code>detect(self, im, threshold=0.4)</code></li>
+<li><code>detect(*, image, config, threshold=0.4)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>classify(*, image, config, top_k=5)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>segment(*, image, config, output)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li><code>ocr(*, image, config, language='eng', psm=6)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+<li>Class <code>CentroidTracker</code>: Temporary IDs only; greedy same-label association, no biometric recognition.</li>
+<li><code>update(self, detections)</code></li>
+<li><code>track(*, video, config, max_frames=30, threshold=0.4)</code>: يراجع جسم الدالة في المسار أعلاه؛ استخرج التوقيع مباشرة من المصدر.</li>
+</ul>
+<h2>11. كتالوج جميع الخدمات وتوقيعاتها وأمثلة تنفيذها</h2>
+<pre><code class="language-python">from pathlib import Path
+import tempfile, threading
+from alfarouqai import AI, Client, Config, Scheduler, prepare_model
+from examples.guide_support import make_fixtures, media_fixtures, model_server, broker, modbus_server, create_onnx
+ROOT = Path.cwd()  # run from the unpacked AlFarouqAI directory
+PHOTO = ROOT/'identity/founder/khalid-salman-original.jpg'
+workspace = tempfile.TemporaryDirectory()
+DATA, OUT = make_fixtures(workspace.name)
+ai = Client()
+
+</code></pre>
+<h3><code>text.analyze</code></h3>
+<p>Extractive Arabic/English text statistics and summary</p>
+<p>Extra: <code>core/system</code>. Required: <code>text</code>.</p>
+<pre><code class="language-python">text_analyze(*, text, config: 'Config', **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('text.analyze', text='الذكاء الاصطناعي يساعد الطلاب. Python helps researchers.')
+</code></pre>
+<h3><code>data.profile</code></h3>
+<p>Profile a UTF-8 CSV with missing values and numeric statistics</p>
+<p>Extra: <code>core/system</code>. Required: <code>data</code>.</p>
+<pre><code class="language-python">data_profile(*, data, config, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('data.profile', data=DATA/'numeric.csv')
+</code></pre>
+<h3><code>ml.train</code></h3>
+<p>Train/test a RandomForest with explicit target/problem</p>
+<p>Extra: <code>ml</code>. Required: <code>data, target, problem</code>.</p>
+<pre><code class="language-python">train_report(*, data, target, problem, config, test_size=0.25, seed=42)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('ml.train', data=DATA/'numeric.csv', target='target', problem='classification')
+</code></pre>
+<h3><code>image.analyze</code></h3>
+<p>Local image statistics and frontal face detection</p>
+<p>Extra: <code>vision</code>. Required: <code>image</code>.</p>
+<pre><code class="language-python">image_analyze(*, image, config, detect_faces=True, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('image.analyze', image=PHOTO)
+</code></pre>
+<h3><code>image.objects</code></h3>
+<p>General object detection using reviewed local model weights</p>
+<p>Extra: <code>objects</code>. Required: <code>image, model_path</code>.</p>
+<pre><code class="language-python">objects_detect(*, image, model_path, config, **kwargs)
+</code></pre>
+<p><strong>Experimental / actual-weight inference not verified:</strong> Legacy local object adapter; use tested vision.detect when appropriate.</p>
+<h3><code>video.motion</code></h3>
+<p>Bounded frame-difference motion regions</p>
+<p>Extra: <code>vision</code>. Required: <code>video</code>.</p>
+<pre><code class="language-python">video_motion(*, video, config, min_area=300, max_frames=None, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.run('video.motion', video=DATA/'clip.avi', max_frames=3)
+</code></pre>
+<h3><code>audio.info</code></h3>
+<p>PCM WAV metadata</p>
+<p>Extra: <code>core/system</code>. Required: <code>audio</code>.</p>
+<pre><code class="language-python">audio_info(*, audio, config, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.run('audio.info', audio=DATA/'silence.wav')
+</code></pre>
+<h3><code>speech.transcribe</code></h3>
+<p>Whisper transcription with an explicit local model</p>
+<p>Extra: <code>speech</code>. Required: <code>audio</code>.</p>
+<pre><code class="language-python">transcribe(*, audio, config, model_path=None, language=None, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">ai.run('speech.synthesize', text='Hello world. A speech recognition test.', output=OUT/'speech.wav')
+result = ai.run('speech.transcribe', audio=OUT/'speech.wav', model_path=str(prepare_model('whisper-tiny')), language='en')
+</code></pre>
+<h3><code>document.read</code></h3>
+<p>Extract text from TXT/PDF/DOCX/XLSX</p>
+<p>Extra: <code>documents</code>. Required: <code>document</code>.</p>
+<pre><code class="language-python">document_read(*, document, config, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('document.read', document=DATA/'note.txt')
+</code></pre>
+<h3><code>code.analyze</code></h3>
+<p>Non-executing Python AST and project review</p>
+<p>Extra: <code>core/system</code>. Required: <code>see signature</code>.</p>
+<pre><code class="language-python">code_analyze(*, path=None, code=None, config, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('code.analyze', code='import os\nos.system(command)\n')
+</code></pre>
+<h3><code>security.logs</code></h3>
+<p>Defensive authentication log analysis</p>
+<p>Extra: <code>core/system</code>. Required: <code>path</code>.</p>
+<pre><code class="language-python">security_logs(*, path, config, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('security.logs', path=DATA/'auth.log')
+</code></pre>
+<h3><code>iot.analyze</code></h3>
+<p>Offline sensor time-series z-score anomaly flags</p>
+<p>Extra: <code>core/system</code>. Required: <code>data, column</code>.</p>
+<pre><code class="language-python">sensor_analyze(*, data, column, threshold=3.0, config, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('iot.analyze', data=DATA/'sensors.csv', column='temperature')
+</code></pre>
+<h3><code>llm.chat</code></h3>
+<p>Opt-in Ollama text and supported vision chat</p>
+<p>Extra: <code>core/system</code>. Required: <code>prompt</code>.</p>
+<pre><code class="language-python">chat(*, prompt, config, system=None, image=None, **kwargs)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">with model_server() as origin:
+    result = Client(Config(allow_network=True, ollama_url=origin, model='reference-smollm')).run('llm.chat', prompt='What is the capital of France?')
+</code></pre>
+<h3><code>local.generate</code></h3>
+<p>Generate text with a local trained causal language model</p>
+<p>Extra: <code>local</code>. Required: <code>prompt</code>.</p>
+<pre><code class="language-python">generate(*, prompt, config, model_path=None, max_new_tokens=96)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai('Explain Python briefly.', task='local.generate', max_new_tokens=40)
+</code></pre>
+<h3><code>nlp.classify</code></h3>
+<p>Classify supplied text by model likelihood of candidate labels</p>
+<p>Extra: <code>local</code>. Required: <code>text, labels</code>.</p>
+<pre><code class="language-python">classify(*, text, labels, config, model_path=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('nlp.classify', text='The service was excellent.', labels=['positive','negative'])
+</code></pre>
+<h3><code>code.generate</code></h3>
+<p>Generate untrusted Python code suggestions with a local LLM</p>
+<p>Extra: <code>local</code>. Required: <code>prompt</code>.</p>
+<pre><code class="language-python">code_generate(*, prompt, config, model_path=None, max_new_tokens=160)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('code.generate', prompt='Write a Python function add(a,b).', max_new_tokens=60)
+</code></pre>
+<h3><code>code.repair</code></h3>
+<p>Suggest a code repair from supplied code and error</p>
+<p>Extra: <code>local</code>. Required: <code>code, error</code>.</p>
+<pre><code class="language-python">code_repair(*, code, error, config, model_path=None, max_new_tokens=160)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('code.repair', code='def add(a,b)\n return a+b', error='missing colon', max_new_tokens=60)
+</code></pre>
+<h3><code>code.test</code></h3>
+<p>Run trusted unittest files with explicit OS-execution consent</p>
+<p>Extra: <code>core/system</code>. Required: <code>path</code>.</p>
+<pre><code class="language-python">code_test(*, path, config, consent=False)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('code.test', path=DATA/'trusted_tests', consent=True)
+</code></pre>
+<h3><code>document.summarize</code></h3>
+<p>Summarize extracted document text with a local trained LLM</p>
+<p>Extra: <code>local</code>. Required: <code>document</code>.</p>
+<pre><code class="language-python">summarize_document(*, document, config, model_path=None, max_new_tokens=128)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('document.summarize', document=DATA/'note.txt', max_new_tokens=50)
+</code></pre>
+<h3><code>vision.detect</code></h3>
+<p>Detect COCO objects with pretrained TorchVision SSDlite</p>
+<p>Extra: <code>torchvision</code>. Required: <code>image</code>.</p>
+<pre><code class="language-python">detect(*, image, config, threshold=0.4)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('vision.detect', image=PHOTO)
+</code></pre>
+<h3><code>vision.classify</code></h3>
+<p>Classify images with pretrained MobileNet V3</p>
+<p>Extra: <code>torchvision</code>. Required: <code>image</code>.</p>
+<pre><code class="language-python">classify(*, image, config, top_k=5)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('vision.classify', image=PHOTO, top_k=3)
+</code></pre>
+<h3><code>vision.segment</code></h3>
+<p>Export a semantic class mask with pretrained LRASPP</p>
+<p>Extra: <code>torchvision</code>. Required: <code>image, output</code>.</p>
+<pre><code class="language-python">segment(*, image, config, output)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('vision.segment', image=PHOTO, output=OUT/'mask.png')
+</code></pre>
+<h3><code>vision.ocr</code></h3>
+<p>Recognize printed text with installed Tesseract language models</p>
+<p>Extra: <code>core/system</code>. Required: <code>image</code>.</p>
+<pre><code class="language-python">ocr(*, image, config, language='eng', psm=6)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.run('vision.ocr', image=DATA/'ocr.png', language='eng')
+</code></pre>
+<h3><code>video.track</code></h3>
+<p>Detect objects and associate temporary track IDs across video</p>
+<p>Extra: <code>torchvision</code>. Required: <code>video</code>.</p>
+<pre><code class="language-python">track(*, video, config, max_frames=30, threshold=0.4)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.run('video.track', video=DATA/'clip.avi', max_frames=3)
+</code></pre>
+<h3><code>speech.recognize</code></h3>
+<p>Transcribe speech with local CTranslate2 Whisper weights</p>
+<p>Extra: <code>speech</code>. Required: <code>audio</code>.</p>
+<pre><code class="language-python">recognize(*, audio, config, language=None, model_path=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">ai.run('speech.synthesize', text='Hello world. A speech recognition test.', output=OUT/'speech.wav')
+result = ai.run('speech.recognize', audio=OUT/'speech.wav', language='en')
+</code></pre>
+<h3><code>speech.synthesize</code></h3>
+<p>Synthesize an audible WAV using external espeak-ng</p>
+<p>Extra: <code>core/system</code>. Required: <code>text, output</code>.</p>
+<pre><code class="language-python">synthesize(*, text, output, config, voice='en-us', speed=150)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('speech.synthesize', text='Hello world.', output=OUT/'speech.wav', voice='en-us')
+</code></pre>
+<h3><code>deep.train</code></h3>
+<p>Train and evaluate a real multilayer PyTorch network</p>
+<p>Extra: <code>deep</code>. Required: <code>data, target, problem</code>.</p>
+<pre><code class="language-python">neural_report(*, data, target, problem, config, epochs=80, hidden=(32, 16), seed=42)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('deep.train', data=DATA/'numeric.csv', target='target', problem='classification', epochs=30)
+</code></pre>
+<h3><code>data.forecast</code></h3>
+<p>Fit a linear time trend with chronological validation</p>
+<p>Extra: <code>ml</code>. Required: <code>data, column</code>.</p>
+<pre><code class="language-python">forecast(*, data, column, config, horizon=5)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('data.forecast', data=DATA/'sensors.csv', column='temperature', horizon=3)
+</code></pre>
+<h3><code>data.recommend</code></h3>
+<p>Recommend unseen items using collaborative cosine similarity</p>
+<p>Extra: <code>ml</code>. Required: <code>data, user, user_column, item_column, rating_column</code>.</p>
+<pre><code class="language-python">recommend(*, data, user, user_column, item_column, rating_column, config, k=5)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('data.recommend', data=DATA/'ratings.csv', user='u1', user_column='user', item_column='item', rating_column='rating')
+</code></pre>
+<h3><code>security.anomalies</code></h3>
+<p>Detect multivariate anomalies with IsolationForest</p>
+<p>Extra: <code>ml</code>. Required: <code>data, columns</code>.</p>
+<pre><code class="language-python">anomalies(*, data, columns, config, contamination=0.1)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('security.anomalies', data=DATA/'sensors.csv', columns=['time','temperature'])
+</code></pre>
+<h3><code>rag.index</code></h3>
+<p>Extract a document and persist multilingual semantic embeddings</p>
+<p>Extra: <code>vector</code>. Required: <code>document, store</code>.</p>
+<pre><code class="language-python">rag_index(*, document, store, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('rag.index', document=DATA/'note.txt', store=OUT/'knowledge.sqlite')
+</code></pre>
+<h3><code>rag.search.semantic</code></h3>
+<p>Search persisted semantic vectors with FAISS and source offsets</p>
+<p>Extra: <code>vector</code>. Required: <code>query, store</code>.</p>
+<pre><code class="language-python">rag_search(*, query, store, config, k=4)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">ai.run('rag.index', document=DATA/'note.txt', store=OUT/'knowledge.sqlite')
+result = ai.run('rag.search.semantic', query='measuring temperature', store=OUT/'knowledge.sqlite')
+</code></pre>
+<h3><code>rag.answer</code></h3>
+<p>Generate a source-returning answer from semantic retrieval</p>
+<p>Extra: <code>vector</code>. Required: <code>question, store</code>.</p>
+<pre><code class="language-python">rag_answer(*, question, store, config, model_path=None, k=3, min_score=0.2)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">ai.run('rag.index', document=DATA/'note.txt', store=OUT/'knowledge.sqlite')
+result = ai.run('rag.answer', question='What measures heat?', store=OUT/'knowledge.sqlite', min_score=.1)
+</code></pre>
+<h3><code>agents.llm</code></h3>
+<p>Use a local LLM to rank allowed tools and review actual results</p>
+<p>Extra: <code>local</code>. Required: <code>goal, inputs_by_task</code>.</p>
+<pre><code class="language-python">llm_agent(*, goal, inputs_by_task, config, model_path=None, max_steps=1)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('agents.llm', goal='Analyze text statistics.', inputs_by_task={'text.analyze':{'text':'Python helps students.'}})
+</code></pre>
+<h3><code>automation.tick</code></h3>
+<p>Run due persisted local jobs once when the caller ticks</p>
+<p>Extra: <code>core/system</code>. Required: <code>store</code>.</p>
+<pre><code class="language-python">tick(*, store, config, now=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">scheduler = Scheduler(OUT/'jobs.sqlite')
+scheduler.add('one','text.analyze',{'text':'Hello'},run_at=0)
+scheduler.close()
+result = ai.run('automation.tick', store=OUT/'jobs.sqlite')
+</code></pre>
+<h3><code>iot.mqtt.publish</code></h3>
+<p>Publish an explicitly approved MQTT message and await broker ACK</p>
+<p>Extra: <code>iot</code>. Required: <code>host, topic, message</code>.</p>
+<pre><code class="language-python">mqtt_publish(*, host, topic, message, config, port=1883, consent=False)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">with broker() as port:
+    result = Client(Config(allow_network=True)).run('iot.mqtt.publish', host='127.0.0.1', port=port, topic='demo/readings', message={'temperature':24}, consent=True)
+</code></pre>
+<h3><code>iot.mqtt.read</code></h3>
+<p>Read real MQTT messages from an explicitly configured broker</p>
+<p>Extra: <code>iot</code>. Required: <code>host, topic</code>.</p>
+<pre><code class="language-python">mqtt_read(*, host, topic, config, port=1883, max_messages=1, duration=3)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">with broker() as port:
+    def publish():
+        import time
+        time.sleep(.5)
+        Client(Config(allow_network=True)).run('iot.mqtt.publish', host='127.0.0.1', port=port, topic='demo/readings', message='24', consent=True)
+    thread = threading.Thread(target=publish); thread.start()
+    result = Client(Config(allow_network=True)).run('iot.mqtt.read', host='127.0.0.1', port=port, topic='demo/readings', duration=4)
+    thread.join()
+</code></pre>
+<h3><code>robotics.serial</code></h3>
+<p>Exchange bounded data on a caller-approved local serial port</p>
+<p>Extra: <code>iot</code>. Required: <code>port</code>.</p>
+<pre><code class="language-python">serial_exchange(*, port, config, baudrate=9600, read_bytes=128, command=None, consent=False)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">import os, select
+master, slave = os.openpty()
+def device_side():
+    if select.select([master],[],[],4)[0]:
+        os.read(master,128); os.write(master,b'PONG')
+thread=threading.Thread(target=device_side); thread.start()
+try:
+    result=Client(Config(timeout=2)).run('robotics.serial',port=os.ttyname(slave),command='PING',read_bytes=4,consent=True)
+    thread.join()
+finally:
+    os.close(master); os.close(slave)
+</code></pre>
+<h3><code>image.generate</code></h3>
+<p>Experimental local Stable Diffusion integration</p>
+<p>Extra: <code>diffusion</code>. Required: <code>prompt, model_path, output</code>.</p>
+<pre><code class="language-python">image_generate(*, prompt, model_path, output, config, steps=20, seed=42, consent=False)
+</code></pre>
+<p><strong>Experimental / actual-weight inference not verified:</strong> Diffusers Stable Diffusion adapter only; actual generation not tested.</p>
+<h3><code>video.generate</code></h3>
+<p>Experimental local CogVideoX integration</p>
+<p>Extra: <code>diffusion</code>. Required: <code>prompt, model_path, output</code>.</p>
+<pre><code class="language-python">video_generate(*, prompt, model_path, output, config, frames=17, steps=20, seed=42, consent=False)
+</code></pre>
+<p><strong>Experimental / actual-weight inference not verified:</strong> CogVideoX adapter only; actual generation not tested.</p>
+<h3><code>arabic.process</code></h3>
+<p>Normalize, tokenize and optionally stem Arabic text</p>
+<p>Extra: <code>nlp</code>. Required: <code>text</code>.</p>
+<pre><code class="language-python">process(*, text, config, stem=True)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.ar('يكتب الطلاب دروس اللغة العربية في المدارس')
+</code></pre>
+<h3><code>nlp.train</code></h3>
+<p>Train and evaluate a labeled Arabic/multilingual text classifier</p>
+<p>Extra: <code>ml</code>. Required: <code>data, text_column, target</code>.</p>
+<pre><code class="language-python">train_report(*, data, text_column, target, config, seed=42)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">model = ai.text_train(data=DATA/'corpus.csv', text_column='text', target='label')
+result = model.report
+print(model.predict(['خدمة ممتازة رائعة']).to_dict())
+</code></pre>
+<h3><code>nlp.topics</code></h3>
+<p>Discover exploratory corpus topics using LDA</p>
+<p>Extra: <code>ml</code>. Required: <code>data, text_column</code>.</p>
+<pre><code class="language-python">topics(*, data, text_column, config, n_topics=3, top_words=8)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('nlp.topics', data=DATA/'corpus.csv', text_column='text', n_topics=2)
+</code></pre>
+<h3><code>nlp.similarity</code></h3>
+<p>Rank text passages by lexical character TF-IDF similarity</p>
+<p>Extra: <code>ml</code>. Required: <code>texts, query</code>.</p>
+<pre><code class="language-python">similarity(*, texts, query, config, k=5)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('nlp.similarity', texts=['تعلم بايثون','صيانة مضخة'], query='بايثون')
+</code></pre>
+<h3><code>sales.forecast</code></h3>
+<p>Aggregate calendar months and forecast sales using temporal baselines</p>
+<p>Extra: <code>ml</code>. Required: <code>data</code>.</p>
+<pre><code class="language-python">sales_forecast(*, data, config, date_column=None, value_column=None, horizon=1)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.sales(DATA/'sales.csv', horizon=1)
+</code></pre>
+<h3><code>data.clean</code></h3>
+<p>Trim fields and remove exact duplicate CSV rows for review</p>
+<p>Extra: <code>core/system</code>. Required: <code>data</code>.</p>
+<pre><code class="language-python">clean(*, data, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('data.clean', data=DATA/'appointments.csv')
+</code></pre>
+<h3><code>data.group</code></h3>
+<p>Aggregate operational records by an explicit grouping column</p>
+<p>Extra: <code>core/system</code>. Required: <code>data, group_column</code>.</p>
+<pre><code class="language-python">group_data(*, data, group_column, config, value_column=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('data.group', data=DATA/'appointments.csv', group_column='department', value_column='waiting_minutes')
+</code></pre>
+<h3><code>privacy.redact</code></h3>
+<p>Mask email/phone patterns without pretending full anonymization</p>
+<p>Extra: <code>core/system</code>. Required: <code>text</code>.</p>
+<pre><code class="language-python">redact(*, text, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('privacy.redact', text='Contact person@example.org +967 700 123 456')
+</code></pre>
+<h3><code>finance.reconcile</code></h3>
+<p>Reconcile two keyed ledgers using exact decimal amounts</p>
+<p>Extra: <code>core/system</code>. Required: <code>left, right, key, amount_column</code>.</p>
+<pre><code class="language-python">reconcile(*, left, right, key, amount_column, config, tolerance=0.01)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('finance.reconcile', left=DATA/'left.csv', right=DATA/'right.csv', key='id', amount_column='amount')
+</code></pre>
+<h3><code>industry.sensors</code></h3>
+<p>Extract vibration/sensor statistics and explicitly sampled spectra</p>
+<p>Extra: <code>ml</code>. Required: <code>data, columns</code>.</p>
+<pre><code class="language-python">sensors(*, data, columns, config, sample_rate=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('industry.sensors', data=DATA/'sensors.csv', columns=['temperature'], sample_rate=1)
+</code></pre>
+<h3><code>industry.control</code></h3>
+<p>Screen measurements against separate baseline control limits</p>
+<p>Extra: <code>core/system</code>. Required: <code>data, column, baseline</code>.</p>
+<pre><code class="language-python">control(*, data, column, baseline, config, sigma=3.0)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('industry.control', data=DATA/'sensors.csv', baseline=DATA/'baseline.csv', column='temperature')
+</code></pre>
+<h3><code>industry.production</code></h3>
+<p>Compute production yield, rejects and optional hourly throughput</p>
+<p>Extra: <code>core/system</code>. Required: <code>data, total_column, good_column</code>.</p>
+<pre><code class="language-python">production(*, data, total_column, good_column, config, operating_hours=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('industry.production', data=DATA/'production.csv', total_column='total', good_column='good', operating_hours=3)
+</code></pre>
+<h3><code>industry.maintenance</code></h3>
+<p>Evaluate a supervised maintenance-label classifier on historical data</p>
+<p>Extra: <code>ml</code>. Required: <code>data, target</code>.</p>
+<pre><code class="language-python">maintenance(*, data, target, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('industry.maintenance', data=DATA/'numeric.csv', target='target')
+</code></pre>
+<h3><code>industry.defects</code></h3>
+<p>Locate aligned-reference image differences for quality screening</p>
+<p>Extra: <code>vision</code>. Required: <code>image, reference</code>.</p>
+<pre><code class="language-python">defects(*, image, reference, config, threshold=25, min_area=20, output=None)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.inspect(DATA/'bad.png', reference=DATA/'good.png', output=OUT/'difference.png')
+</code></pre>
+<h3><code>database.profile</code></h3>
+<p>Read SQLite schema and row counts without modifying the database</p>
+<p>Extra: <code>core/system</code>. Required: <code>database</code>.</p>
+<pre><code class="language-python">database_profile(*, database, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('database.profile', database=DATA/'factory.sqlite')
+</code></pre>
+<h3><code>code.tests.generate</code></h3>
+<p>Generate untrusted unittest suggestions with syntax diagnostics</p>
+<p>Extra: <code>local</code>. Required: <code>code</code>.</p>
+<pre><code class="language-python">tests_generate(*, code, config, model_path=None, max_new_tokens=160)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('code.tests.generate', code='def add(a,b):\n    return a+b\n', max_new_tokens=80)
+</code></pre>
+<h3><code>api.schema</code></h3>
+<p>Build the authenticated text API OpenAPI schema</p>
+<p>Extra: <code>api</code>. Required: <code>see signature</code>.</p>
+<pre><code class="language-python">api_schema(*, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('api.schema')
+</code></pre>
+<h3><code>onnx.predict</code></h3>
+<p>Run reviewed local ONNX tensors with the CPU runtime</p>
+<p>Extra: <code>onnx</code>. Required: <code>model_path, inputs</code>.</p>
+<pre><code class="language-python">onnx_predict(*, model_path, inputs, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">create_onnx(DATA/'double.onnx')
+result = ai.run('onnx.predict', model_path=DATA/'double.onnx', inputs={'x':[[2.],[3.]]})
+</code></pre>
+<h3><code>tensorflow.predict</code></h3>
+<p>Run a reviewed local single-output Keras model</p>
+<p>Extra: <code>tensorflow</code>. Required: <code>model_path, inputs</code>.</p>
+<pre><code class="language-python">tensorflow_predict(*, model_path, inputs, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">import tensorflow as tf
+model=tf.keras.Sequential([tf.keras.layers.Input(shape=(1,)),tf.keras.layers.Dense(1)])
+import numpy as np
+model.layers[0].set_weights([np.array([[2.]],dtype='float32'),np.array([1.],dtype='float32')])
+model.save(DATA/'linear.keras')
+result = ai.run('tensorflow.predict', model_path=DATA/'linear.keras', inputs=[[2.]])
+</code></pre>
+<h3><code>llm.compatible</code></h3>
+<p>Call an explicitly approved OpenAI-compatible optional inference endpoint</p>
+<p>Extra: <code>core/system</code>. Required: <code>prompt, endpoint, model</code>.</p>
+<pre><code class="language-python">compatible_chat(*, prompt, endpoint, model, config, api_key_env=None, max_tokens=80)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">with model_server() as origin:
+    result = Client(Config(allow_network=True)).run('llm.compatible', prompt='What is the capital of France?', endpoint=origin+'/v1', model='reference-smollm')
+</code></pre>
+<h3><code>iot.modbus.read</code></h3>
+<p>Read bounded holding registers from an approved local gateway</p>
+<p>Extra: <code>industrial</code>. Required: <code>host, address, count</code>.</p>
+<pre><code class="language-python">modbus_read(*, host, address, count, config, port=502, device_id=1)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">with modbus_server() as port:
+    result = Client(Config(allow_network=True)).run('iot.modbus.read', host='127.0.0.1', port=port, address=0, count=2)
+</code></pre>
+<h3><code>document.insights</code></h3>
+<p>Extract text, keywords, dates and an extractive summary from a file</p>
+<p>Extra: <code>documents</code>. Required: <code>document</code>.</p>
+<pre><code class="language-python">document_insights(*, document, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = AI('حلل هذا الملف واستخرج أهم المعلومات', file=DATA/'note.txt')
+</code></pre>
+<h3><code>document.search</code></h3>
+<p>Search document passages lexically with source references</p>
+<p>Extra: <code>documents</code>. Required: <code>document, query</code>.</p>
+<pre><code class="language-python">document_search(*, document, query, config, k=3)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = ai.run('document.search', document=DATA/'note.txt', query='Python')
+</code></pre>
+<h3><code>ai.search</code></h3>
+<p>Solve a bounded unit-cost grid shortest path with A-star</p>
+<p>Extra: <code>core/system</code>. Required: <code>grid, start, goal</code>.</p>
+<pre><code class="language-python">search(*, grid, start, goal, config)
+</code></pre>
+<p>Executed service block after the common setup below:</p>
+<pre><code class="language-python">result = AI('astar', grid=[[0,0,0],[0,1,0]], start=[0,0], goal=[1,2])
+</code></pre>
+<h2>12. شجرة الملفات وتسلسل المسؤوليات</h2>
+<p>.git أرشيف محلي مستبعد من التسليم، dist نواتج wheel/sdist، src الكود، tests العقود، examples الاستخدام، docs المعرفة، scripts التطوير، deploy قوالب منصات، reports أدلة تحقق تاريخية وحديثة، identity أصل الصورة. لا تحذف historical evidence لكن لا تستعمله كحالة الإصدار الحالي. القائمة التالية ملفات الشجرة وقت التوليد قبل نواتج البناء النهائية؛ DELIVERY_MANIFEST.json هو المرجع النهائي لكل ملف وهاشه.</p>
+<pre><code class="language-text">.github/ISSUE_TEMPLATE/bug_report.md
+.github/ISSUE_TEMPLATE/feature_request.md
+.github/pull_request_template.md
+.github/workflows/ci.yml
+.github/workflows/publish.yml
+.github/workflows/release-check.yml
+.gitignore
+.vscode/launch.json
+.vscode/settings.json
+CHANGELOG.md
+CONTRIBUTING.html
+CONTRIBUTING.md
+DELIVERY_MANIFEST.json
+LICENSE
+LICENSING.md
+MANIFEST.in
+NOTICE
+PUBLICATION_GUIDE.ar.md
+PUBLISH.sh
+PUBLISH_WINDOWS.bat
+README.ar.html
+README.ar.md
+README.html
+README.md
+SECURITY.html
+SECURITY.md
+START_HERE.md
+THIRD_PARTY_NOTICES.html
+THIRD_PARTY_NOTICES.md
+USER_GUIDE_AR.md
+USER_GUIDE_EN.md
+archive-validation.json
+config.example.json
+demo-output/data-report.html
+demo-output/text-report.json
+deploy/huggingface/Dockerfile
+deploy/huggingface/README.md
+deploy/huggingface/app.py
+dist/alfarouqai-0.2.0a1-py3-none-any.whl
+docs/ar/api.html
+docs/ar/api.md
+docs/ar/architecture.html
+docs/ar/architecture.md
+docs/ar/capabilities-0.2.html
+docs/ar/capabilities-0.2.md
+docs/ar/capabilities.html
+docs/ar/capabilities.md
+docs/ar/curriculum.html
+docs/ar/curriculum.md
+docs/ar/development.html
+docs/ar/development.md
+docs/ar/guide.html
+docs/ar/guide.md
+docs/ar/handbook-0.2.html
+docs/ar/handbook-0.2.md
+docs/en/api.html
+docs/en/api.md
+docs/en/architecture.html
+docs/en/architecture.md
+docs/en/capabilities-0.2.html
+docs/en/capabilities-0.2.md
+docs/en/capabilities.html
+docs/en/capabilities.md
+docs/en/curriculum.html
+docs/en/curriculum.md
+docs/en/development.html
+docs/en/development.md
+docs/en/guide.html
+docs/en/guide.md
+docs/en/handbook-0.2.html
+docs/en/handbook-0.2.md
+docs/index.html
+docs/research/SOURCES-0.2.html
+docs/research/SOURCES-0.2.md
+docs/research/SOURCES.html
+docs/research/SOURCES.md
+examples/01_quickstart.py
+examples/02_machine_learning.py
+examples/03_agents.py
+examples/04_retrieval.py
+examples/05_ollama.py
+examples/06_vision.py
+examples/07_plugin.py
+examples/08_sensors_and_logs.py
+examples/09_documents.py
+examples/10_local_models.py
+examples/11_pretrained_vision.py
+examples/12_speech.py
+examples/13_neural_network.py
+examples/14_semantic_rag.py
+examples/15_llm_agents.py
+examples/16_scheduler.py
+examples/17_analytics.py
+examples/18_device_transports.py
+examples/data/auth.log
+examples/data/knowledge.txt
+examples/data/neural.csv
+examples/data/ratings.csv
+examples/data/sensors.csv
+examples/data/students.csv
+examples/guide_catalog.py
+examples/guide_support.py
+identity/founder/LICENSE
+identity/founder/README.md
+identity/founder/khalid-salman-original.jpg
+identity/founder/profile.json
+notebooks/AlFarouqAI_0_2_Getting_Started.ipynb
+notebooks/README.md
+pyproject.toml
+reports/FINAL_REPORT.ar.html
+reports/FINAL_REPORT.ar.md
+reports/FINAL_REPORT.en.html
+reports/FINAL_REPORT.en.md
+reports/baseline-source-hashes.json
+reports/build-0.2.log
+reports/build.log
+reports/capability-verification-0.2.json
+reports/coding-guide-results/agents.llm.json
+reports/coding-guide-results/agents.llm.log
+reports/coding-guide-results/ai.search.json
+reports/coding-guide-results/ai.search.log
+reports/coding-guide-results/api.schema.json
+reports/coding-guide-results/api.schema.log
+reports/coding-guide-results/arabic.process.json
+reports/coding-guide-results/arabic.process.log
+reports/coding-guide-results/audio.info.json
+reports/coding-guide-results/audio.info.log
+reports/coding-guide-results/automation.tick.json
+reports/coding-guide-results/automation.tick.log
+reports/coding-guide-results/code.analyze.json
+reports/coding-guide-results/code.analyze.log
+reports/coding-guide-results/code.generate.json
+reports/coding-guide-results/code.generate.log
+reports/coding-guide-results/code.repair.json
+reports/coding-guide-results/code.repair.log
+reports/coding-guide-results/code.test.json
+reports/coding-guide-results/code.test.log
+reports/coding-guide-results/code.tests.generate.json
+reports/coding-guide-results/code.tests.generate.log
+reports/coding-guide-results/data.clean.json
+reports/coding-guide-results/data.clean.log
+reports/coding-guide-results/data.forecast.json
+reports/coding-guide-results/data.forecast.log
+reports/coding-guide-results/data.group.json
+reports/coding-guide-results/data.group.log
+reports/coding-guide-results/data.profile.json
+reports/coding-guide-results/data.profile.log
+reports/coding-guide-results/data.recommend.json
+reports/coding-guide-results/data.recommend.log
+reports/coding-guide-results/database.profile.json
+reports/coding-guide-results/database.profile.log
+reports/coding-guide-results/deep.train.json
+reports/coding-guide-results/deep.train.log
+reports/coding-guide-results/document.insights.json
+reports/coding-guide-results/document.insights.log
+reports/coding-guide-results/document.read.json
+reports/coding-guide-results/document.read.log
+reports/coding-guide-results/document.search.json
+reports/coding-guide-results/document.search.log
+reports/coding-guide-results/document.summarize.json
+reports/coding-guide-results/document.summarize.log
+reports/coding-guide-results/finance.reconcile.json
+reports/coding-guide-results/finance.reconcile.log
+reports/coding-guide-results/image.analyze.json
+reports/coding-guide-results/image.analyze.log
+reports/coding-guide-results/industry.control.json
+reports/coding-guide-results/industry.control.log
+reports/coding-guide-results/industry.defects.json
+reports/coding-guide-results/industry.defects.log
+reports/coding-guide-results/industry.maintenance.json
+reports/coding-guide-results/industry.maintenance.log
+reports/coding-guide-results/industry.production.json
+reports/coding-guide-results/industry.production.log
+reports/coding-guide-results/industry.sensors.json
+reports/coding-guide-results/industry.sensors.log
+reports/coding-guide-results/iot.analyze.json
+reports/coding-guide-results/iot.analyze.log
+reports/coding-guide-results/iot.modbus.read.json
+reports/coding-guide-results/iot.modbus.read.log
+reports/coding-guide-results/iot.mqtt.publish.json
+reports/coding-guide-results/iot.mqtt.publish.log
+reports/coding-guide-results/iot.mqtt.read.json
+reports/coding-guide-results/iot.mqtt.read.log
+reports/coding-guide-results/llm.chat.json
+reports/coding-guide-results/llm.chat.log
+reports/coding-guide-results/llm.compatible.json
+reports/coding-guide-results/llm.compatible.log
+reports/coding-guide-results/local.generate.json
+reports/coding-guide-results/local.generate.log
+reports/coding-guide-results/ml.train.json
+reports/coding-guide-results/ml.train.log
+reports/coding-guide-results/nlp.classify.json
+reports/coding-guide-results/nlp.classify.log
+reports/coding-guide-results/nlp.similarity.json
+reports/coding-guide-results/nlp.similarity.log
+reports/coding-guide-results/nlp.topics.json
+reports/coding-guide-results/nlp.topics.log
+reports/coding-guide-results/nlp.train.json
+reports/coding-guide-results/nlp.train.log
+reports/coding-guide-results/onnx.predict.json
+reports/coding-guide-results/onnx.predict.log
+reports/coding-guide-results/privacy.redact.json
+reports/coding-guide-results/privacy.redact.log
+reports/coding-guide-results/rag.answer.json
+reports/coding-guide-results/rag.answer.log
+reports/coding-guide-results/rag.index.json
+reports/coding-guide-results/rag.index.log
+reports/coding-guide-results/rag.search.semantic.json
+reports/coding-guide-results/rag.search.semantic.log
+reports/coding-guide-results/robotics.serial.json
+reports/coding-guide-results/robotics.serial.log
+reports/coding-guide-results/sales.forecast.json
+reports/coding-guide-results/sales.forecast.log
+reports/coding-guide-results/security.anomalies.json
+reports/coding-guide-results/security.anomalies.log
+reports/coding-guide-results/security.logs.json
+reports/coding-guide-results/security.logs.log
+reports/coding-guide-results/speech.recognize.json
+reports/coding-guide-results/speech.recognize.log
+reports/coding-guide-results/speech.synthesize.json
+reports/coding-guide-results/speech.synthesize.log
+reports/coding-guide-results/speech.transcribe.json
+reports/coding-guide-results/speech.transcribe.log
+reports/coding-guide-results/tensorflow.predict.json
+reports/coding-guide-results/tensorflow.predict.log
+reports/coding-guide-results/text.analyze.json
+reports/coding-guide-results/text.analyze.log
+reports/coding-guide-results/video.motion.json
+reports/coding-guide-results/video.motion.log
+reports/coding-guide-results/video.track.json
+reports/coding-guide-results/video.track.log
+reports/coding-guide-results/vision.classify.json
+reports/coding-guide-results/vision.classify.log
+reports/coding-guide-results/vision.detect.json
+reports/coding-guide-results/vision.detect.log
+reports/coding-guide-results/vision.ocr.json
+reports/coding-guide-results/vision.ocr.log
+reports/coding-guide-results/vision.segment.json
+reports/coding-guide-results/vision.segment.log
+reports/coding-guide-verification.json
+reports/dependency-check-0.2.log
+reports/dependency-check.log
+reports/device-example-help.log
+reports/document-example.log
+reports/environment-0.2.json
+reports/environment.json
+reports/example-10_local_models.log
+reports/example-11_pretrained_vision.log
+reports/example-12_speech.log
+reports/example-13_neural_network.log
+reports/example-14_semantic_rag.log
+reports/example-15_llm_agents.log
+reports/example-16_scheduler.log
+reports/example-17_analytics.log
+reports/history/0.2-upload/ALFAROUQAI_FULL_REPORT.txt
+reports/history/0.2-upload/LICENSE
+reports/history/0.2-upload/NOTICE
+reports/history/0.2-upload/README.ar.md
+reports/history/0.2-upload/README.md
+reports/history/0.2-upload/push.bat
+reports/history/0.2-upload/pyproject.toml
+reports/installed-source-match.json
+reports/installer-success-0.2.json
+reports/llm-example-help.log
+reports/model-manifests/lraspp.json
+reports/model-manifests/minilm-multilingual.json
+reports/model-manifests/mobilenet-v3.json
+reports/model-manifests/smollm2-135m.json
+reports/model-manifests/ssdlite320.json
+reports/model-manifests/whisper-tiny.json
+reports/notebook-validation.json
+reports/package-check-0.2.log
+reports/package-check.log
+reports/preservation-0.2.json
+reports/pytest-0.2.log
+reports/pytest-0.2.xml
+reports/pytest-0.3.xml
+reports/pytest.log
+reports/pytest.xml
+reports/real-results/agents.json
+reports/real-results/classification-report.csv
+reports/real-results/classification-report.html
+reports/real-results/classification-report.md
+reports/real-results/classification-report.txt
+reports/real-results/classification.json
+reports/real-results/data-profile.json
+reports/real-results/defensive-logs.json
+reports/real-results/docx-extraction.json
+reports/real-results/founder-photo-analysis.json
+reports/real-results/lexical-retrieval.json
+reports/real-results/motion-fixture.json
+reports/real-results/pdf-extraction.json
+reports/real-results/predictions.json
+reports/real-results/regression.json
+reports/real-results/sensors.json
+reports/real-results/source-review.json
+reports/real-results/text.json
+reports/real-results/wav-info.json
+reports/real-results/xlsx-extraction.json
+reports/regression-0.2.log
+reports/releases/0.1.0/FINAL_REPORT.ar.md
+reports/releases/0.1.0/FINAL_REPORT.en.md
+reports/releases/0.1.0/dist/alfarouqai-0.1.0-py3-none-any.whl
+reports/releases/0.1.0/dist/alfarouqai-0.1.0.tar.gz
+reports/releases/0.1.0/environment.json
+reports/releases/0.1.0/pytest.log
+reports/releases/0.1.0/pytest.xml
+reports/releases/0.1.0/verification-summary.json
+reports/releases/0.1.0/wheel-smoke.json
+reports/report-generation.json
+reports/third_party_license_evidence/Markdown/licenses/LICENSE.md
+reports/third_party_license_evidence/numpy/LICENSE.txt
+reports/third_party_license_evidence/opencv-python-headless/LICENSE-3RD-PARTY.txt
+reports/third_party_license_evidence/opencv-python-headless/LICENSE.txt
+reports/third_party_license_evidence/pandas/licenses/LICENSE
+reports/third_party_license_evidence/pandas/licenses/LICENSES/DATEUTIL_LICENSE
+reports/third_party_license_evidence/pandas/licenses/LICENSES/HAVEN_LICENSE
+reports/third_party_license_evidence/pandas/licenses/LICENSES/KLIB_LICENSE
+reports/third_party_license_evidence/pandas/licenses/LICENSES/MUSL_LICENSE
+reports/third_party_license_evidence/pandas/licenses/LICENSES/NUMPY_LICENSE
+reports/third_party_license_evidence/pandas/licenses/LICENSES/PACKAGING_LICENSE
+reports/third_party_license_evidence/pandas/licenses/LICENSES/PSF_LICENSE
+reports/third_party_license_evidence/pandas/licenses/LICENSES/PYPERCLIP_LICENSE
+reports/third_party_license_evidence/pandas/licenses/LICENSES/PYUPGRADE_LICENSE
+reports/third_party_license_evidence/pandas/licenses/LICENSES/SAS7BDAT_LICENSE
+reports/third_party_license_evidence/pandas/licenses/LICENSES/STATSBASE_JL_LICENSE
+reports/third_party_license_evidence/pandas/licenses/LICENSES/ULTRAJSON_LICENSE
+reports/third_party_license_evidence/pandas/licenses/LICENSES/XSIMD_LICENSE
+reports/third_party_license_evidence/pandas/licenses/subprojects/fast_float-8.2.10/LICENSE-APACHE
+reports/third_party_license_evidence/pandas/licenses/subprojects/fast_float-8.2.10/LICENSE-BOOST
+reports/third_party_license_evidence/pandas/licenses/subprojects/fast_float-8.2.10/LICENSE-MIT
+reports/third_party_license_evidence/pypdf/licenses/LICENSE
+reports/third_party_license_evidence/python-docx/licenses/LICENSE
+reports/third_party_license_evidence/scikit-learn/licenses/COPYING
+reports/third_party_license_evidence/scipy/LICENSE.txt
+reports/upload-inventory.json
+reports/v0.2-learning-results/anomalies.json
+reports/v0.2-learning-results/forecast.json
+reports/v0.2-learning-results/neural-model/model.json
+reports/v0.2-learning-results/neural-model/weights.safetensors
+reports/v0.2-learning-results/neural-predictions.csv
+reports/v0.2-learning-results/neural-training.json
+reports/v0.2-learning-results/recommendations.json
+reports/v0.2-model-results/code-generation.json
+reports/v0.2-model-results/code-repair.json
+reports/v0.2-model-results/crosslingual-semantic-search.json
+reports/v0.2-model-results/document-summary.json
+reports/v0.2-model-results/image-classification.json
+reports/v0.2-model-results/llm-agent.json
+reports/v0.2-model-results/local-generation.json
+reports/v0.2-model-results/mqtt-publish.json
+reports/v0.2-model-results/mqtt-read.json
+reports/v0.2-model-results/nlp-classification.json
+reports/v0.2-model-results/object-detection.json
+reports/v0.2-model-results/ocr-arabic.json
+reports/v0.2-model-results/ocr-english.json
+reports/v0.2-model-results/rag-answer.json
+reports/v0.2-model-results/segmentation.json
+reports/v0.2-model-results/semantic-mask.png
+reports/v0.2-model-results/serial-pty.json
+reports/v0.2-model-results/speech-fixture.wav
+reports/v0.2-model-results/speech-recognition.json
+reports/v0.2-model-results/speech-synthesis.json
+reports/v0.2-model-results/video-tracks.json
+reports/verification-run-0.2.json
+reports/verification-run-0.3.json
+reports/verification-summary.json
+reports/verification-workers/worker-0.log
+reports/verification-workers/worker-0.xml
+reports/verification-workers/worker-1.log
+reports/verification-workers/worker-1.xml
+reports/verification-workers/worker-2.log
+reports/verification-workers/worker-2.xml
+reports/verification-workers/worker-3.log
+reports/verification-workers/worker-3.xml
+reports/verification-workers/worker-4.log
+reports/verification-workers/worker-4.xml
+reports/verification-workers/worker-5.log
+reports/verification-workers/worker-5.xml
+reports/verification-workers/worker-6.log
+reports/verification-workers/worker-6.xml
+reports/verification-workers-0.3/worker-0.log
+reports/verification-workers-0.3/worker-0.xml
+reports/verification-workers-0.3/worker-1.log
+reports/verification-workers-0.3/worker-1.xml
+reports/verification-workers-0.3/worker-10.log
+reports/verification-workers-0.3/worker-10.xml
+reports/verification-workers-0.3/worker-11.log
+reports/verification-workers-0.3/worker-11.xml
+reports/verification-workers-0.3/worker-12.log
+reports/verification-workers-0.3/worker-12.xml
+reports/verification-workers-0.3/worker-13.log
+reports/verification-workers-0.3/worker-13.xml
+reports/verification-workers-0.3/worker-2.log
+reports/verification-workers-0.3/worker-2.xml
+reports/verification-workers-0.3/worker-3.log
+reports/verification-workers-0.3/worker-3.xml
+reports/verification-workers-0.3/worker-4.log
+reports/verification-workers-0.3/worker-4.xml
+reports/verification-workers-0.3/worker-5.log
+reports/verification-workers-0.3/worker-5.xml
+reports/verification-workers-0.3/worker-6.log
+reports/verification-workers-0.3/worker-6.xml
+reports/verification-workers-0.3/worker-7.log
+reports/verification-workers-0.3/worker-7.xml
+reports/verification-workers-0.3/worker-8.log
+reports/verification-workers-0.3/worker-8.xml
+reports/verification-workers-0.3/worker-9.log
+reports/verification-workers-0.3/worker-9.xml
+reports/verified-requirements-0.2.txt
+reports/verified-requirements.txt
+reports/vision-example.log
+reports/wheel-smoke.json
+scripts/build_complete_guide.py
+scripts/build_docs.py
+scripts/capture_examples.py
+scripts/capture_upgrade.py
+scripts/package_delivery.py
+scripts/prepublish_check.py
+scripts/publish.py
+scripts/run_verification.py
+scripts/upload_to_google_drive.py
+scripts/validate_project.py
+scripts/verify_coding_guide.py
+scripts/wheel_smoke.py
+src/alfarouqai/__init__.py
+src/alfarouqai/__main__.py
+src/alfarouqai/agents.py
+src/alfarouqai/api.py
+src/alfarouqai/arabic.py
+src/alfarouqai/automation.py
+src/alfarouqai/business.py
+src/alfarouqai/cli.py
+src/alfarouqai/client.py
+src/alfarouqai/core.py
+src/alfarouqai/coursework.py
+src/alfarouqai/dependencies.py
+src/alfarouqai/developer.py
+src/alfarouqai/documents.py
+src/alfarouqai/engines.py
+src/alfarouqai/extensions.py
+src/alfarouqai/generative.py
+src/alfarouqai/industrial_io.py
+src/alfarouqai/industry.py
+src/alfarouqai/integrations.py
+src/alfarouqai/language.py
+src/alfarouqai/learning.py
+src/alfarouqai/local.py
+src/alfarouqai/media.py
+src/alfarouqai/ml.py
+src/alfarouqai/models.py
+src/alfarouqai/providers.py
+src/alfarouqai/py.typed
+src/alfarouqai/resources.py
+src/alfarouqai/retrieval.py
+src/alfarouqai/services.py
+src/alfarouqai/shortcut.py
+src/alfarouqai/speech.py
+src/alfarouqai/vision.py
+tests/test_additional_verification.py
+tests/test_core.py
+tests/test_engines_03.py
+tests/test_models.py
+tests/test_optional.py
+tests/test_resources_03.py
+tests/test_services_03.py
+tests/test_shortcuts_03.py
+tests/test_system.py
+tests/test_transport.py
+tests/test_upgrade.py
+</code></pre></body></html>

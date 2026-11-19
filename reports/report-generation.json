@@ -1,0 +1,27 @@
+{
+  "release": "0.2.0 Alpha",
+  "date": "2026-11-15",
+  "incremental_from": "0.1.0",
+  "original_test_files_unchanged": {
+    "test_optional.py": true,
+    "test_core.py": true,
+    "test_transport.py": true
+  },
+  "original_79_tests_passed": true,
+  "counts": {
+    "tests": 107,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "test_execution": "sequential isolated pytest workers; not a monolithic same-process run",
+  "installed_wheel_full_suite": true,
+  "registered_capabilities": 40,
+  "local_execution_verified_capabilities": 36,
+  "actual_pretrained_model_families": 6,
+  "model_weights_bundled": false,
+  "physical_device_verified": false,
+  "publicly_published": false,
+  "original_license": "Proprietary / All Rights Reserved",
+  "current_model_artifacts": 21
+}

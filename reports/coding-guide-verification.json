@@ -1,0 +1,498 @@
+{
+  "installed_wheel": true,
+  "examples": [
+    {
+      "task": "text.analyze",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.114,
+      "log": "reports/coding-guide-results/text.analyze.log",
+      "snippet_sha256": "45f67c438d32571d000a641e900f1f262d8902e639a58d1671424f38ae352dd9"
+    },
+    {
+      "task": "data.profile",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.114,
+      "log": "reports/coding-guide-results/data.profile.log",
+      "snippet_sha256": "3637309c87ea812896a9c32d90b7f8b72a49c43b15f45a73896c9576735da070"
+    },
+    {
+      "task": "ml.train",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 1.675,
+      "log": "reports/coding-guide-results/ml.train.log",
+      "snippet_sha256": "a0e710a1d5a4e0b2a71d48a6868597f0c89afc5b4f82e87e4432f0eac0691e1c"
+    },
+    {
+      "task": "image.analyze",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.569,
+      "log": "reports/coding-guide-results/image.analyze.log",
+      "snippet_sha256": "11dd31381f0eebe0f0f42b42c02bcac3103d2b5889c88dc87eb9bf5995d1fe22"
+    },
+    {
+      "task": "video.motion",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.269,
+      "log": "reports/coding-guide-results/video.motion.log",
+      "snippet_sha256": "aebb8409c603de7660eeea15bd96174ca40fa001c3a31f2a97bd136b9849369d"
+    },
+    {
+      "task": "audio.info",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.217,
+      "log": "reports/coding-guide-results/audio.info.log",
+      "snippet_sha256": "66580fb4a541972a1e77367cc4a92b537df7540c3765f22b800eac0cbbc5c4ad"
+    },
+    {
+      "task": "speech.transcribe",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 1.226,
+      "log": "reports/coding-guide-results/speech.transcribe.log",
+      "snippet_sha256": "cd9e001433cf5f10e6567a6ed7422a742e039947d50a5fbd0f72b579bf93902b"
+    },
+    {
+      "task": "document.read",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.114,
+      "log": "reports/coding-guide-results/document.read.log",
+      "snippet_sha256": "cc7719ada25e84189496ac3231bd68974a8f267cafd3c2e87299d1adc1217f82"
+    },
+    {
+      "task": "code.analyze",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.114,
+      "log": "reports/coding-guide-results/code.analyze.log",
+      "snippet_sha256": "503198f74807a58b2240afd4d4178875f40e3bd20276dcaf9d468806c716d79b"
+    },
+    {
+      "task": "security.logs",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.114,
+      "log": "reports/coding-guide-results/security.logs.log",
+      "snippet_sha256": "d98c4297eea74536d9e9ad662c5da4ceef3b6203495a2a99b9ea5cc1ccd1624d"
+    },
+    {
+      "task": "iot.analyze",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.114,
+      "log": "reports/coding-guide-results/iot.analyze.log",
+      "snippet_sha256": "8bbf08378fa2dfa4bbd4971b689d2900fce232166596d7a36a13bcdffbe8ab72"
+    },
+    {
+      "task": "llm.chat",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 4.529,
+      "log": "reports/coding-guide-results/llm.chat.log",
+      "snippet_sha256": "4fa391a99c9a92c7dd35bd68ca816776a02db186d067a90159942fa353644761"
+    },
+    {
+      "task": "local.generate",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 5.839,
+      "log": "reports/coding-guide-results/local.generate.log",
+      "snippet_sha256": "d1f6a5a6fdfeb467161e437766fa1389718fe075a88fe4c783f641f07103b9ce"
+    },
+    {
+      "task": "nlp.classify",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 4.443,
+      "log": "reports/coding-guide-results/nlp.classify.log",
+      "snippet_sha256": "b1435a68448dc5a2d2de660e14637d09a9cd15b73b65ec58dc492b97264e3b3f"
+    },
+    {
+      "task": "code.generate",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 5.841,
+      "log": "reports/coding-guide-results/code.generate.log",
+      "snippet_sha256": "cfdfc9b7f611e060702f3770f96772245260c1c48b5522eb0f275745b9b2604e"
+    },
+    {
+      "task": "code.repair",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 5.038,
+      "log": "reports/coding-guide-results/code.repair.log",
+      "snippet_sha256": "bf44fc0c7b887d8e1f14e017dca2897dd194fc75a217f5ede444f6b129a7b579"
+    },
+    {
+      "task": "code.test",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.214,
+      "log": "reports/coding-guide-results/code.test.log",
+      "snippet_sha256": "6be4c37a644376ed876dde2e95ba0ae3c464203609287d71a0794db900d43d8a"
+    },
+    {
+      "task": "document.summarize",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 6.193,
+      "log": "reports/coding-guide-results/document.summarize.log",
+      "snippet_sha256": "273c2d6395b688459b6f4b5e51499ad47ea6e9d078c6407ae611309ab8938d53"
+    },
+    {
+      "task": "vision.detect",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 3.179,
+      "log": "reports/coding-guide-results/vision.detect.log",
+      "snippet_sha256": "617baa1c3ea56aa52befe406d99fb2c9d399d6254543771d099560c4834d545b"
+    },
+    {
+      "task": "vision.classify",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 2.777,
+      "log": "reports/coding-guide-results/vision.classify.log",
+      "snippet_sha256": "3c4b7c452cea250e571bf8f7d7d0d061d6cacea571b1243fd9dbbd027dba5daa"
+    },
+    {
+      "task": "vision.segment",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 3.533,
+      "log": "reports/coding-guide-results/vision.segment.log",
+      "snippet_sha256": "1a376e81e58cb8111d8c83426005a7a432f458b3b412b44d43742e91cab72f7a"
+    },
+    {
+      "task": "vision.ocr",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.519,
+      "log": "reports/coding-guide-results/vision.ocr.log",
+      "snippet_sha256": "4583a59d4f882dc4beda0c45a2d5e270bec8e95bbacdface2e2a77e0e3b4efbb"
+    },
+    {
+      "task": "video.track",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 3.23,
+      "log": "reports/coding-guide-results/video.track.log",
+      "snippet_sha256": "b9c7468bc11121636aa1540f37d9570cee2b82f371c7da10dfe539ba54a8329d"
+    },
+    {
+      "task": "speech.recognize",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 1.02,
+      "log": "reports/coding-guide-results/speech.recognize.log",
+      "snippet_sha256": "65092b66d372f4a792c56b72e62b8164d902efc9d7eaf2923f6c9f0504e7d31f"
+    },
+    {
+      "task": "speech.synthesize",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.164,
+      "log": "reports/coding-guide-results/speech.synthesize.log",
+      "snippet_sha256": "ffae7310bcaf644765ff0290445d17b22a79a8eb647d349f76b79605dd2efac3"
+    },
+    {
+      "task": "deep.train",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 5.237,
+      "log": "reports/coding-guide-results/deep.train.log",
+      "snippet_sha256": "e708d792299116c31593829a3e5d8d86ff9a957f94eeede4f4080b05cb413042"
+    },
+    {
+      "task": "data.forecast",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.167,
+      "log": "reports/coding-guide-results/data.forecast.log",
+      "snippet_sha256": "846280a53597dbdf3efa7625cd114f1db74093caa847aa7ea4da0bdf8cd87602"
+    },
+    {
+      "task": "data.recommend",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.164,
+      "log": "reports/coding-guide-results/data.recommend.log",
+      "snippet_sha256": "4d494f947ebf75b2a6d1f6c1ac3b9cda605ce22ec4d99d54d87a5ea6b4aaca79"
+    },
+    {
+      "task": "security.anomalies",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 1.518,
+      "log": "reports/coding-guide-results/security.anomalies.log",
+      "snippet_sha256": "d76e989252e4a9411a35b32c3cc56ba845d3b3f3282975593bbd695132dad4b5"
+    },
+    {
+      "task": "rag.index",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 7.199,
+      "log": "reports/coding-guide-results/rag.index.log",
+      "snippet_sha256": "73ce08be345e3d424bcede62fd1f6738a68c7d2576b6357a71c7a80d785e369e"
+    },
+    {
+      "task": "rag.search.semantic",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 9.357,
+      "log": "reports/coding-guide-results/rag.search.semantic.log",
+      "snippet_sha256": "c2dc7e9d99b4c9a44aa3474a2a8c56053c3c7800aa306d947fc3fb082de41ad7"
+    },
+    {
+      "task": "rag.answer",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 9.912,
+      "log": "reports/coding-guide-results/rag.answer.log",
+      "snippet_sha256": "d3e268dd24ab5b8e7ff3651032290b1ef62cc2ffb7cb495f3bc5bd476f499971"
+    },
+    {
+      "task": "agents.llm",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 8.957,
+      "log": "reports/coding-guide-results/agents.llm.log",
+      "snippet_sha256": "d4261629cb44e79c80b499f3ae49aa24193a3530c1c81f6f984dc7e0a1c81a06"
+    },
+    {
+      "task": "automation.tick",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.165,
+      "log": "reports/coding-guide-results/automation.tick.log",
+      "snippet_sha256": "bd227f5e790e76607dbd100a85f5fecf53a9d2723b1ec4d1ed74092385b6b91c"
+    },
+    {
+      "task": "iot.mqtt.publish",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.265,
+      "log": "reports/coding-guide-results/iot.mqtt.publish.log",
+      "snippet_sha256": "db11246b386ace6743e93c8c703bc9c9b08158c916ce8ccdf4cfd103b1d9881e"
+    },
+    {
+      "task": "iot.mqtt.read",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.767,
+      "log": "reports/coding-guide-results/iot.mqtt.read.log",
+      "snippet_sha256": "c80044b99ab95464629ecaa6778fdeecbe55e03823064f5c41f1400a69f9398b"
+    },
+    {
+      "task": "robotics.serial",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.666,
+      "log": "reports/coding-guide-results/robotics.serial.log",
+      "snippet_sha256": "baf6457d1aa87dcffbe64717a1c69098f5fefd1c2828b04a310386de76c2b52d"
+    },
+    {
+      "task": "arabic.process",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 1.678,
+      "log": "reports/coding-guide-results/arabic.process.log",
+      "snippet_sha256": "f466617a103a1727f20e1e8b5ad89faa5893b047ac4f1f46eb7e1eaee7c00ae8"
+    },
+    {
+      "task": "nlp.train",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 1.328,
+      "log": "reports/coding-guide-results/nlp.train.log",
+      "snippet_sha256": "4699efa25880657557972050c92a415f53c4bcabf73f306a13623fde40789291"
+    },
+    {
+      "task": "nlp.topics",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 1.372,
+      "log": "reports/coding-guide-results/nlp.topics.log",
+      "snippet_sha256": "bd4c155b4ec2cbcc4670a0ea2c80a0ca6956a31d7fc8066fc0fbe4dbcd892c6e"
+    },
+    {
+      "task": "nlp.similarity",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 1.325,
+      "log": "reports/coding-guide-results/nlp.similarity.log",
+      "snippet_sha256": "edceda2ddfe9f219db994e633feead666721fbac0095e8b8f2458795be038ce4"
+    },
+    {
+      "task": "sales.forecast",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.418,
+      "log": "reports/coding-guide-results/sales.forecast.log",
+      "snippet_sha256": "77ab8e645fe69769a2dc04d64364d68ca34b67078b3bace94e62043f77c815bb"
+    },
+    {
+      "task": "data.clean",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.365,
+      "log": "reports/coding-guide-results/data.clean.log",
+      "snippet_sha256": "79160d8e18825bfa538bef58fd5ff00842daa594acfff8a72ea27de3c1e51b71"
+    },
+    {
+      "task": "data.group",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.165,
+      "log": "reports/coding-guide-results/data.group.log",
+      "snippet_sha256": "db871164daa214b653f8a81ad727a4626728c60c841bf331cfc39ba22c92b201"
+    },
+    {
+      "task": "privacy.redact",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.165,
+      "log": "reports/coding-guide-results/privacy.redact.log",
+      "snippet_sha256": "2fa7763f49db76afd989594da78b1ab589f876fd38878cbf090acaa0ffcdce89"
+    },
+    {
+      "task": "finance.reconcile",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.164,
+      "log": "reports/coding-guide-results/finance.reconcile.log",
+      "snippet_sha256": "3af4bee7dc30c516751ecd1200e1b3ed296569d15ce3d2107b2c0c2de34282f2"
+    },
+    {
+      "task": "industry.sensors",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.164,
+      "log": "reports/coding-guide-results/industry.sensors.log",
+      "snippet_sha256": "0cc6bbd246c2c852ead2bee28a78a9fa03e0dc4e130dd748ec284ee2becdfae9"
+    },
+    {
+      "task": "industry.control",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.114,
+      "log": "reports/coding-guide-results/industry.control.log",
+      "snippet_sha256": "3e6fc1ceabacaf3c2778183e42de47e038917c49e1d3912a6033a47eff7f9431"
+    },
+    {
+      "task": "industry.production",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.114,
+      "log": "reports/coding-guide-results/industry.production.log",
+      "snippet_sha256": "b2d4c2146b45a48495e5f4ea3ae0c631f5722f80ce2586c5bc83593163aede82"
+    },
+    {
+      "task": "industry.maintenance",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 1.525,
+      "log": "reports/coding-guide-results/industry.maintenance.log",
+      "snippet_sha256": "11e1da054c2b465691db1ba004d6bb481aa3489156022b46b5af920b85f59145"
+    },
+    {
+      "task": "industry.defects",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.369,
+      "log": "reports/coding-guide-results/industry.defects.log",
+      "snippet_sha256": "9991714604744b498a7dc3019a4f48e46d4db3e5b4ee7c95c2e40d5ecd7b613c"
+    },
+    {
+      "task": "database.profile",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.114,
+      "log": "reports/coding-guide-results/database.profile.log",
+      "snippet_sha256": "eea184bad88bd73226afac1b2bcdb3bcca0a41f08e6bdd55cdb07d137dee5600"
+    },
+    {
+      "task": "code.tests.generate",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 6.102,
+      "log": "reports/coding-guide-results/code.tests.generate.log",
+      "snippet_sha256": "e4c498458b803a45bee409961ab5a74c8d6d99a46486e08c55efc4d338871da4"
+    },
+    {
+      "task": "api.schema",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.415,
+      "log": "reports/coding-guide-results/api.schema.log",
+      "snippet_sha256": "7efa3a360fdf95671f33a4cbf4d4a652e4f196e095d69a6f3e973cb210b57bc0"
+    },
+    {
+      "task": "onnx.predict",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.871,
+      "log": "reports/coding-guide-results/onnx.predict.log",
+      "snippet_sha256": "c047be78d9318094316a47f7e2586090577e8191b28cdedb16673a6402160468"
+    },
+    {
+      "task": "tensorflow.predict",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 5.739,
+      "log": "reports/coding-guide-results/tensorflow.predict.log",
+      "snippet_sha256": "bdf670cec7788e3338d0c4f15f7c7c94c2ac501697828db3e54ea93caae27c0a"
+    },
+    {
+      "task": "llm.compatible",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 5.338,
+      "log": "reports/coding-guide-results/llm.compatible.log",
+      "snippet_sha256": "8d8d0bc8082aff86b0f35db8743edc032f7164788ce056617273c9c5b2fe7d5b"
+    },
+    {
+      "task": "iot.modbus.read",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.265,
+      "log": "reports/coding-guide-results/iot.modbus.read.log",
+      "snippet_sha256": "a02a8404fb5670980bd2558ce81688e9458c29b7c029c9fc7df390ad3ab158ed"
+    },
+    {
+      "task": "document.insights",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.114,
+      "log": "reports/coding-guide-results/document.insights.log",
+      "snippet_sha256": "e5c8f3ef2e432aa64c3f8118207317877fab88af5ce77a1c109a847503ee401e"
+    },
+    {
+      "task": "document.search",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.114,
+      "log": "reports/coding-guide-results/document.search.log",
+      "snippet_sha256": "d37b05970019ffd4f92c0e2fe62bf3fbf76fa0619fce69b4c22e60b2d3dedcb1"
+    },
+    {
+      "task": "ai.search",
+      "passed": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.114,
+      "log": "reports/coding-guide-results/ai.search.log",
+      "snippet_sha256": "22a077438a0680fac129646de587c44c116bebf4ba2f061ac97aa237fdc49dee"
+    }
+  ],
+  "untested": {
+    "image.objects": "الموصل القديم يتطلب نموذج Transformers محلياً متوافقاً؛ لم يختبر بأوزان فعلية في هذا الإصدار. البديل vision.detect مختبر ولا يحذف المسار القديم.",
+    "image.generate": "مسار Stable Diffusion تجريبي غير مختبر بأوزان فعلية ضمن هذه الموارد. لا ندرج مثال توليد تحت وصف مختبر.",
+    "video.generate": "مسار CogVideoX يتطلب موارد ونموذجاً مناسباً؛ لم يجر استدلال فعلي، لذلك لا يوجد مثال تشغيل مثبت هنا."
+  }
+}

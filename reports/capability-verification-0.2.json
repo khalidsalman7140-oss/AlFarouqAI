@@ -1,0 +1,467 @@
+[
+  {
+    "name": "text.analyze",
+    "description": "Extractive Arabic/English text statistics and summary",
+    "required": [
+      "text"
+    ],
+    "extra": null,
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "data.profile",
+    "description": "Profile a UTF-8 CSV with missing values and numeric statistics",
+    "required": [
+      "data"
+    ],
+    "extra": null,
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "ml.train",
+    "description": "Train/test a RandomForest with explicit target/problem",
+    "required": [
+      "data",
+      "target",
+      "problem"
+    ],
+    "extra": "ml",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "image.analyze",
+    "description": "Local image statistics and frontal face detection",
+    "required": [
+      "image"
+    ],
+    "extra": "vision",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "image.objects",
+    "description": "General object detection using reviewed local model weights",
+    "required": [
+      "image",
+      "model_path"
+    ],
+    "extra": "objects",
+    "status": "implemented",
+    "verification": "not-actual-inference-verified",
+    "note": "Legacy HF adapter not exercised with weights; tested vision.detect is the new alternative"
+  },
+  {
+    "name": "video.motion",
+    "description": "Bounded frame-difference motion regions",
+    "required": [
+      "video"
+    ],
+    "extra": "vision",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "audio.info",
+    "description": "PCM WAV metadata",
+    "required": [
+      "audio"
+    ],
+    "extra": null,
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "speech.transcribe",
+    "description": "Whisper transcription with an explicit local model",
+    "required": [
+      "audio"
+    ],
+    "extra": "speech",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "document.read",
+    "description": "Extract text from TXT/PDF/DOCX/XLSX",
+    "required": [
+      "document"
+    ],
+    "extra": "documents",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "code.analyze",
+    "description": "Non-executing Python AST and project review",
+    "required": [],
+    "extra": null,
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "security.logs",
+    "description": "Defensive authentication log analysis",
+    "required": [
+      "path"
+    ],
+    "extra": null,
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "iot.analyze",
+    "description": "Offline sensor time-series z-score anomaly flags",
+    "required": [
+      "data",
+      "column"
+    ],
+    "extra": null,
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "llm.chat",
+    "description": "Opt-in Ollama text and supported vision chat",
+    "required": [
+      "prompt"
+    ],
+    "extra": null,
+    "status": "implemented",
+    "verification": "not-actual-inference-verified",
+    "note": "HTTP contract only, no Ollama inference; use tested local.generate alternative"
+  },
+  {
+    "name": "local.generate",
+    "description": "Generate text with a local trained causal language model",
+    "required": [
+      "prompt"
+    ],
+    "extra": "local",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "nlp.classify",
+    "description": "Classify supplied text by model likelihood of candidate labels",
+    "required": [
+      "text",
+      "labels"
+    ],
+    "extra": "local",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "code.generate",
+    "description": "Generate untrusted Python code suggestions with a local LLM",
+    "required": [
+      "prompt"
+    ],
+    "extra": "local",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "code.repair",
+    "description": "Suggest a code repair from supplied code and error",
+    "required": [
+      "code",
+      "error"
+    ],
+    "extra": "local",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "code.test",
+    "description": "Run trusted unittest files with explicit OS-execution consent",
+    "required": [
+      "path"
+    ],
+    "extra": null,
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "document.summarize",
+    "description": "Summarize extracted document text with a local trained LLM",
+    "required": [
+      "document"
+    ],
+    "extra": "local",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "vision.detect",
+    "description": "Detect COCO objects with pretrained TorchVision SSDlite",
+    "required": [
+      "image"
+    ],
+    "extra": "torchvision",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "vision.classify",
+    "description": "Classify images with pretrained MobileNet V3",
+    "required": [
+      "image"
+    ],
+    "extra": "torchvision",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "vision.segment",
+    "description": "Export a semantic class mask with pretrained LRASPP",
+    "required": [
+      "image",
+      "output"
+    ],
+    "extra": "torchvision",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "vision.ocr",
+    "description": "Recognize printed text with installed Tesseract language models",
+    "required": [
+      "image"
+    ],
+    "extra": null,
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "video.track",
+    "description": "Detect objects and associate temporary track IDs across video",
+    "required": [
+      "video"
+    ],
+    "extra": "torchvision",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "speech.recognize",
+    "description": "Transcribe speech with local CTranslate2 Whisper weights",
+    "required": [
+      "audio"
+    ],
+    "extra": "speech",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "speech.synthesize",
+    "description": "Synthesize an audible WAV using external espeak-ng",
+    "required": [
+      "text",
+      "output"
+    ],
+    "extra": null,
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "deep.train",
+    "description": "Train and evaluate a real multilayer PyTorch network",
+    "required": [
+      "data",
+      "target",
+      "problem"
+    ],
+    "extra": "deep",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "data.forecast",
+    "description": "Fit a linear time trend with chronological validation",
+    "required": [
+      "data",
+      "column"
+    ],
+    "extra": "ml",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "data.recommend",
+    "description": "Recommend unseen items using collaborative cosine similarity",
+    "required": [
+      "data",
+      "user",
+      "user_column",
+      "item_column",
+      "rating_column"
+    ],
+    "extra": "ml",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "security.anomalies",
+    "description": "Detect multivariate anomalies with IsolationForest",
+    "required": [
+      "data",
+      "columns"
+    ],
+    "extra": "ml",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "rag.index",
+    "description": "Extract a document and persist multilingual semantic embeddings",
+    "required": [
+      "document",
+      "store"
+    ],
+    "extra": "vector",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "rag.search.semantic",
+    "description": "Search persisted semantic vectors with FAISS and source offsets",
+    "required": [
+      "query",
+      "store"
+    ],
+    "extra": "vector",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "rag.answer",
+    "description": "Generate a source-returning answer from semantic retrieval",
+    "required": [
+      "question",
+      "store"
+    ],
+    "extra": "vector",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "agents.llm",
+    "description": "Use a local LLM to rank allowed tools and review actual results",
+    "required": [
+      "goal",
+      "inputs_by_task"
+    ],
+    "extra": "local",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "automation.tick",
+    "description": "Run due persisted local jobs once when the caller ticks",
+    "required": [
+      "store"
+    ],
+    "extra": null,
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "iot.mqtt.publish",
+    "description": "Publish an explicitly approved MQTT message and await broker ACK",
+    "required": [
+      "host",
+      "topic",
+      "message"
+    ],
+    "extra": "iot",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "iot.mqtt.read",
+    "description": "Read real MQTT messages from an explicitly configured broker",
+    "required": [
+      "host",
+      "topic"
+    ],
+    "extra": "iot",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "robotics.serial",
+    "description": "Exchange bounded data on a caller-approved local serial port",
+    "required": [
+      "port"
+    ],
+    "extra": "iot",
+    "status": "implemented",
+    "verification": "actual-local-execution-verified",
+    "note": "See pytest workers and/or model-result artifacts; fixture tests are not a quality benchmark."
+  },
+  {
+    "name": "image.generate",
+    "description": "Experimental local Stable Diffusion integration",
+    "required": [
+      "prompt",
+      "model_path",
+      "output"
+    ],
+    "extra": "diffusion",
+    "status": "adapter-not-runtime-tested",
+    "verification": "not-actual-inference-verified",
+    "note": "Experimental diffusion adapter; consent/parameter gates tested, no weight inference"
+  },
+  {
+    "name": "video.generate",
+    "description": "Experimental local CogVideoX integration",
+    "required": [
+      "prompt",
+      "model_path",
+      "output"
+    ],
+    "extra": "diffusion",
+    "status": "adapter-not-runtime-tested",
+    "verification": "not-actual-inference-verified",
+    "note": "Experimental CogVideoX adapter; no weight inference or video exported"
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "task": "code.test",
+  "data": {
+    "returncode": 0,
+    "passed": true,
+    "timed_out": false,
+    "log": "test_add (test_math.T.test_add) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+  },
+  "backend": "python.unittest.subprocess",
+  "warnings": [
+    "Trusted-code runner only. Isolation flag and timeout do NOT block network/filesystem access or child-process side effects."
+  ],
+  "provenance": {
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.064553,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

@@ -1,0 +1,119 @@
+<!doctype html><html lang="ar" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RELEASE_REPORT.ar | AlFarouq AI</title><style>body{font:17px/1.85 system-ui,sans-serif;max-width:1080px;margin:0 auto;padding:32px;background:#fafcff;color:#16243b}a{color:#075f94}pre,code{direction:ltr;text-align:left;font-family:monospace}pre{overflow:auto;padding:22px;border-radius:12px;background:#0d2235;color:#e0f4ff}code{font-size:.9em}table{border-collapse:collapse;width:100%;display:block;overflow:auto}td,th{border:1px solid #cbd5e1;padding:10px;text-align:start}th{background:#e2eef5}h1,h2{color:#073d57}img{max-width:100%}nav,footer{padding:16px 0;border-bottom:1px solid #cbd5e1}footer{font-size:13px;color:#475569}blockquote{border-inline-start:4px solid #079499;padding-inline-start:1em} @media print{body{font-size:12px}pre{white-space:pre-wrap}}</style><nav><a href="../docs/index.html">AlFarouq AI — Documentation / التوثيق</a></nav><main><h1 id="alfarouq-ai-030a1">تقرير تسليم AlFarouq AI — 0.3.0a1</h1>
+<p>تاريخ: 2026-11-19. حقوق المؤلف © 2026 خالد سلمان — اليمن.</p>
+<h2 id="_1">الخلاصة التنفيذية</h2>
+<p>تطوير تراكمي للملف المرفق، وليس مشروعاً جديداً. حافظت النسخة على أسماء الخدمات
+والواجهات والاختبارات القديمة، وأضيفت خدمات عملية وتوثيق كامل وبوابة Model وفحص
+موارد. ZIP خاص لا ينشر نفسه. أوصاف الرؤية ليست وعوداً بأن كل مهمة أو أكبر نموذج
+يعمل على أي عتاد أو بأن جودة النموذج الصغير تصلح للإنتاج.</p>
+<h2 id="_2">أدلة التحقق الحالية</h2>
+<table>
+<thead>
+<tr>
+<th>الفحص</th>
+<th>النتيجة المقاسة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>إصدار metadata والكود</td>
+<td>0.3.0a1</td>
+</tr>
+<tr>
+<td>القدرات المسجلة</td>
+<td>64</td>
+</tr>
+<tr>
+<td>كامل الاختبارات ضد wheel المثبت</td>
+<td>133 ناجحاً، 0 فشل، 0 أخطاء، 0 تخطٍ</td>
+</tr>
+<tr>
+<td>اختبار النواة في بيئة منفصلة بلا محركات اختيارية</td>
+<td>88 ناجحاً، 45 مستبعداً بقصد حسب العلامات</td>
+</tr>
+<tr>
+<td>أمثلة الدليل المنفذة من النص نفسه ضد wheel</td>
+<td>61 ناجحاً</td>
+</tr>
+<tr>
+<td>المتطلبات الإلزامية للنواة</td>
+<td>صفر</td>
+</tr>
+<tr>
+<td>مطابقة وحدات المصدر مع wheel المختبر</td>
+<td>كل الوحدات متطابقة بالهاش</td>
+</tr>
+<tr>
+<td>فحص build / twine</td>
+<td>wheel وsdist ناجحان</td>
+</tr>
+<tr>
+<td>المنصة المثبتة بالتنفيذ</td>
+<td>Python 3.12.3 / Linux / CPU</td>
+</tr>
+</tbody>
+</table>
+<p>الأعداد متداخلة وليست 282 ميزة مستقلة. اختبارات النماذج عمال معزولة متسلسلة
+لتجنب نفاد الذاكرة؛ ليس تشغيل كل المحركات في process واحدة. المارك contract
+والfixture لا يعنيان نموذجاً مزيفاً؛ لكن خادم البروتوكول المرجعي ليس daemon المزود.
+التقارير القديمة محفوظة للتاريخ ولا تمثل أرقام هذا الإصدار. سجلات XML وJSON في
+reports/verification-workers-0.3 وpytest-0.3.xml وcoding-guide-verification.json.</p>
+<h2 id="_3">ما اكتمل فعلياً</h2>
+<ul>
+<li>بوابة AI وصف مختصر وخدمة صريحة ومفاتيح اختيار model/backend/endpoint/device.
+نموذج محلي افتراضي للنص العام، جلسة Model قابلة لإعادة الاستخدام، إظهار backend
+والأخطاء والتوقيت اختيارياً، لا تخمين أهداف تدريب/مراجع جودة/إذن جهاز.</li>
+<li>environment وmodel_plan يفحصان hints وRAM/cgroup وnvidia-smi المتاح ويقدران حجم
+الأوزان؛ تحقق CPU ورفض CUDA غير الموجود. لا تقدير fit مضمون أو offload آلي.</li>
+<li>NLP عربي: تطبيع وتجزئة واشتقاق ISRI ومشروعات تصنيف TF-IDF/LogisticRegression
+وتقييم وحفظ/استعادة، LDA للمواضيع، تشابه لفظي، وتضمين متعدد اللغات فعلي منفصل.</li>
+<li>بيانات وأعمال: تنظيف وتجميع وتحليل CSV، تنبؤ شهري متحقق زمنياً، توصيات، مطابقة
+دفاتر Decimal وإخفاء أنماط بريد/هاتف تقريبياً. لا ضمان جودة قرارات مالية/سريرية.</li>
+<li>مصنع: خصائص حساسات وأطياف بتردد عينة، SPC بمرجع مستقل، عائد إنتاج، تقييم مصنف
+صيانة بتسميات، وفحص فروق صورة مرجعية مصطفة. ليست عيوباً صناعية عامة أو RUL.</li>
+<li>تشغيل أوزان SmolLM2-135M وMiniLM متعدد اللغات وWhisper-tiny وMobileNet وSSDlite
+وLRASPP. تحليل وجوه/كائنات/تصنيف/تقسيم ومناطق حركة وتتبع مؤقت، OCR عربي/إنجليزي،
+تفريغ صوتي وملف كلام espeak-ng، وتدريب شبكة PyTorch وحفظ safetensors.</li>
+<li>ONNX CPU استدلال حقيقي، TensorFlow تدريب حفظ/استدلال في الاختبار واستدلال نموذج
+Keras محلي ضمن API، ومحاولات توليد/إصلاح أكواد واختبارات بنموذج محلي مع مراجعة
+نحوية؛ لا ادعاء أن كل كود مولد صحيح أو آمن أو أنه أُصلح بنجاح منطقي.</li>
+<li>مستندات TXT/PDF/DOCX/XLSX، معلومات/بحث واستخراج، RAG وFAISS/SQLite ومصادر، وكلاء
+بأدوات مسموحة وDAG وجدولة عند tick، SQLite read-only وAPI محدودة بمفتاح، A-star.</li>
+<li>MQTT مع وسيط حقيقي وSerial PTY وModbus مع خادم محلي؛ شبكات برمجية فعلية لا عتاد
+روبوت/PLC. compatible وOllama protocols مع خادم مرجعي يستدل بنموذج حقيقي.</li>
+</ul>
+<h2 id="_4">ملفات التوثيق والتجهيز</h2>
+<p>USER_GUIDE_AR.md وUSER_GUIDE_EN.md دليلان ممتلئان بالتثبيت والأمثلة والمتطلبات
+والنشر وحل الأخطاء. ALFAROUQ_AI_COMPLETE_CODING_GUIDE.md يضم 64 مدخلاً و61 كتلة
+منفذة مع مقتطف ناتج. examples/guide يشمل ملفات تشغيل مستقلة للكتل. دليل المالك
+ALFAROUQ_AI_OWNER_MASTER_GUIDE_AR.md خاص ويشرح الوحدات والملفات والواجهات والتبعيات
+والرخص والبناء والتشخيص. له نسخة HTML محلية لقراءة الهاتف؛ كلاهما مستبعد من
+staging النشر العام وsdist. README وHTML وCI وقوالب المساهمة/الأمان/النشر جاهزة.
+CI مصفوفة مستقبلية، لا دليل أن GitHub Actions أو Windows/macOS اشتغلت هنا.</p>
+<h2 id="_5">غير مثبت أو غير مكتمل</h2>
+<p>image.objects القديم وimage.generate وvideo.generate محولات موجودة لكن غير
+مختبرة بأوزان فعلية. لا نتائج توليد صور/فيديو مرفقة كأنها إنجاز. لا تشغيل GPU
+حقيقي أو multi-GPU/tensor parallel/quantization ضخم أو معماريات HF عشوائية، لا
+اختبار فعلي لـvLLM/Ollama الأصليين أو Hugging Face Spaces/Colab/Kaggle/Codespaces،
+لا أجهزة مصنع/روبوت حقيقية، لا Fine-tuning واسع، لا تصديق دقة عامة، لا تقييم
+Arabic benchmark شامل، ولا أمان/توسع إنتاجي/امتثال طبي أو مصرفي. الأوزان ليست
+داخل ZIP؛ تحميلها اختياري بعد الموافقة ومراجعة حقوقها ومساحة/عتاد التشغيل.
+فهم الطلب routing محافظ مع fallback نصي؛ ليس تنفيذ أي طلب مستحيل بلغة طبيعية.</p>
+<h2 id="_6">النشر والنسخ والحقوق</h2>
+<p>لم تتوفر جلسة GitHub مخولة (فشل gh auth status) ولا OAuth Google Drive أو token
+خاص بالتطبيق. لم ينشر شيء على GitHub/PyPI/Hugging Face أو Google Drive، ولا توجد
+روابط عامة مخترعة. أدوات النشر جافة افتراضياً ومهيأة لتسجيل المالك ومراجعته.
+AI Drive بديل خاص منفصل إذا نجح الحفظ وتظهر رابطه في رسالة التسليم، لا ادعاء
+Google Drive. لا يمكن ضمان أو إلغاء شاشة اشتراك المنصة؛ الأرشيف صغير وسليم
+ومسارات تنزيل بديلة تُذكر عند نجاحها فقط. النسخة الأصلية المرفقة تحفظ كاحتياط
+مستقل ولا تدمج .git القديمة في الإصدار المنظف.</p>
+<p>حقوق التأليف لخالد سلمان. وفق أحدث طلب للنشر المفتوح الكود الأصلي Apache-2.0؛
+هذا يمنح حقوقاً للجمهور وفق الرخصة ولا يساوي All Rights Reserved مطلقاً. الصورة
+والهوية بشروط مستقلة والمكونات/الأوزان الخارجية تحت تراخيصها. لم تُنقل ملكية
+أي مكتبة خارجية. لا استشارة قانونية. صورة المؤسس الأصلية محفوظة بهاشها دون تعديل.</p>
+<h2 id="_7">التشغيل السريع</h2>
+<p>فك ZIP وافتح المجلد الذي فيه pyproject.toml، أنشئ venv ثم
+<code>python -m pip install .</code> أو ثبت wheel من dist. افتح USER_GUIDE_AR.html للشرح.
+على الهاتف اقرأ HTML أو Markdown وافتح Colab في المتصفح للحساب عند الحاجة؛
+لا وعد أن Android يشغّل كل المحركات محلياً. لا أوزان أو مفاتيح في الأرشيف.
+سلامة CRC وفك الأرشيف وهاش كل ملف تُسجل في verification-receipt.json وmanifest
+بعد بناء ZIP؛ لا تساوي هذه الفحوص جودة تنبؤ أو أمان نموذج خارجي.</p></main><footer>© 2026 Khalid Salman — Original code Apache-2.0. Identity and third-party rights are separate. Local alpha; not published.</footer></html>

@@ -1,0 +1,113 @@
+{
+  "version": "0.3.0a1",
+  "execution": "sequential isolated pytest workers; not a monolithic same-process run",
+  "installed_wheel": true,
+  "counts": {
+    "tests": 133,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "workers": [
+    {
+      "job": [
+        "-m",
+        "not model"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-0.log"
+    },
+    {
+      "job": [
+        "tests/test_additional_verification.py::test_new_public_dispatch_and_original_semantic_adapter"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-1.log"
+    },
+    {
+      "job": [
+        "tests/test_engines_03.py::test_actual_tensorflow_training_save_and_inference"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-2.log"
+    },
+    {
+      "job": [
+        "tests/test_engines_03.py::test_real_model_over_compatible_and_ollama_protocols"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-3.log"
+    },
+    {
+      "job": [
+        "tests/test_engines_03.py::test_test_generation_actual_model"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-4.log"
+    },
+    {
+      "job": [
+        "tests/test_models.py::test_real_llm_generation_classification_and_code"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-5.log"
+    },
+    {
+      "job": [
+        "tests/test_models.py::test_real_torchvision_detection_classification_segmentation_and_video"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-6.log"
+    },
+    {
+      "job": [
+        "tests/test_models.py::test_real_tts_and_whisper_transcription"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-7.log"
+    },
+    {
+      "job": [
+        "tests/test_models.py::test_real_semantic_store_persistence_and_grounded_generation"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-8.log"
+    },
+    {
+      "job": [
+        "tests/test_models.py::test_real_local_llm_planner_and_reviewer"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-9.log"
+    },
+    {
+      "job": [
+        "tests/test_resources_03.py::test_generic_prompt_and_explicit_cpu_device"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-10.log"
+    },
+    {
+      "job": [
+        "tests/test_resources_03.py::test_cuda_unavailable_is_not_fake_success"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-11.log"
+    },
+    {
+      "job": [
+        "tests/test_shortcuts_03.py::test_one_line_local_model_and_reusable_session"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-12.log"
+    },
+    {
+      "job": [
+        "tests/test_shortcuts_03.py::test_one_line_remote_protocol_model_gateway"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers-0.3/worker-13.log"
+    }
+  ],
+  "actual_model_tests_opted_in": true
+}

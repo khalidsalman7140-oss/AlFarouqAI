@@ -1,0 +1,23 @@
+{
+  "task": "code.repair",
+  "data": {
+    "text": "def add(a,b):\n    return a+b\n\nprint(add(1,2))",
+    "generated_tokens": 23,
+    "input_tokens": 58
+  },
+  "backend": "transformers.local-causal-lm",
+  "warnings": [
+    "Generated content can be wrong. Default 135M model is English-first and limited; not a strongest-model or Arabic-quality claim. Input is truncated to 1024 tokens.",
+    "Suggested repair only; original files are not modified and correctness is not guaranteed."
+  ],
+  "provenance": {
+    "model_path": "/home/user/alfarouq-models/smollm2-135m",
+    "actual_weight_inference": true,
+    "device": "cpu",
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 4.233141,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

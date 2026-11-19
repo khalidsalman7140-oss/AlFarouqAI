@@ -1,0 +1,166 @@
+<!doctype html><html lang="en" dir="ltr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>THIRD_PARTY_NOTICES | AlFarouq AI</title><style>body{font:17px/1.85 system-ui,sans-serif;max-width:1080px;margin:0 auto;padding:32px;background:#fafcff;color:#16243b}a{color:#075f94}pre,code{direction:ltr;text-align:left;font-family:monospace}pre{overflow:auto;padding:22px;border-radius:12px;background:#0d2235;color:#e0f4ff}code{font-size:.9em}table{border-collapse:collapse;width:100%;display:block;overflow:auto}td,th{border:1px solid #cbd5e1;padding:10px;text-align:start}th{background:#e2eef5}h1,h2{color:#073d57}img{max-width:100%}nav,footer{padding:16px 0;border-bottom:1px solid #cbd5e1}footer{font-size:13px;color:#475569}blockquote{border-inline-start:4px solid #079499;padding-inline-start:1em} @media print{body{font-size:12px}pre{white-space:pre-wrap}}</style><nav><a href="docs/index.html">AlFarouq AI — Documentation / التوثيق</a></nav><main><h1 id="02-third-party-addendum">0.2 third-party addendum</h1>
+<p>Original AlFarouq AI code stays PROPRIETARY. No MIT/Apache/GPL public grant applies to original code.
+External projects alone retain their respective licenses. No weights or external executables are bundled.</p>
+<table>
+<thead>
+<tr>
+<th>Added external engine</th>
+<th>License boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PyTorch / TorchVision</td>
+<td>BSD-style libraries and separate weight/training-data conditions; inspect exact release notices</td>
+</tr>
+<tr>
+<td>FAISS</td>
+<td>MIT, Meta copyright; external library only</td>
+</tr>
+<tr>
+<td>Transformers / SentenceTransformers</td>
+<td>Apache-2.0 framework; model-specific terms remain separate</td>
+</tr>
+<tr>
+<td>SmolLM2-135M-Instruct</td>
+<td>Model card Apache-2.0; English-first limitations</td>
+</tr>
+<tr>
+<td>multilingual MiniLM-L12-v2</td>
+<td>Model card Apache-2.0; exact revision recorded</td>
+</tr>
+<tr>
+<td>Whisper tiny conversion / CTranslate2</td>
+<td>Original/model/converter notices independently reviewed; manifests record source, not blanket clearance</td>
+</tr>
+<tr>
+<td>Tesseract</td>
+<td>Apache-2.0 external executable and language data</td>
+</tr>
+<tr>
+<td>espeak-ng</td>
+<td>GPL-3.0-or-later external executable, invoked as a separate program, NOT linked/vendored or applying GPL to our original code; review combined-distribution legal implications</td>
+</tr>
+<tr>
+<td>Eclipse Paho MQTT</td>
+<td>Dual EPL-2.0 / EDL-1.0, inspect deployed distribution</td>
+</tr>
+<tr>
+<td>pySerial</td>
+<td>BSD-style, inspect installed metadata/license</td>
+</tr>
+<tr>
+<td>Diffusers / CogVideoX / Stable Diffusion</td>
+<td>Library/model terms separate; no model deployed or weights bundled; actual inference not verified</td>
+</tr>
+</tbody>
+</table>
+<p>See docs/research/SOURCES-0.2.md and reports/model-manifests. This is not a full legal audit or commercial-use warranty.</p>
+<h1 id="third-party-notices-and-license-boundaries">Third-party notices and license boundaries</h1>
+<p>AlFarouq AI original works: copyright Khalid Salman; see LICENSE.
+Third-party projects retain their own copyrights/licenses. No third-party sources,
+model weights, datasets or binaries are bundled in the core wheel. Full checkout
+includes only original teaching fixtures, tests, founder asset and generated reports.
+Installing optional dependencies fetches distributions that carry their own notices.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Initial license classification</th>
+<th>Usage and verification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td>PSF</td>
+<td>interpreter, not bundled</td>
+</tr>
+<tr>
+<td>scikit-learn</td>
+<td>BSD-3-Clause</td>
+<td>optional; actual training/prediction tested</td>
+</tr>
+<tr>
+<td>pandas / NumPy / SciPy</td>
+<td>BSD family; inspect binary-vendor notices too</td>
+<td>optional tabular/transitive stack; versions in environment report</td>
+</tr>
+<tr>
+<td>OpenCV &gt;=4.10,&lt;5</td>
+<td>Apache-2.0 library</td>
+<td>optional faces/motion tested; native/codec/data-file notices may differ</td>
+</tr>
+<tr>
+<td>pypdf</td>
+<td>BSD-3-Clause</td>
+<td>optional; actual installed package metadata/licenses recorded</td>
+</tr>
+<tr>
+<td>python-docx</td>
+<td>MIT</td>
+<td>optional; installed package metadata/licenses recorded</td>
+</tr>
+<tr>
+<td>openpyxl</td>
+<td>MIT</td>
+<td>optional; installed package metadata/licenses recorded</td>
+</tr>
+<tr>
+<td>faster-whisper</td>
+<td>MIT, preliminary source listing</td>
+<td>optional adapter, not installed or inference tested here</td>
+</tr>
+<tr>
+<td>SentenceTransformers</td>
+<td>Apache-2.0 library</td>
+<td>optional adapter, no deployed model license clearance</td>
+</tr>
+<tr>
+<td>Transformers</td>
+<td>Apache-2.0 library</td>
+<td>optional adapter, no deployed weights</td>
+</tr>
+<tr>
+<td>PyTorch</td>
+<td>BSD-style library, plus notices</td>
+<td>optional detector backend, not inference tested</td>
+</tr>
+<tr>
+<td>safetensors</td>
+<td>Apache-2.0 library</td>
+<td>optional detector weights format</td>
+</tr>
+<tr>
+<td>skops</td>
+<td>BSD-3-Clause</td>
+<td>optional save-only adapter, not persistence-tested</td>
+</tr>
+<tr>
+<td>pytest / build / twine / setuptools / wheel</td>
+<td>inspect exact metadata and included notices</td>
+<td>build/test tools, not core runtime</td>
+</tr>
+<tr>
+<td>Markdown (documentation renderer)</td>
+<td>BSD-3-Clause per installed metadata</td>
+<td>documentation build only; not core runtime</td>
+</tr>
+</tbody>
+</table>
+<p>Evidence: <a href="docs/research/SOURCES.html">research sources</a>, and the mechanically recorded
+installed distribution metadata in reports/environment.json. The latter may include
+transitive/development tools; it is NOT a verified complete SBOM or legal audit.
+Binary distributions can carry additional licensed components. Full available
+license/NOTICE files for the executed runtime engines are copied to
+reports/third_party_license_evidence/ as evidence, without claiming those works.</p>
+<p>No external model weights were downloaded, bundled or trained. Commercial rights
+for a specific future model are UNVERIFIED until its exact revision/license,
+training-data restrictions, acceptable-use rules, attribution and redistribution
+conditions are reviewed. Do not equate "free download" with unrestricted use.</p>
+<p>Ultralytics/YOLO is NOT a dependency. The vendor offers AGPL/enterprise options;
+compatibility with this project's restrictive original-work license needs separate
+review. ONNX Runtime, MQTT, robotics middleware and OCR are roadmap options only.
+This is an engineering inventory, not legal advice or a warranty of license fitness.</p>
+<p>جميع الحقوق للمكونات الخارجية محفوظة لأصحابها. لا ينقل شرط ملكية خالد سلمان
+حقوق أي عمل خارجي إليه، ولا يمنح استخداماً تجارياً لكل نموذج بصورة تلقائية.</p></main><footer>© 2026 Khalid Salman — Original code Apache-2.0. Identity and third-party rights are separate. Local alpha; not published.</footer></html>

@@ -1,0 +1,27 @@
+{
+  "all_module_sources_match_tested_wheel": true,
+  "modules": {
+    "core.py": true,
+    "automation.py": true,
+    "integrations.py": true,
+    "language.py": true,
+    "media.py": true,
+    "vision.py": true,
+    "agents.py": true,
+    "documents.py": true,
+    "cli.py": true,
+    "speech.py": true,
+    "ml.py": true,
+    "generative.py": true,
+    "client.py": true,
+    "local.py": true,
+    "retrieval.py": true,
+    "providers.py": true,
+    "dependencies.py": true,
+    "__init__.py": true,
+    "models.py": true,
+    "__main__.py": true,
+    "learning.py": true,
+    "extensions.py": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "task": "ml.predict",
+  "data": {
+    "rows": [
+      {
+        "prediction": "yes"
+      }
+    ]
+  },
+  "backend": "scikit-learn",
+  "warnings": [],
+  "provenance": {
+    "problem": "classification",
+    "target": "passed"
+  },
+  "schema_version": "1.0"
+}

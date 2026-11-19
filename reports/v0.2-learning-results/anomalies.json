@@ -1,0 +1,168 @@
+{
+  "task": "security.anomalies",
+  "data": {
+    "rows": [
+      {
+        "row": 0,
+        "anomaly": true,
+        "decision_score": -0.023024166242154753
+      },
+      {
+        "row": 1,
+        "anomaly": false,
+        "decision_score": 0.029133112530140837
+      },
+      {
+        "row": 2,
+        "anomaly": false,
+        "decision_score": 0.00011081770942622526
+      },
+      {
+        "row": 3,
+        "anomaly": false,
+        "decision_score": 0.04539204346825021
+      },
+      {
+        "row": 4,
+        "anomaly": false,
+        "decision_score": 0.08377983698436348
+      },
+      {
+        "row": 5,
+        "anomaly": false,
+        "decision_score": 0.06339520156201461
+      },
+      {
+        "row": 6,
+        "anomaly": false,
+        "decision_score": 0.08081952842464235
+      },
+      {
+        "row": 7,
+        "anomaly": false,
+        "decision_score": 0.1050821383563727
+      },
+      {
+        "row": 8,
+        "anomaly": false,
+        "decision_score": 0.07725338765123058
+      },
+      {
+        "row": 9,
+        "anomaly": false,
+        "decision_score": 0.08350169892172354
+      },
+      {
+        "row": 10,
+        "anomaly": false,
+        "decision_score": 0.10478852414959855
+      },
+      {
+        "row": 11,
+        "anomaly": false,
+        "decision_score": 0.08501801523436081
+      },
+      {
+        "row": 12,
+        "anomaly": false,
+        "decision_score": 0.0931762651697936
+      },
+      {
+        "row": 13,
+        "anomaly": false,
+        "decision_score": 0.1142094199569299
+      },
+      {
+        "row": 14,
+        "anomaly": false,
+        "decision_score": 0.0970598266284366
+      },
+      {
+        "row": 15,
+        "anomaly": false,
+        "decision_score": 0.10532803280804953
+      },
+      {
+        "row": 16,
+        "anomaly": false,
+        "decision_score": 0.1200185810737282
+      },
+      {
+        "row": 17,
+        "anomaly": false,
+        "decision_score": 0.10057379699786911
+      },
+      {
+        "row": 18,
+        "anomaly": false,
+        "decision_score": 0.11033353670695456
+      },
+      {
+        "row": 19,
+        "anomaly": false,
+        "decision_score": 0.11825741266047302
+      },
+      {
+        "row": 20,
+        "anomaly": false,
+        "decision_score": 0.1014018428500858
+      },
+      {
+        "row": 21,
+        "anomaly": false,
+        "decision_score": 0.09948443034887328
+      },
+      {
+        "row": 22,
+        "anomaly": false,
+        "decision_score": 0.0990190613732464
+      },
+      {
+        "row": 23,
+        "anomaly": false,
+        "decision_score": 0.09038246774509617
+      },
+      {
+        "row": 24,
+        "anomaly": false,
+        "decision_score": 0.07551441951795934
+      },
+      {
+        "row": 25,
+        "anomaly": true,
+        "decision_score": -0.24327079102866
+      },
+      {
+        "row": 26,
+        "anomaly": false,
+        "decision_score": 0.06632529168381851
+      },
+      {
+        "row": 27,
+        "anomaly": false,
+        "decision_score": 0.026590643597761865
+      },
+      {
+        "row": 28,
+        "anomaly": false,
+        "decision_score": 0.030539930429023476
+      },
+      {
+        "row": 29,
+        "anomaly": true,
+        "decision_score": -0.0009973593848355833
+      }
+    ]
+  },
+  "backend": "sklearn.IsolationForest",
+  "warnings": [
+    "Unsupervised anomalies are not proof of a cyberattack."
+  ],
+  "provenance": {
+    "library_version": "0.2.0",
+    "elapsed_seconds": 0.209927,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

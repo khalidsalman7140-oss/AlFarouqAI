@@ -1,0 +1,81 @@
+{
+  "task": "agents.llm",
+  "data": {
+    "results": {
+      "text.analyze": {
+        "task": "text.analyze",
+        "data": {
+          "characters": 22,
+          "words": 3,
+          "sentences": 1,
+          "keywords": [
+            [
+              "python",
+              1
+            ],
+            [
+              "helps",
+              1
+            ],
+            [
+              "students",
+              1
+            ]
+          ],
+          "extractive_summary": "Python helps students."
+        },
+        "backend": "stdlib.frequency",
+        "warnings": [
+          "Extractive statistics only; not an LLM or sentiment model."
+        ],
+        "provenance": {
+          "library_version": "0.3.0a1",
+          "elapsed_seconds": 0.000581,
+          "network_policy": "explicit opt-in",
+          "executed": true
+        },
+        "schema_version": "1.0"
+      }
+    },
+    "trace": [
+      {
+        "role": "llm-planner",
+        "ranking": {
+          "label": "Extractive Arabic/English text statistics and summary",
+          "rows": [
+            {
+              "label": "Extractive Arabic/English text statistics and summary",
+              "relative_score": 0.5684041380882263,
+              "mean_log_likelihood": -5.793736934661865
+            },
+            {
+              "label": "Finish without using another tool",
+              "relative_score": 0.43159589171409607,
+              "mean_log_likelihood": -6.069079875946045
+            }
+          ]
+        },
+        "step": 0
+      },
+      {
+        "role": "specialist",
+        "task": "text.analyze",
+        "executed": true
+      }
+    ],
+    "review": "\"Text.analyze\" analyzes text statistics and provides a summary of the results.\n\n\"backend\" is a synonym for \"standard library.\"\n\n\"verification\" is not a valid term in this context.\n\n\"lumen\" is not a valid term in this context.\n\n\"sentiment\" is not a valid term in this context.\n\n\"explicit",
+    "completed_tools": 1
+  },
+  "backend": "local-llm-constrained-planner+tools+reviewer",
+  "warnings": [
+    "Planner and reviewer share one small local model. Roles are not independent trained agents. No arbitrary tool generation/execution; review can be wrong."
+  ],
+  "provenance": {
+    "actual_weight_inference": true,
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 8.022371,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

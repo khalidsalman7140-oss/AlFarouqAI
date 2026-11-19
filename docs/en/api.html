@@ -1,0 +1,336 @@
+<!doctype html><html lang="en" dir="ltr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>api | AlFarouq AI</title><style>body{font:17px/1.85 system-ui,sans-serif;max-width:1080px;margin:0 auto;padding:32px;background:#fafcff;color:#16243b}a{color:#075f94}pre,code{direction:ltr;text-align:left;font-family:monospace}pre{overflow:auto;padding:22px;border-radius:12px;background:#0d2235;color:#e0f4ff}code{font-size:.9em}table{border-collapse:collapse;width:100%;display:block;overflow:auto}td,th{border:1px solid #cbd5e1;padding:10px;text-align:start}th{background:#e2eef5}h1,h2{color:#073d57}img{max-width:100%}nav,footer{padding:16px 0;border-bottom:1px solid #cbd5e1}footer{font-size:13px;color:#475569}blockquote{border-inline-start:4px solid #079499;padding-inline-start:1em} @media print{body{font-size:12px}pre{white-space:pre-wrap}}</style><nav><a href="../index.html">AlFarouq AI — Documentation / التوثيق</a></nav><main><h1 id="api-reference">API reference</h1>
+<p>Signatures generated from actual handlers. Client supplies Config.</p>
+<p><a href="guide.html">Guide</a> · <a href="capabilities.html">Capabilities</a></p>
+<pre><code class="language-python">AI(prompt, *, config=None, **inputs) -&gt; Result
+Client(config=None, registry=None)
+Client.run(task, **inputs) -&gt; Result
+Client.plan(prompt, **inputs) -&gt; dict
+Client.train(data=..., target=..., problem=...) -&gt; TrainedModel
+Result.export(path, *, overwrite=False) -&gt; Path
+KnowledgeBase(chunk_size=800, overlap=100)
+AgentTeam(client=None, allowed_tasks=None, workers=1)
+</code></pre>
+<h2 id="textanalyze"><code>text.analyze</code></h2>
+<p>Extractive Arabic/English text statistics and summary</p>
+<pre><code class="language-python">client.run('text.analyze', text=...)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>text</code>.</p>
+<h2 id="dataprofile"><code>data.profile</code></h2>
+<p>Profile a UTF-8 CSV with missing values and numeric statistics</p>
+<pre><code class="language-python">client.run('data.profile', data=...)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>data</code>.</p>
+<h2 id="mltrain"><code>ml.train</code></h2>
+<p>Train/test a RandomForest with explicit target/problem</p>
+<pre><code class="language-python">client.run('ml.train', data=..., target=..., problem=..., test_size=0.25, seed=42)
+</code></pre>
+<p>Extra: <code>ml</code>. Required: <code>data, target, problem</code>.</p>
+<h2 id="imageanalyze"><code>image.analyze</code></h2>
+<p>Local image statistics and frontal face detection</p>
+<pre><code class="language-python">client.run('image.analyze', image=..., detect_faces=True)
+</code></pre>
+<p>Extra: <code>vision</code>. Required: <code>image</code>.</p>
+<h2 id="imageobjects"><code>image.objects</code></h2>
+<p>General object detection using reviewed local model weights</p>
+<pre><code class="language-python">client.run('image.objects', image=..., model_path=...)
+</code></pre>
+<p>Extra: <code>objects</code>. Required: <code>image, model_path</code>.</p>
+<h2 id="videomotion"><code>video.motion</code></h2>
+<p>Bounded frame-difference motion regions</p>
+<pre><code class="language-python">client.run('video.motion', video=..., min_area=300, max_frames=None)
+</code></pre>
+<p>Extra: <code>vision</code>. Required: <code>video</code>.</p>
+<h2 id="audioinfo"><code>audio.info</code></h2>
+<p>PCM WAV metadata</p>
+<pre><code class="language-python">client.run('audio.info', audio=...)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>audio</code>.</p>
+<h2 id="speechtranscribe"><code>speech.transcribe</code></h2>
+<p>Whisper transcription with an explicit local model</p>
+<pre><code class="language-python">client.run('speech.transcribe', audio=..., model_path=None, language=None)
+</code></pre>
+<p>Extra: <code>speech</code>. Required: <code>audio</code>.</p>
+<h2 id="documentread"><code>document.read</code></h2>
+<p>Extract text from TXT/PDF/DOCX/XLSX</p>
+<pre><code class="language-python">client.run('document.read', document=...)
+</code></pre>
+<p>Extra: <code>documents</code>. Required: <code>document</code>.</p>
+<h2 id="codeanalyze"><code>code.analyze</code></h2>
+<p>Non-executing Python AST and project review</p>
+<pre><code class="language-python">client.run('code.analyze', path=None, code=None)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>see handler input rules</code>.</p>
+<h2 id="securitylogs"><code>security.logs</code></h2>
+<p>Defensive authentication log analysis</p>
+<pre><code class="language-python">client.run('security.logs', path=...)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>path</code>.</p>
+<h2 id="iotanalyze"><code>iot.analyze</code></h2>
+<p>Offline sensor time-series z-score anomaly flags</p>
+<pre><code class="language-python">client.run('iot.analyze', data=..., column=..., threshold=3.0)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>data, column</code>.</p>
+<h2 id="llmchat"><code>llm.chat</code></h2>
+<p>Opt-in Ollama text and supported vision chat</p>
+<pre><code class="language-python">client.run('llm.chat', prompt=..., system=None, image=None)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>prompt</code>.</p>
+<h2 id="localgenerate"><code>local.generate</code></h2>
+<p>Generate text with a local trained causal language model</p>
+<pre><code class="language-python">client.run('local.generate', prompt=..., model_path=None, max_new_tokens=96)
+</code></pre>
+<p>Extra: <code>local</code>. Required: <code>prompt</code>.</p>
+<h2 id="nlpclassify"><code>nlp.classify</code></h2>
+<p>Classify supplied text by model likelihood of candidate labels</p>
+<pre><code class="language-python">client.run('nlp.classify', text=..., labels=..., model_path=None)
+</code></pre>
+<p>Extra: <code>local</code>. Required: <code>text, labels</code>.</p>
+<h2 id="codegenerate"><code>code.generate</code></h2>
+<p>Generate untrusted Python code suggestions with a local LLM</p>
+<pre><code class="language-python">client.run('code.generate', prompt=..., model_path=None, max_new_tokens=160)
+</code></pre>
+<p>Extra: <code>local</code>. Required: <code>prompt</code>.</p>
+<h2 id="coderepair"><code>code.repair</code></h2>
+<p>Suggest a code repair from supplied code and error</p>
+<pre><code class="language-python">client.run('code.repair', code=..., error=..., model_path=None, max_new_tokens=160)
+</code></pre>
+<p>Extra: <code>local</code>. Required: <code>code, error</code>.</p>
+<h2 id="codetest"><code>code.test</code></h2>
+<p>Run trusted unittest files with explicit OS-execution consent</p>
+<pre><code class="language-python">client.run('code.test', path=..., consent=False)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>path</code>.</p>
+<h2 id="documentsummarize"><code>document.summarize</code></h2>
+<p>Summarize extracted document text with a local trained LLM</p>
+<pre><code class="language-python">client.run('document.summarize', document=..., model_path=None, max_new_tokens=128)
+</code></pre>
+<p>Extra: <code>local</code>. Required: <code>document</code>.</p>
+<h2 id="visiondetect"><code>vision.detect</code></h2>
+<p>Detect COCO objects with pretrained TorchVision SSDlite</p>
+<pre><code class="language-python">client.run('vision.detect', image=..., threshold=0.4)
+</code></pre>
+<p>Extra: <code>torchvision</code>. Required: <code>image</code>.</p>
+<h2 id="visionclassify"><code>vision.classify</code></h2>
+<p>Classify images with pretrained MobileNet V3</p>
+<pre><code class="language-python">client.run('vision.classify', image=..., top_k=5)
+</code></pre>
+<p>Extra: <code>torchvision</code>. Required: <code>image</code>.</p>
+<h2 id="visionsegment"><code>vision.segment</code></h2>
+<p>Export a semantic class mask with pretrained LRASPP</p>
+<pre><code class="language-python">client.run('vision.segment', image=..., output=...)
+</code></pre>
+<p>Extra: <code>torchvision</code>. Required: <code>image, output</code>.</p>
+<h2 id="visionocr"><code>vision.ocr</code></h2>
+<p>Recognize printed text with installed Tesseract language models</p>
+<pre><code class="language-python">client.run('vision.ocr', image=..., language='eng', psm=6)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>image</code>.</p>
+<h2 id="videotrack"><code>video.track</code></h2>
+<p>Detect objects and associate temporary track IDs across video</p>
+<pre><code class="language-python">client.run('video.track', video=..., max_frames=30, threshold=0.4)
+</code></pre>
+<p>Extra: <code>torchvision</code>. Required: <code>video</code>.</p>
+<h2 id="speechrecognize"><code>speech.recognize</code></h2>
+<p>Transcribe speech with local CTranslate2 Whisper weights</p>
+<pre><code class="language-python">client.run('speech.recognize', audio=..., language=None, model_path=None)
+</code></pre>
+<p>Extra: <code>speech</code>. Required: <code>audio</code>.</p>
+<h2 id="speechsynthesize"><code>speech.synthesize</code></h2>
+<p>Synthesize an audible WAV using external espeak-ng</p>
+<pre><code class="language-python">client.run('speech.synthesize', text=..., output=..., voice='en-us', speed=150)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>text, output</code>.</p>
+<h2 id="deeptrain"><code>deep.train</code></h2>
+<p>Train and evaluate a real multilayer PyTorch network</p>
+<pre><code class="language-python">client.run('deep.train', data=..., target=..., problem=..., epochs=80, hidden=(32, 16), seed=42)
+</code></pre>
+<p>Extra: <code>deep</code>. Required: <code>data, target, problem</code>.</p>
+<h2 id="dataforecast"><code>data.forecast</code></h2>
+<p>Fit a linear time trend with chronological validation</p>
+<pre><code class="language-python">client.run('data.forecast', data=..., column=..., horizon=5)
+</code></pre>
+<p>Extra: <code>ml</code>. Required: <code>data, column</code>.</p>
+<h2 id="datarecommend"><code>data.recommend</code></h2>
+<p>Recommend unseen items using collaborative cosine similarity</p>
+<pre><code class="language-python">client.run('data.recommend', data=..., user=..., user_column=..., item_column=..., rating_column=..., k=5)
+</code></pre>
+<p>Extra: <code>ml</code>. Required: <code>data, user, user_column, item_column, rating_column</code>.</p>
+<h2 id="securityanomalies"><code>security.anomalies</code></h2>
+<p>Detect multivariate anomalies with IsolationForest</p>
+<pre><code class="language-python">client.run('security.anomalies', data=..., columns=..., contamination=0.1)
+</code></pre>
+<p>Extra: <code>ml</code>. Required: <code>data, columns</code>.</p>
+<h2 id="ragindex"><code>rag.index</code></h2>
+<p>Extract a document and persist multilingual semantic embeddings</p>
+<pre><code class="language-python">client.run('rag.index', document=..., store=...)
+</code></pre>
+<p>Extra: <code>vector</code>. Required: <code>document, store</code>.</p>
+<h2 id="ragsearchsemantic"><code>rag.search.semantic</code></h2>
+<p>Search persisted semantic vectors with FAISS and source offsets</p>
+<pre><code class="language-python">client.run('rag.search.semantic', query=..., store=..., k=4)
+</code></pre>
+<p>Extra: <code>vector</code>. Required: <code>query, store</code>.</p>
+<h2 id="raganswer"><code>rag.answer</code></h2>
+<p>Generate a source-returning answer from semantic retrieval</p>
+<pre><code class="language-python">client.run('rag.answer', question=..., store=..., model_path=None, k=3, min_score=0.2)
+</code></pre>
+<p>Extra: <code>vector</code>. Required: <code>question, store</code>.</p>
+<h2 id="agentsllm"><code>agents.llm</code></h2>
+<p>Use a local LLM to rank allowed tools and review actual results</p>
+<pre><code class="language-python">client.run('agents.llm', goal=..., inputs_by_task=..., model_path=None, max_steps=1)
+</code></pre>
+<p>Extra: <code>local</code>. Required: <code>goal, inputs_by_task</code>.</p>
+<h2 id="automationtick"><code>automation.tick</code></h2>
+<p>Run due persisted local jobs once when the caller ticks</p>
+<pre><code class="language-python">client.run('automation.tick', store=..., now=None)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>store</code>.</p>
+<h2 id="iotmqttpublish"><code>iot.mqtt.publish</code></h2>
+<p>Publish an explicitly approved MQTT message and await broker ACK</p>
+<pre><code class="language-python">client.run('iot.mqtt.publish', host=..., topic=..., message=..., port=1883, consent=False)
+</code></pre>
+<p>Extra: <code>iot</code>. Required: <code>host, topic, message</code>.</p>
+<h2 id="iotmqttread"><code>iot.mqtt.read</code></h2>
+<p>Read real MQTT messages from an explicitly configured broker</p>
+<pre><code class="language-python">client.run('iot.mqtt.read', host=..., topic=..., port=1883, max_messages=1, duration=3)
+</code></pre>
+<p>Extra: <code>iot</code>. Required: <code>host, topic</code>.</p>
+<h2 id="roboticsserial"><code>robotics.serial</code></h2>
+<p>Exchange bounded data on a caller-approved local serial port</p>
+<pre><code class="language-python">client.run('robotics.serial', port=..., baudrate=9600, read_bytes=128, command=None, consent=False)
+</code></pre>
+<p>Extra: <code>iot</code>. Required: <code>port</code>.</p>
+<h2 id="imagegenerate"><code>image.generate</code></h2>
+<p>Experimental local Stable Diffusion integration</p>
+<pre><code class="language-python">client.run('image.generate', prompt=..., model_path=..., output=..., steps=20, seed=42, consent=False)
+</code></pre>
+<p>Extra: <code>diffusion</code>. Required: <code>prompt, model_path, output</code>.</p>
+<h2 id="videogenerate"><code>video.generate</code></h2>
+<p>Experimental local CogVideoX integration</p>
+<pre><code class="language-python">client.run('video.generate', prompt=..., model_path=..., output=..., frames=17, steps=20, seed=42, consent=False)
+</code></pre>
+<p>Extra: <code>diffusion</code>. Required: <code>prompt, model_path, output</code>.</p>
+<h2 id="arabicprocess"><code>arabic.process</code></h2>
+<p>Normalize, tokenize and optionally stem Arabic text</p>
+<pre><code class="language-python">client.run('arabic.process', text=..., stem=True)
+</code></pre>
+<p>Extra: <code>nlp</code>. Required: <code>text</code>.</p>
+<h2 id="nlptrain"><code>nlp.train</code></h2>
+<p>Train and evaluate a labeled Arabic/multilingual text classifier</p>
+<pre><code class="language-python">client.run('nlp.train', data=..., text_column=..., target=..., seed=42)
+</code></pre>
+<p>Extra: <code>ml</code>. Required: <code>data, text_column, target</code>.</p>
+<h2 id="nlptopics"><code>nlp.topics</code></h2>
+<p>Discover exploratory corpus topics using LDA</p>
+<pre><code class="language-python">client.run('nlp.topics', data=..., text_column=..., n_topics=3, top_words=8)
+</code></pre>
+<p>Extra: <code>ml</code>. Required: <code>data, text_column</code>.</p>
+<h2 id="nlpsimilarity"><code>nlp.similarity</code></h2>
+<p>Rank text passages by lexical character TF-IDF similarity</p>
+<pre><code class="language-python">client.run('nlp.similarity', texts=..., query=..., k=5)
+</code></pre>
+<p>Extra: <code>ml</code>. Required: <code>texts, query</code>.</p>
+<h2 id="salesforecast"><code>sales.forecast</code></h2>
+<p>Aggregate calendar months and forecast sales using temporal baselines</p>
+<pre><code class="language-python">client.run('sales.forecast', data=..., date_column=None, value_column=None, horizon=1)
+</code></pre>
+<p>Extra: <code>ml</code>. Required: <code>data</code>.</p>
+<h2 id="dataclean"><code>data.clean</code></h2>
+<p>Trim fields and remove exact duplicate CSV rows for review</p>
+<pre><code class="language-python">client.run('data.clean', data=...)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>data</code>.</p>
+<h2 id="datagroup"><code>data.group</code></h2>
+<p>Aggregate operational records by an explicit grouping column</p>
+<pre><code class="language-python">client.run('data.group', data=..., group_column=..., value_column=None)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>data, group_column</code>.</p>
+<h2 id="privacyredact"><code>privacy.redact</code></h2>
+<p>Mask email/phone patterns without pretending full anonymization</p>
+<pre><code class="language-python">client.run('privacy.redact', text=...)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>text</code>.</p>
+<h2 id="financereconcile"><code>finance.reconcile</code></h2>
+<p>Reconcile two keyed ledgers using exact decimal amounts</p>
+<pre><code class="language-python">client.run('finance.reconcile', left=..., right=..., key=..., amount_column=..., tolerance=0.01)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>left, right, key, amount_column</code>.</p>
+<h2 id="industrysensors"><code>industry.sensors</code></h2>
+<p>Extract vibration/sensor statistics and explicitly sampled spectra</p>
+<pre><code class="language-python">client.run('industry.sensors', data=..., columns=..., sample_rate=None)
+</code></pre>
+<p>Extra: <code>ml</code>. Required: <code>data, columns</code>.</p>
+<h2 id="industrycontrol"><code>industry.control</code></h2>
+<p>Screen measurements against separate baseline control limits</p>
+<pre><code class="language-python">client.run('industry.control', data=..., column=..., baseline=..., sigma=3.0)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>data, column, baseline</code>.</p>
+<h2 id="industryproduction"><code>industry.production</code></h2>
+<p>Compute production yield, rejects and optional hourly throughput</p>
+<pre><code class="language-python">client.run('industry.production', data=..., total_column=..., good_column=..., operating_hours=None)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>data, total_column, good_column</code>.</p>
+<h2 id="industrymaintenance"><code>industry.maintenance</code></h2>
+<p>Evaluate a supervised maintenance-label classifier on historical data</p>
+<pre><code class="language-python">client.run('industry.maintenance', data=..., target=...)
+</code></pre>
+<p>Extra: <code>ml</code>. Required: <code>data, target</code>.</p>
+<h2 id="industrydefects"><code>industry.defects</code></h2>
+<p>Locate aligned-reference image differences for quality screening</p>
+<pre><code class="language-python">client.run('industry.defects', image=..., reference=..., threshold=25, min_area=20, output=None)
+</code></pre>
+<p>Extra: <code>vision</code>. Required: <code>image, reference</code>.</p>
+<h2 id="databaseprofile"><code>database.profile</code></h2>
+<p>Read SQLite schema and row counts without modifying the database</p>
+<pre><code class="language-python">client.run('database.profile', database=...)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>database</code>.</p>
+<h2 id="codetestsgenerate"><code>code.tests.generate</code></h2>
+<p>Generate untrusted unittest suggestions with syntax diagnostics</p>
+<pre><code class="language-python">client.run('code.tests.generate', code=..., model_path=None, max_new_tokens=160)
+</code></pre>
+<p>Extra: <code>local</code>. Required: <code>code</code>.</p>
+<h2 id="apischema"><code>api.schema</code></h2>
+<p>Build the authenticated text API OpenAPI schema</p>
+<pre><code class="language-python">client.run('api.schema', )
+</code></pre>
+<p>Extra: <code>api</code>. Required: <code>see handler input rules</code>.</p>
+<h2 id="onnxpredict"><code>onnx.predict</code></h2>
+<p>Run reviewed local ONNX tensors with the CPU runtime</p>
+<pre><code class="language-python">client.run('onnx.predict', model_path=..., inputs=...)
+</code></pre>
+<p>Extra: <code>onnx</code>. Required: <code>model_path, inputs</code>.</p>
+<h2 id="tensorflowpredict"><code>tensorflow.predict</code></h2>
+<p>Run a reviewed local single-output Keras model</p>
+<pre><code class="language-python">client.run('tensorflow.predict', model_path=..., inputs=...)
+</code></pre>
+<p>Extra: <code>tensorflow</code>. Required: <code>model_path, inputs</code>.</p>
+<h2 id="llmcompatible"><code>llm.compatible</code></h2>
+<p>Call an explicitly approved OpenAI-compatible optional inference endpoint</p>
+<pre><code class="language-python">client.run('llm.compatible', prompt=..., endpoint=..., model=..., api_key_env=None, max_tokens=80)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>prompt, endpoint, model</code>.</p>
+<h2 id="iotmodbusread"><code>iot.modbus.read</code></h2>
+<p>Read bounded holding registers from an approved local gateway</p>
+<pre><code class="language-python">client.run('iot.modbus.read', host=..., address=..., count=..., port=502, device_id=1)
+</code></pre>
+<p>Extra: <code>industrial</code>. Required: <code>host, address, count</code>.</p>
+<h2 id="documentinsights"><code>document.insights</code></h2>
+<p>Extract text, keywords, dates and an extractive summary from a file</p>
+<pre><code class="language-python">client.run('document.insights', document=...)
+</code></pre>
+<p>Extra: <code>documents</code>. Required: <code>document</code>.</p>
+<h2 id="documentsearch"><code>document.search</code></h2>
+<p>Search document passages lexically with source references</p>
+<pre><code class="language-python">client.run('document.search', document=..., query=..., k=3)
+</code></pre>
+<p>Extra: <code>documents</code>. Required: <code>document, query</code>.</p>
+<h2 id="aisearch"><code>ai.search</code></h2>
+<p>Solve a bounded unit-cost grid shortest path with A-star</p>
+<pre><code class="language-python">client.run('ai.search', grid=..., start=..., goal=...)
+</code></pre>
+<p>Extra: <code>core</code>. Required: <code>grid, start, goal</code>.</p>
+<h2 id="errors">Errors / الأخطاء</h2>
+<p><code>ValidationError</code>, <code>MissingDependency</code>, <code>ConsentRequired</code>, <code>UnsupportedTask</code> inherit <code>AlFarouqError</code>. Some engine exceptions propagate; check the guide and security policy.</p>
+<h2 id="model-adapter-limits">Model adapter limits / حدود النماذج</h2>
+<p>See the current capability-verification report for actual trained-weight tests versus experimental/legacy adapter-only paths.</p></main><footer>© 2026 Khalid Salman — Original code Apache-2.0. Identity and third-party rights are separate. Local alpha; not published.</footer></html>

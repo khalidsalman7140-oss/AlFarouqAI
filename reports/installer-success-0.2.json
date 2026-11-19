@@ -1,0 +1,10 @@
+{
+  "extra": "iot",
+  "dedicated_venv": true,
+  "pip_returncode": 0,
+  "installed_imports_tested": [
+    "serial",
+    "paho.mqtt.client"
+  ],
+  "no_current_interpreter_mutation": true
+}

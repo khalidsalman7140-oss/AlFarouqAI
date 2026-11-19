@@ -1,0 +1,26 @@
+{
+  "task": "document.summarize",
+  "data": {
+    "text": "AlFarouq AI helps students use Python. Temperature sensors measure heat.\nخالد سلمان مؤسس المشروع. التاريخ 2026",
+    "generated_tokens": 50,
+    "input_tokens": 109
+  },
+  "backend": "transformers.local-causal-lm",
+  "warnings": [
+    "Generated content can be wrong. Default 135M model is English-first and limited; not a strongest-model or Arabic-quality claim. Input is truncated to 1024 tokens.",
+    "Only first 12000 characters supplied; LLM token cap can truncate further. Not guaranteed faithful."
+  ],
+  "provenance": {
+    "model_path": "/home/user/alfarouq-models/smollm2-135m",
+    "actual_weight_inference": true,
+    "device": "cpu",
+    "source": {
+      "input_sha256": "5096ad5eb86a69e21ae380117d863c2734471d3bcfa065caa533594d441cf31f"
+    },
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 5.444318,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

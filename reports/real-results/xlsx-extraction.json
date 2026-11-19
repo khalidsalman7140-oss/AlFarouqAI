@@ -1,0 +1,35 @@
+{
+  "task": "document.read",
+  "data": {
+    "text": "name\tvalue\nsample\t95",
+    "characters": 20,
+    "rows": [
+      {
+        "sheet": "Sheet",
+        "values": [
+          "name",
+          "value"
+        ]
+      },
+      {
+        "sheet": "Sheet",
+        "values": [
+          "sample",
+          "95"
+        ]
+      }
+    ]
+  },
+  "backend": "openpyxl",
+  "warnings": [
+    "Text extraction only; scanned PDFs need OCR, formulas are not recalculated, complex layout may be lost."
+  ],
+  "provenance": {
+    "input_sha256": "ee4fbca3b6dcc502fb5c993f260b367c040854f5da04625b33ebd582b0c73b79",
+    "library_version": "0.1.0",
+    "elapsed_seconds": 0.005012,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

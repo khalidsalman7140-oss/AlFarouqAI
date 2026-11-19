@@ -1,0 +1,21 @@
+{
+  "task": "audio.info",
+  "data": {
+    "channels": 1,
+    "sample_rate": 16000,
+    "sample_width_bytes": 2,
+    "frames": 16000,
+    "duration_seconds": 1.0,
+    "compression": "NONE"
+  },
+  "backend": "stdlib.wave",
+  "warnings": [],
+  "provenance": {
+    "input_sha256": "643f8a8dc8bd9c19225afffad2becfec5426180b3749cb208abdf1a6c8354efc",
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.000274,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

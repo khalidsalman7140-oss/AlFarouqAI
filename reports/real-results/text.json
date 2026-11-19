@@ -1,0 +1,54 @@
+{
+  "task": "text.analyze",
+  "data": {
+    "characters": 60,
+    "words": 8,
+    "sentences": 2,
+    "keywords": [
+      [
+        "الذكاء",
+        1
+      ],
+      [
+        "الاصطناعي",
+        1
+      ],
+      [
+        "يساعد",
+        1
+      ],
+      [
+        "الطلاب",
+        1
+      ],
+      [
+        "local",
+        1
+      ],
+      [
+        "tools",
+        1
+      ],
+      [
+        "support",
+        1
+      ],
+      [
+        "research",
+        1
+      ]
+    ],
+    "extractive_summary": "الذكاء الاصطناعي يساعد الطلاب. Local tools support research."
+  },
+  "backend": "stdlib.frequency",
+  "warnings": [
+    "Extractive statistics only; not an LLM or sentiment model."
+  ],
+  "provenance": {
+    "library_version": "0.1.0",
+    "elapsed_seconds": 0.000451,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

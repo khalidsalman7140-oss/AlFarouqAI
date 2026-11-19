@@ -1,0 +1,147 @@
+{
+  "task": "agents.workflow",
+  "data": {
+    "results": {
+      "read": {
+        "task": "document.read",
+        "data": {
+          "text": "AlFarouq AI supports local-first Python workflows. The lightweight core needs no runtime dependencies.\nخالد سلمان مؤسس مشروع AlFarouq AI. يهدف المشروع إلى تبسيط استخدام الذكاء الاصطناعي للطلاب والمطورين.\nMachine learning requires an explicit target column and a classification or regression problem type.\nExternal models require a separate license review and may require substantial RAM.\n",
+          "characters": 388,
+          "rows": []
+        },
+        "backend": "stdlib.text",
+        "warnings": [
+          "Text extraction only; scanned PDFs need OCR, formulas are not recalculated, complex layout may be lost."
+        ],
+        "provenance": {
+          "input_sha256": "fea05f6a779c0c5a474b0cd4f94064b1384a333c3cf2fa092d1dec1c9d2682eb",
+          "library_version": "0.1.0",
+          "elapsed_seconds": 0.000388,
+          "network_policy": "explicit opt-in",
+          "executed": true
+        },
+        "schema_version": "1.0"
+      },
+      "summary": {
+        "task": "text.analyze",
+        "data": {
+          "characters": 388,
+          "words": 55,
+          "sentences": 6,
+          "keywords": [
+            [
+              "alfarouq",
+              2
+            ],
+            [
+              "ai",
+              2
+            ],
+            [
+              "require",
+              2
+            ],
+            [
+              "supports",
+              1
+            ],
+            [
+              "local",
+              1
+            ],
+            [
+              "first",
+              1
+            ],
+            [
+              "python",
+              1
+            ],
+            [
+              "workflows",
+              1
+            ],
+            [
+              "lightweight",
+              1
+            ],
+            [
+              "core",
+              1
+            ],
+            [
+              "needs",
+              1
+            ],
+            [
+              "no",
+              1
+            ]
+          ],
+          "extractive_summary": "AlFarouq AI supports local-first Python workflows. خالد سلمان مؤسس مشروع AlFarouq AI. External models require a separate license review and may require substantial RAM."
+        },
+        "backend": "stdlib.frequency",
+        "warnings": [
+          "Extractive statistics only; not an LLM or sentiment model."
+        ],
+        "provenance": {
+          "library_version": "0.1.0",
+          "elapsed_seconds": 0.000251,
+          "network_policy": "explicit opt-in",
+          "executed": true
+        },
+        "schema_version": "1.0"
+      }
+    },
+    "trace": [
+      {
+        "agent": "planner",
+        "event": "validated",
+        "levels": [
+          [
+            "read"
+          ],
+          [
+            "summary"
+          ]
+        ]
+      },
+      {
+        "agent": "specialist",
+        "step": "read",
+        "task": "document.read",
+        "event": "completed"
+      },
+      {
+        "agent": "schema-reviewer",
+        "step": "read",
+        "event": "schema-accepted"
+      },
+      {
+        "agent": "specialist",
+        "step": "summary",
+        "task": "text.analyze",
+        "event": "completed"
+      },
+      {
+        "agent": "schema-reviewer",
+        "step": "summary",
+        "event": "schema-accepted"
+      }
+    ],
+    "levels": [
+      [
+        "read"
+      ],
+      [
+        "summary"
+      ]
+    ]
+  },
+  "backend": "bounded-dag-agents",
+  "warnings": [
+    "Deterministic specialist orchestration and schema validation, not independent LLM deliberation or factual verification. Tool execution has no OS sandbox; do not load untrusted plugins."
+  ],
+  "provenance": {},
+  "schema_version": "1.0"
+}

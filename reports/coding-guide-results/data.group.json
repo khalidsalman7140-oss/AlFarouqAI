@@ -1,0 +1,30 @@
+{
+  "task": "data.group",
+  "data": {
+    "rows": [
+      {
+        "group": "Clinic",
+        "count": 1,
+        "total": 20.0,
+        "mean": 20.0
+      },
+      {
+        "group": "Lab",
+        "count": 2,
+        "total": 22.0,
+        "mean": 11.0
+      }
+    ]
+  },
+  "backend": "stdlib.grouped-aggregation",
+  "warnings": [
+    "Operational grouping only; use appropriate anonymization and authorization for patient/customer records. No clinical or credit decisions."
+  ],
+  "provenance": {
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.000489,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

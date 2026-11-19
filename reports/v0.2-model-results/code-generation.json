@@ -1,0 +1,23 @@
+{
+  "task": "code.generate",
+  "data": {
+    "text": "```python\ndef add(a, b):\n    return a + b\n```\n\nThis function uses the built-in `+` operator to add the two numbers and returns the result.",
+    "generated_tokens": 41,
+    "input_tokens": 48
+  },
+  "backend": "transformers.local-causal-lm",
+  "warnings": [
+    "Generated content can be wrong. Default 135M model is English-first and limited; not a strongest-model or Arabic-quality claim. Input is truncated to 1024 tokens.",
+    "Code is untrusted, not executed or proven correct. Review and test in a separate environment."
+  ],
+  "provenance": {
+    "model_path": "/home/user/alfarouq-models/smollm2-135m",
+    "actual_weight_inference": true,
+    "device": "cpu",
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 2.416006,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

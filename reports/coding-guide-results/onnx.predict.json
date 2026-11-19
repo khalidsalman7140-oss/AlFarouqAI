@@ -1,0 +1,26 @@
+{
+  "task": "onnx.predict",
+  "data": {
+    "outputs": {
+      "y": [
+        [
+          4.0
+        ],
+        [
+          6.0
+        ]
+      ]
+    }
+  },
+  "backend": "onnxruntime.CPUExecutionProvider",
+  "warnings": [
+    "Only reviewed local models; native runtime is not an OS sandbox. External tensor data and custom-op libraries are not loaded by this adapter."
+  ],
+  "provenance": {
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.098134,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

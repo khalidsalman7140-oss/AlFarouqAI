@@ -1,0 +1,46 @@
+{
+  "task": "vision.ocr",
+  "data": {
+    "text": "ALFAROUQ Al 2026",
+    "rows": [
+      {
+        "text": "ALFAROUQ",
+        "confidence": 91.66423,
+        "x": 31,
+        "y": 60,
+        "width": 267,
+        "height": 43
+      },
+      {
+        "text": "Al",
+        "confidence": 91.024826,
+        "x": 317,
+        "y": 61,
+        "width": 44,
+        "height": 36
+      },
+      {
+        "text": "2026",
+        "confidence": 96.341599,
+        "x": 385,
+        "y": 60,
+        "width": 121,
+        "height": 38
+      }
+    ],
+    "language": "eng"
+  },
+  "backend": "tesseract.system",
+  "warnings": [
+    "Recognition depends on scan quality and installed language packs; Arabic quality not guaranteed."
+  ],
+  "provenance": {
+    "actual_model_inference": true,
+    "input_sha256": "f8ac4bffc906a6a76295686bd4e3e4ae9e3fbe0389ead1fd9d47d973a1f3644f",
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.139659,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

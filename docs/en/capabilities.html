@@ -1,0 +1,139 @@
+<!doctype html><html lang="en" dir="ltr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>capabilities | AlFarouq AI</title><style>body{font:17px/1.85 system-ui,sans-serif;max-width:1080px;margin:0 auto;padding:32px;background:#fafcff;color:#16243b}a{color:#075f94}pre,code{direction:ltr;text-align:left;font-family:monospace}pre{overflow:auto;padding:22px;border-radius:12px;background:#0d2235;color:#e0f4ff}code{font-size:.9em}table{border-collapse:collapse;width:100%;display:block;overflow:auto}td,th{border:1px solid #cbd5e1;padding:10px;text-align:start}th{background:#e2eef5}h1,h2{color:#073d57}img{max-width:100%}nav,footer{padding:16px 0;border-bottom:1px solid #cbd5e1}footer{font-size:13px;color:#475569}blockquote{border-inline-start:4px solid #079499;padding-inline-start:1em} @media print{body{font-size:12px}pre{white-space:pre-wrap}}</style><nav><a href="../index.html">AlFarouq AI — Documentation / التوثيق</a></nav><main><blockquote>
+<p>Preserved 0.1.0 documentation. Current status: <a href="handbook-0.2.html">0.2 handbook</a> and <a href="capabilities-0.2.html">0.2 matrix</a>.</p>
+</blockquote>
+<h1 id="capability-coverage-and-roadmap">Capability coverage and roadmap</h1>
+<p><a href="../ar/capabilities.html">العربية</a> · <a href="guide.html">Guide</a></p>
+<p>Tested means an engine actually ran on local fixtures, not that a general quality
+claim was established. See reports/pytest.xml and the final report.</p>
+<table>
+<thead>
+<tr>
+<th>Requested area</th>
+<th>0.1.0 delivery</th>
+<th>Verification / boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NLP</td>
+<td>frequency statistics and extractive summary</td>
+<td>tested; not neural translation or sentiment</td>
+</tr>
+<tr>
+<td>LLM</td>
+<td>Ollama chat adapter</td>
+<td>HTTP contract tested only; no model inference</td>
+</tr>
+<tr>
+<td>Computer vision</td>
+<td>dimensions/colors/Haar faces</td>
+<td>tested on supplied photo; not identity</td>
+</tr>
+<tr>
+<td>IoT</td>
+<td>recorded CSV z-score analytics</td>
+<td>tested; no device integration</td>
+</tr>
+<tr>
+<td>AI application development</td>
+<td>Python API/CLI/report artifacts</td>
+<td>tested; no production server</td>
+</tr>
+<tr>
+<td>Neural-network programming</td>
+<td>optional framework adapters only</td>
+<td>no neural model-builder/trainer API</td>
+</tr>
+<tr>
+<td>Deep learning</td>
+<td>optional inference adapters</td>
+<td>no DL training/finetuning</td>
+</tr>
+<tr>
+<td>Machine learning</td>
+<td>RandomForest classification/regression</td>
+<td>real training/evaluation/prediction tested</td>
+</tr>
+<tr>
+<td>Generative AI</td>
+<td>local text generation adapter</td>
+<td>no actual generation test; no image/video synthesis</td>
+</tr>
+<tr>
+<td>Multimodal AI</td>
+<td>optional image input to Ollama</td>
+<td>compatible model required; untested inference</td>
+</tr>
+<tr>
+<td>Image/video/objects/tracking</td>
+<td>faces, motion, local detector adapter</td>
+<td>motion tested; general detector untested; tracking absent</td>
+</tr>
+<tr>
+<td>Speech AI</td>
+<td>WAV metadata + Whisper adapter</td>
+<td>WAV tested; Whisper inference untested; no TTS</td>
+</tr>
+<tr>
+<td>Agents</td>
+<td>DAG planner/specialists/reviewer</td>
+<td>tested; no independent multi-LLM deliberation</td>
+</tr>
+<tr>
+<td>Data science/prediction</td>
+<td>CSV profiles and tabular prediction</td>
+<td>tested; not universal AutoML</td>
+</tr>
+<tr>
+<td>Documents</td>
+<td>TXT/PDF/DOCX/XLSX extraction</td>
+<td>tested; no OCR or legacy DOC/XLS</td>
+</tr>
+<tr>
+<td>Code engineering</td>
+<td>AST/project/risk review</td>
+<td>tested; no automatic repair/generated-code execution</td>
+</tr>
+<tr>
+<td>RAG/search/memory</td>
+<td>JSON lexical index + semantic adapter</td>
+<td>lexical tested; embeddings untested; no full answer-generation RAG</td>
+</tr>
+<tr>
+<td>Automation</td>
+<td>on-demand local DAG workflows</td>
+<td>tested; no persistent scheduler/events</td>
+</tr>
+<tr>
+<td>Robotics</td>
+<td>no control implementation</td>
+<td>future; hardware safety/approval required</td>
+</tr>
+<tr>
+<td>Defensive security</td>
+<td>auth-failure log and AST rules</td>
+<td>tested; not SIEM/vulnerability scanner</td>
+</tr>
+<tr>
+<td>Other services</td>
+<td>config/exports/plugins/policy</td>
+<td>tested as detailed in delivery report</td>
+</tr>
+</tbody>
+</table>
+<h2 id="acceptance-based-roadmap">Acceptance-based roadmap</h2>
+<ul>
+<li><strong>0.2:</strong> owner license decision, run actual cross-platform CI, per-platform hash
+  locks, reproducible Arabic/real-world evaluations, installer/skops integration tests.</li>
+<li><strong>0.3:</strong> licensed, hashed local text/vision/speech/embedding weights and real CPU/GPU
+  inference tests; constrained JSON planning with explicit privilege separation.</li>
+<li><strong>0.4:</strong> Arabic OCR/layout extraction, temporary-ID multi-object tracking (not face
+  identification), licensed TTS, evidence-grounded RAG with abstention evaluation.</li>
+<li><strong>0.5:</strong> process sandbox/resource limits, cancellation/async, MQTT/ONNX/edge/robot
+  adapters with safety tests. No physical actuation without explicit approval.</li>
+<li><strong>1.0:</strong> stable API contracts, independent security/license review, reproducible
+  benchmarks, migrations, incident response and enterprise integration tests.</li>
+</ul>
+<p>Additional needs identified: MLOps/experiment tracking, privacy/redaction, fairness
+and accessibility, interpretability, group/time-aware evaluation, quantization and
+Arabic quality assessment. These are roadmap items, not placeholder functions.</p></main><footer>© 2026 Khalid Salman — Original code Apache-2.0. Identity and third-party rights are separate. Local alpha; not published.</footer></html>

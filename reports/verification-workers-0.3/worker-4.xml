@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="7.993" timestamp="2026-11-19T11:09:51.312289+00:00" hostname="sbx-f4f0156a"><testcase classname="tests.test_engines_03" name="test_test_generation_actual_model" time="7.952" /></testsuite></testsuites>

@@ -1,0 +1,76 @@
+{
+  "task": "video.track",
+  "data": {
+    "rows": [
+      {
+        "frame": 0,
+        "time_seconds": 0.0,
+        "objects": [
+          {
+            "label": "person",
+            "label_id": 1,
+            "score": 0.9135314226150513,
+            "box_xyxy": [
+              2.08,
+              206.75,
+              355.96,
+              643.33
+            ],
+            "track_id": 1
+          }
+        ]
+      },
+      {
+        "frame": 1,
+        "time_seconds": 0.2,
+        "objects": [
+          {
+            "label": "person",
+            "label_id": 1,
+            "score": 0.9398543238639832,
+            "box_xyxy": [
+              1.73,
+              207.22,
+              355.78,
+              642.31
+            ],
+            "track_id": 1
+          }
+        ]
+      },
+      {
+        "frame": 2,
+        "time_seconds": 0.4,
+        "objects": [
+          {
+            "label": "person",
+            "label_id": 1,
+            "score": 0.9304247498512268,
+            "box_xyxy": [
+              1.61,
+              207.75,
+              355.59,
+              651.12
+            ],
+            "track_id": 1
+          }
+        ]
+      }
+    ],
+    "truncated": false,
+    "processed_frames": 3
+  },
+  "backend": "torchvision.ssdlite+centroid-tracker",
+  "warnings": [
+    "Temporary same-class centroid tracks; can swap IDs under occlusion/crossing. Not action recognition or identity."
+  ],
+  "provenance": {
+    "actual_weight_inference": true,
+    "input_sha256": "a96a9da7f7ecc3c82e8790ac0a74a26113d13e4ae536dcce00db74f9e6bbd260",
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 2.416973,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

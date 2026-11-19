@@ -1,0 +1,49 @@
+<!doctype html><html lang="en" dir="ltr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>development | AlFarouq AI</title><style>body{font:17px/1.85 system-ui,sans-serif;max-width:1080px;margin:0 auto;padding:32px;background:#fafcff;color:#16243b}a{color:#075f94}pre,code{direction:ltr;text-align:left;font-family:monospace}pre{overflow:auto;padding:22px;border-radius:12px;background:#0d2235;color:#e0f4ff}code{font-size:.9em}table{border-collapse:collapse;width:100%;display:block;overflow:auto}td,th{border:1px solid #cbd5e1;padding:10px;text-align:start}th{background:#e2eef5}h1,h2{color:#073d57}img{max-width:100%}nav,footer{padding:16px 0;border-bottom:1px solid #cbd5e1}footer{font-size:13px;color:#475569}blockquote{border-inline-start:4px solid #079499;padding-inline-start:1em} @media print{body{font-size:12px}pre{white-space:pre-wrap}}</style><nav><a href="../index.html">AlFarouq AI — Documentation / التوثيق</a></nav><main><blockquote>
+<p>Preserved 0.1.0 documentation. Current status: <a href="handbook-0.2.html">0.2 handbook</a> and <a href="capabilities-0.2.html">0.2 matrix</a>.</p>
+</blockquote>
+<h1 id="development-plugins-and-release-preparation">Development, plugins and release preparation</h1>
+<p><a href="../ar/development.html">العربية</a> · <a href="../../CONTRIBUTING.html">Contribution policy</a></p>
+<h2 id="implement-a-real-capability">Implement a real capability</h2>
+<pre><code class="language-python">from alfarouqai import Client, Capability, Result
+
+def word_count(*, text, config):
+    return Result('custom.words', {'count':len(text.split())}, 'my-plugin')
+
+client = Client()
+client.registry.register(Capability('custom.words', word_count, 'Word count', ('text',)))
+print(client.run('custom.words',text='Hello AlFarouq AI').data)
+</code></pre>
+<p>Use explicit keyword parameters; unknown inputs and duplicate capability names are
+rejected. Honor Config, lazy imports, consent policy, resource limits and provenance.
+Ship Arabic/English documentation and real success/failure tests. Do not register
+names that merely raise NotImplementedError or return hard-coded model results.</p>
+<p>For a separate installed distribution:</p>
+<pre><code class="language-toml">[project.entry-points.&quot;alfarouqai.plugins&quot;]
+counter = &quot;my_plugin:register&quot;
+</code></pre>
+<p><code>register(registry)</code> calls registry.register(Capability(...)). Load trusted installed
+plugins only with <code>client.registry.load_plugins(consent=True)</code>. Discovery does not
+confer trust: loading runs Python with your process privileges, not in a sandbox.</p>
+<h2 id="tests-and-packaging">Tests and packaging</h2>
+<pre><code class="language-bash">python -m pip install -e '.[dev,ml,vision,documents]'
+python -m pytest
+python -m build
+python -m twine check dist/*
+</code></pre>
+<p>The PDF fixture test also needs reportlab; without it that test explicitly skips.
+Actual model-weight inference tests are not yet supplied. reports/environment.json
+and verified-requirements.txt record the tested environment, not a portable hash
+lock or vulnerability audit. CI templates target multiple OS/Python versions but
+have not run on GitHub in this delivery.</p>
+<h2 id="publication-is-explicitly-deferred">Publication is explicitly deferred</h2>
+<p>Repository files, templates, CI, package metadata, wheel and sdist are prepared.
+No external repository was created, no namespace reserved and no public upload made.
+After owner approval: decide a compatible license, verify PyPI/GitHub/trademark
+availability, review public disclosure of email/photo/age, create a repository in
+your account, run CI, build a new release and test TestPyPI with your credentials.
+Only publish the final release after another explicit approval. There are no tokens
+or publishing workflows here. Library version is maintained in pyproject.toml,
+core.<strong>version</strong> and CHANGELOG; pre-1.0 minor releases may change APIs.</p>
+<p>The current all-rights-reserved terms require written permission for contributions
+and reuse. Do not silently apply MIT while retaining a contradictory no-copying
+restriction. Third-party licenses always apply to their own works separately.</p></main><footer>© 2026 Khalid Salman — Original code Apache-2.0. Identity and third-party rights are separate. Local alpha; not published.</footer></html>

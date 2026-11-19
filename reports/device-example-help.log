@@ -1,0 +1,7 @@
+usage: 18_device_transports.py [-h] [--serial-port SERIAL_PORT]
+                               [--approve-device]
+
+options:
+  -h, --help            show this help message and exit
+  --serial-port SERIAL_PORT
+  --approve-device

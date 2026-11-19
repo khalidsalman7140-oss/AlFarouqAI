@@ -1,0 +1,31 @@
+{
+  "task": "nlp.classify",
+  "data": {
+    "label": "positive",
+    "rows": [
+      {
+        "label": "positive",
+        "relative_score": 0.5228655338287354,
+        "mean_log_likelihood": -12.288873672485352
+      },
+      {
+        "label": "negative",
+        "relative_score": 0.47713443636894226,
+        "mean_log_likelihood": -12.380399703979492
+      }
+    ]
+  },
+  "backend": "local-llm.label-likelihood",
+  "warnings": [
+    "Relative scores are not calibrated probabilities; labels are ranked by a small LLM, not a task-finetuned classifier."
+  ],
+  "provenance": {
+    "model_path": "/home/user/alfarouq-models/smollm2-135m",
+    "actual_weight_inference": true,
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 3.64149,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

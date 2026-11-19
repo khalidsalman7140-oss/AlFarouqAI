@@ -1,0 +1,4 @@
+AlFarouq AI supports local-first Python workflows. The lightweight core needs no runtime dependencies.
+خالد سلمان مؤسس مشروع AlFarouq AI. يهدف المشروع إلى تبسيط استخدام الذكاء الاصطناعي للطلاب والمطورين.
+Machine learning requires an explicit target column and a classification or regression problem type.
+External models require a separate license review and may require substantial RAM.

@@ -1,0 +1,153 @@
+{
+  "task": "ml.train",
+  "data": {
+    "problem": "regression",
+    "target": "target",
+    "features": [
+      "x",
+      "group"
+    ],
+    "numeric_features": [
+      "x"
+    ],
+    "train_rows": 90,
+    "test_rows": 30,
+    "seed": 42,
+    "metrics": {
+      "mae": 1.3899999999999992,
+      "r2": 0.9994260470360056
+    },
+    "rows": [
+      {
+        "actual": 91,
+        "prediction": 91.86666666666666
+      },
+      {
+        "actual": 97,
+        "prediction": 94.7
+      },
+      {
+        "actual": 11,
+        "prediction": 8.966666666666667
+      },
+      {
+        "actual": 113,
+        "prediction": 112.1
+      },
+      {
+        "actual": 55,
+        "prediction": 53.93333333333333
+      },
+      {
+        "actual": 131,
+        "prediction": 131.1
+      },
+      {
+        "actual": 149,
+        "prediction": 147.6
+      },
+      {
+        "actual": 23,
+        "prediction": 20.366666666666667
+      },
+      {
+        "actual": 83,
+        "prediction": 82.7
+      },
+      {
+        "actual": 217,
+        "prediction": 215.3
+      },
+      {
+        "actual": 39,
+        "prediction": 37.3
+      },
+      {
+        "actual": 127,
+        "prediction": 125.4
+      },
+      {
+        "actual": 25,
+        "prediction": 22.633333333333333
+      },
+      {
+        "actual": 75,
+        "prediction": 74.7
+      },
+      {
+        "actual": 181,
+        "prediction": 180.1
+      },
+      {
+        "actual": 185,
+        "prediction": 187.03333333333333
+      },
+      {
+        "actual": 221,
+        "prediction": 220.0
+      },
+      {
+        "actual": 3,
+        "prediction": 6.466666666666667
+      },
+      {
+        "actual": 179,
+        "prediction": 175.86666666666667
+      },
+      {
+        "actual": 211,
+        "prediction": 209.4
+      },
+      {
+        "actual": 133,
+        "prediction": 133.53333333333333
+      },
+      {
+        "actual": 93,
+        "prediction": 92.86666666666666
+      },
+      {
+        "actual": 65,
+        "prediction": 64.36666666666666
+      },
+      {
+        "actual": 143,
+        "prediction": 144.46666666666667
+      },
+      {
+        "actual": 87,
+        "prediction": 87.13333333333334
+      },
+      {
+        "actual": 27,
+        "prediction": 28.7
+      },
+      {
+        "actual": 33,
+        "prediction": 31.966666666666665
+      },
+      {
+        "actual": 231,
+        "prediction": 229.0
+      },
+      {
+        "actual": 155,
+        "prediction": 153.33333333333334
+      },
+      {
+        "actual": 197,
+        "prediction": 196.0
+      }
+    ]
+  },
+  "backend": "scikit-learn.RandomForest",
+  "warnings": [
+    "Held-out split, not cross-validation. Not suitable evidence for time-series, grouped or causal claims; use domain-specific splits in future versions.",
+    "Synthetic y=2x+3 fixture, not a research benchmark."
+  ],
+  "provenance": {
+    "input_sha256": "10c5438f7b4a6f8b6bfc489fbd75f17174deb4c84066ff11b294973c336c3d35",
+    "sklearn_version": "1.9.1"
+  },
+  "schema_version": "1.0"
+}

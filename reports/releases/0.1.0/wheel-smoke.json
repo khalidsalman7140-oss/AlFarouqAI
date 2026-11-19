@@ -1,0 +1,16 @@
+{
+  "wheel_version": "0.1.0",
+  "python": "3.12.3",
+  "mandatory_runtime_dependencies": [],
+  "capability_count": 13,
+  "checks": [
+    "wheel import outside checkout",
+    "no mandatory runtime dependencies",
+    "real text analysis",
+    "CSV statistics and export",
+    "lexical retrieval",
+    "agent reference data flow"
+  ],
+  "model_inference_tested": false,
+  "passed": true
+}

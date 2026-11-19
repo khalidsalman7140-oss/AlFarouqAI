@@ -1,0 +1,306 @@
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=77.0.3
+  - wheel
+* Getting build dependencies for sdist...
+running egg_info
+writing src/alfarouqai.egg-info/PKG-INFO
+writing dependency_links to src/alfarouqai.egg-info/dependency_links.txt
+writing entry points to src/alfarouqai.egg-info/entry_points.txt
+writing requirements to src/alfarouqai.egg-info/requires.txt
+writing top-level names to src/alfarouqai.egg-info/top_level.txt
+reading manifest file 'src/alfarouqai.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no files found matching '*.css' under directory 'docs'
+adding license file 'LICENSE'
+adding license file 'NOTICE'
+adding license file 'THIRD_PARTY_NOTICES.md'
+writing manifest file 'src/alfarouqai.egg-info/SOURCES.txt'
+* Installed build dependency versions:
+  - setuptools==84.2.1
+  - wheel==0.48.0
+* Building sdist...
+running sdist
+running egg_info
+writing src/alfarouqai.egg-info/PKG-INFO
+writing dependency_links to src/alfarouqai.egg-info/dependency_links.txt
+writing entry points to src/alfarouqai.egg-info/entry_points.txt
+writing requirements to src/alfarouqai.egg-info/requires.txt
+writing top-level names to src/alfarouqai.egg-info/top_level.txt
+reading manifest file 'src/alfarouqai.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no files found matching '*.css' under directory 'docs'
+adding license file 'LICENSE'
+adding license file 'NOTICE'
+adding license file 'THIRD_PARTY_NOTICES.md'
+writing manifest file 'src/alfarouqai.egg-info/SOURCES.txt'
+running check
+creating alfarouqai-0.2.0
+creating alfarouqai-0.2.0/deploy/huggingface
+creating alfarouqai-0.2.0/docs
+creating alfarouqai-0.2.0/docs/ar
+creating alfarouqai-0.2.0/docs/en
+creating alfarouqai-0.2.0/docs/research
+creating alfarouqai-0.2.0/examples
+creating alfarouqai-0.2.0/examples/data
+creating alfarouqai-0.2.0/identity/founder
+creating alfarouqai-0.2.0/notebooks
+creating alfarouqai-0.2.0/scripts
+creating alfarouqai-0.2.0/src/alfarouqai
+creating alfarouqai-0.2.0/src/alfarouqai.egg-info
+creating alfarouqai-0.2.0/tests
+copying files to alfarouqai-0.2.0...
+copying CHANGELOG.md -> alfarouqai-0.2.0
+copying CONTRIBUTING.md -> alfarouqai-0.2.0
+copying LICENSE -> alfarouqai-0.2.0
+copying MANIFEST.in -> alfarouqai-0.2.0
+copying NOTICE -> alfarouqai-0.2.0
+copying README.ar.md -> alfarouqai-0.2.0
+copying README.md -> alfarouqai-0.2.0
+copying SECURITY.md -> alfarouqai-0.2.0
+copying THIRD_PARTY_NOTICES.md -> alfarouqai-0.2.0
+copying pyproject.toml -> alfarouqai-0.2.0
+copying deploy/huggingface/Dockerfile -> alfarouqai-0.2.0/deploy/huggingface
+copying deploy/huggingface/README.md -> alfarouqai-0.2.0/deploy/huggingface
+copying deploy/huggingface/app.py -> alfarouqai-0.2.0/deploy/huggingface
+copying docs/index.html -> alfarouqai-0.2.0/docs
+copying docs/ar/api.html -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/api.md -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/architecture.html -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/architecture.md -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/capabilities-0.2.html -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/capabilities-0.2.md -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/capabilities.html -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/capabilities.md -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/curriculum.html -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/curriculum.md -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/development.html -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/development.md -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/guide.html -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/guide.md -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/handbook-0.2.html -> alfarouqai-0.2.0/docs/ar
+copying docs/ar/handbook-0.2.md -> alfarouqai-0.2.0/docs/ar
+copying docs/en/api.html -> alfarouqai-0.2.0/docs/en
+copying docs/en/api.md -> alfarouqai-0.2.0/docs/en
+copying docs/en/architecture.html -> alfarouqai-0.2.0/docs/en
+copying docs/en/architecture.md -> alfarouqai-0.2.0/docs/en
+copying docs/en/capabilities-0.2.html -> alfarouqai-0.2.0/docs/en
+copying docs/en/capabilities-0.2.md -> alfarouqai-0.2.0/docs/en
+copying docs/en/capabilities.html -> alfarouqai-0.2.0/docs/en
+copying docs/en/capabilities.md -> alfarouqai-0.2.0/docs/en
+copying docs/en/curriculum.html -> alfarouqai-0.2.0/docs/en
+copying docs/en/curriculum.md -> alfarouqai-0.2.0/docs/en
+copying docs/en/development.html -> alfarouqai-0.2.0/docs/en
+copying docs/en/development.md -> alfarouqai-0.2.0/docs/en
+copying docs/en/guide.html -> alfarouqai-0.2.0/docs/en
+copying docs/en/guide.md -> alfarouqai-0.2.0/docs/en
+copying docs/en/handbook-0.2.html -> alfarouqai-0.2.0/docs/en
+copying docs/en/handbook-0.2.md -> alfarouqai-0.2.0/docs/en
+copying docs/research/SOURCES-0.2.html -> alfarouqai-0.2.0/docs/research
+copying docs/research/SOURCES-0.2.md -> alfarouqai-0.2.0/docs/research
+copying docs/research/SOURCES.html -> alfarouqai-0.2.0/docs/research
+copying docs/research/SOURCES.md -> alfarouqai-0.2.0/docs/research
+copying examples/01_quickstart.py -> alfarouqai-0.2.0/examples
+copying examples/02_machine_learning.py -> alfarouqai-0.2.0/examples
+copying examples/03_agents.py -> alfarouqai-0.2.0/examples
+copying examples/04_retrieval.py -> alfarouqai-0.2.0/examples
+copying examples/05_ollama.py -> alfarouqai-0.2.0/examples
+copying examples/06_vision.py -> alfarouqai-0.2.0/examples
+copying examples/07_plugin.py -> alfarouqai-0.2.0/examples
+copying examples/08_sensors_and_logs.py -> alfarouqai-0.2.0/examples
+copying examples/09_documents.py -> alfarouqai-0.2.0/examples
+copying examples/10_local_models.py -> alfarouqai-0.2.0/examples
+copying examples/11_pretrained_vision.py -> alfarouqai-0.2.0/examples
+copying examples/12_speech.py -> alfarouqai-0.2.0/examples
+copying examples/13_neural_network.py -> alfarouqai-0.2.0/examples
+copying examples/14_semantic_rag.py -> alfarouqai-0.2.0/examples
+copying examples/15_llm_agents.py -> alfarouqai-0.2.0/examples
+copying examples/16_scheduler.py -> alfarouqai-0.2.0/examples
+copying examples/17_analytics.py -> alfarouqai-0.2.0/examples
+copying examples/18_device_transports.py -> alfarouqai-0.2.0/examples
+copying examples/data/auth.log -> alfarouqai-0.2.0/examples/data
+copying examples/data/knowledge.txt -> alfarouqai-0.2.0/examples/data
+copying examples/data/neural.csv -> alfarouqai-0.2.0/examples/data
+copying examples/data/ratings.csv -> alfarouqai-0.2.0/examples/data
+copying examples/data/sensors.csv -> alfarouqai-0.2.0/examples/data
+copying examples/data/students.csv -> alfarouqai-0.2.0/examples/data
+copying identity/founder/README.md -> alfarouqai-0.2.0/identity/founder
+copying identity/founder/khalid-salman-original.jpg -> alfarouqai-0.2.0/identity/founder
+copying identity/founder/profile.json -> alfarouqai-0.2.0/identity/founder
+copying notebooks/AlFarouqAI_0_2_Getting_Started.ipynb -> alfarouqai-0.2.0/notebooks
+copying notebooks/README.md -> alfarouqai-0.2.0/notebooks
+copying scripts/build_docs.py -> alfarouqai-0.2.0/scripts
+copying scripts/capture_examples.py -> alfarouqai-0.2.0/scripts
+copying scripts/capture_upgrade.py -> alfarouqai-0.2.0/scripts
+copying scripts/package_delivery.py -> alfarouqai-0.2.0/scripts
+copying scripts/run_verification.py -> alfarouqai-0.2.0/scripts
+copying scripts/validate_project.py -> alfarouqai-0.2.0/scripts
+copying scripts/wheel_smoke.py -> alfarouqai-0.2.0/scripts
+copying src/alfarouqai/__init__.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/__main__.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/agents.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/automation.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/cli.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/client.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/core.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/dependencies.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/documents.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/extensions.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/generative.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/integrations.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/language.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/learning.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/local.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/media.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/ml.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/models.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/providers.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/py.typed -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/retrieval.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/speech.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai/vision.py -> alfarouqai-0.2.0/src/alfarouqai
+copying src/alfarouqai.egg-info/PKG-INFO -> alfarouqai-0.2.0/src/alfarouqai.egg-info
+copying src/alfarouqai.egg-info/SOURCES.txt -> alfarouqai-0.2.0/src/alfarouqai.egg-info
+copying src/alfarouqai.egg-info/dependency_links.txt -> alfarouqai-0.2.0/src/alfarouqai.egg-info
+copying src/alfarouqai.egg-info/entry_points.txt -> alfarouqai-0.2.0/src/alfarouqai.egg-info
+copying src/alfarouqai.egg-info/requires.txt -> alfarouqai-0.2.0/src/alfarouqai.egg-info
+copying src/alfarouqai.egg-info/top_level.txt -> alfarouqai-0.2.0/src/alfarouqai.egg-info
+copying tests/test_additional_verification.py -> alfarouqai-0.2.0/tests
+copying tests/test_core.py -> alfarouqai-0.2.0/tests
+copying tests/test_models.py -> alfarouqai-0.2.0/tests
+copying tests/test_optional.py -> alfarouqai-0.2.0/tests
+copying tests/test_system.py -> alfarouqai-0.2.0/tests
+copying tests/test_transport.py -> alfarouqai-0.2.0/tests
+copying tests/test_upgrade.py -> alfarouqai-0.2.0/tests
+Writing alfarouqai-0.2.0/setup.cfg
+Creating tar archive
+removing 'alfarouqai-0.2.0' (and everything under it)
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=77.0.3
+  - wheel
+* Getting build dependencies for wheel...
+running egg_info
+writing src/alfarouqai.egg-info/PKG-INFO
+writing dependency_links to src/alfarouqai.egg-info/dependency_links.txt
+writing entry points to src/alfarouqai.egg-info/entry_points.txt
+writing requirements to src/alfarouqai.egg-info/requires.txt
+writing top-level names to src/alfarouqai.egg-info/top_level.txt
+reading manifest file 'src/alfarouqai.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no files found matching '*.css' under directory 'docs'
+adding license file 'LICENSE'
+adding license file 'NOTICE'
+adding license file 'THIRD_PARTY_NOTICES.md'
+writing manifest file 'src/alfarouqai.egg-info/SOURCES.txt'
+* Installed build dependency versions:
+  - setuptools==84.2.1
+  - wheel==0.48.0
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/alfarouqai
+copying src/alfarouqai/core.py -> build/lib/alfarouqai
+copying src/alfarouqai/automation.py -> build/lib/alfarouqai
+copying src/alfarouqai/integrations.py -> build/lib/alfarouqai
+copying src/alfarouqai/language.py -> build/lib/alfarouqai
+copying src/alfarouqai/media.py -> build/lib/alfarouqai
+copying src/alfarouqai/vision.py -> build/lib/alfarouqai
+copying src/alfarouqai/agents.py -> build/lib/alfarouqai
+copying src/alfarouqai/documents.py -> build/lib/alfarouqai
+copying src/alfarouqai/cli.py -> build/lib/alfarouqai
+copying src/alfarouqai/speech.py -> build/lib/alfarouqai
+copying src/alfarouqai/ml.py -> build/lib/alfarouqai
+copying src/alfarouqai/generative.py -> build/lib/alfarouqai
+copying src/alfarouqai/client.py -> build/lib/alfarouqai
+copying src/alfarouqai/local.py -> build/lib/alfarouqai
+copying src/alfarouqai/retrieval.py -> build/lib/alfarouqai
+copying src/alfarouqai/providers.py -> build/lib/alfarouqai
+copying src/alfarouqai/dependencies.py -> build/lib/alfarouqai
+copying src/alfarouqai/__init__.py -> build/lib/alfarouqai
+copying src/alfarouqai/models.py -> build/lib/alfarouqai
+copying src/alfarouqai/__main__.py -> build/lib/alfarouqai
+copying src/alfarouqai/learning.py -> build/lib/alfarouqai
+copying src/alfarouqai/extensions.py -> build/lib/alfarouqai
+running egg_info
+writing src/alfarouqai.egg-info/PKG-INFO
+writing dependency_links to src/alfarouqai.egg-info/dependency_links.txt
+writing entry points to src/alfarouqai.egg-info/entry_points.txt
+writing requirements to src/alfarouqai.egg-info/requires.txt
+writing top-level names to src/alfarouqai.egg-info/top_level.txt
+reading manifest file 'src/alfarouqai.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no files found matching '*.css' under directory 'docs'
+adding license file 'LICENSE'
+adding license file 'NOTICE'
+adding license file 'THIRD_PARTY_NOTICES.md'
+writing manifest file 'src/alfarouqai.egg-info/SOURCES.txt'
+copying src/alfarouqai/py.typed -> build/lib/alfarouqai
+installing to build/bdist.linux-x86_64/wheel
+running install
+running install_lib
+creating build/bdist.linux-x86_64/wheel
+creating build/bdist.linux-x86_64/wheel/alfarouqai
+copying build/lib/alfarouqai/core.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/automation.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/integrations.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/language.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/media.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/vision.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/agents.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/py.typed -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/documents.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/cli.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/speech.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/ml.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/generative.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/client.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/local.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/retrieval.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/providers.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/dependencies.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/__init__.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/models.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/__main__.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/learning.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+copying build/lib/alfarouqai/extensions.py -> build/bdist.linux-x86_64/wheel/./alfarouqai
+running install_egg_info
+Copying src/alfarouqai.egg-info to build/bdist.linux-x86_64/wheel/./alfarouqai-0.2.0-py3.12.egg-info
+running install_scripts
+creating build/bdist.linux-x86_64/wheel/alfarouqai-0.2.0.dist-info/WHEEL
+creating '/home/user/alfarouq-work/AlFarouqAI/dist/.tmp-_jg5tjhz/alfarouqai-0.2.0-py3-none-any.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+adding 'alfarouqai/__init__.py'
+adding 'alfarouqai/__main__.py'
+adding 'alfarouqai/agents.py'
+adding 'alfarouqai/automation.py'
+adding 'alfarouqai/cli.py'
+adding 'alfarouqai/client.py'
+adding 'alfarouqai/core.py'
+adding 'alfarouqai/dependencies.py'
+adding 'alfarouqai/documents.py'
+adding 'alfarouqai/extensions.py'
+adding 'alfarouqai/generative.py'
+adding 'alfarouqai/integrations.py'
+adding 'alfarouqai/language.py'
+adding 'alfarouqai/learning.py'
+adding 'alfarouqai/local.py'
+adding 'alfarouqai/media.py'
+adding 'alfarouqai/ml.py'
+adding 'alfarouqai/models.py'
+adding 'alfarouqai/providers.py'
+adding 'alfarouqai/py.typed'
+adding 'alfarouqai/retrieval.py'
+adding 'alfarouqai/speech.py'
+adding 'alfarouqai/vision.py'
+adding 'alfarouqai-0.2.0.dist-info/licenses/LICENSE'
+adding 'alfarouqai-0.2.0.dist-info/licenses/NOTICE'
+adding 'alfarouqai-0.2.0.dist-info/licenses/THIRD_PARTY_NOTICES.md'
+adding 'alfarouqai-0.2.0.dist-info/METADATA'
+adding 'alfarouqai-0.2.0.dist-info/WHEEL'
+adding 'alfarouqai-0.2.0.dist-info/entry_points.txt'
+adding 'alfarouqai-0.2.0.dist-info/top_level.txt'
+adding 'alfarouqai-0.2.0.dist-info/RECORD'
+removing build/bdist.linux-x86_64/wheel
+Successfully built alfarouqai-0.2.0.tar.gz and alfarouqai-0.2.0-py3-none-any.whl

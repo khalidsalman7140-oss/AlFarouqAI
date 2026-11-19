@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=77.0.3", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alfarouqai"
+version = "0.3.0a1"
+description = "Local-first, lightweight unified AI tools and bounded agent workflows"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_NOTICES.md"]
+authors = [{name="Khalid Salman", email="khalidsalman7140@gmail.com"}]
+keywords = ["ai", "local-first", "arabic", "agents", "machine-learning"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Education",
+  "Natural Language :: Arabic",
+  "Natural Language :: English",
+]
+dependencies = []
+
+[project.optional-dependencies]
+ml = ["scikit-learn>=1.5,<2", "pandas>=2.2,<4"]
+vision = ["opencv-python-headless>=4.10,<5"]
+documents = ["pypdf>=5,<7", "python-docx>=1.1,<2", "openpyxl>=3.1,<4"]
+speech = ["faster-whisper>=1.1,<2", "av>=11,<16"]
+semantic = ["sentence-transformers>=3,<6"]
+objects = ["transformers>=4.45,<6", "torch>=2.5,<3", "Pillow>=10.4,<14", "safetensors>=0.4,<1"]
+persistence = ["skops>=0.11,<1"]
+local = ["transformers>=4.46,<5", "torch>=2.6,<3", "safetensors>=0.4,<1"]
+torchvision = ["torch>=2.6,<3", "torchvision>=0.21,<1", "Pillow>=10.4,<14"]
+deep = ["torch>=2.6,<3", "safetensors>=0.4,<1", "scikit-learn>=1.5,<2", "pandas>=2.2,<4"]
+vector = ["sentence-transformers>=3.3,<6", "faiss-cpu>=1.8,<2"]
+iot = ["pyserial>=3.5,<4", "paho-mqtt>=2,<3"]
+diffusion = ["diffusers>=0.31,<1", "transformers>=4.46,<5", "torch>=2.6,<3", "accelerate>=1,<2", "safetensors>=0.4,<1", "imageio-ffmpeg>=0.5,<1"]
+nlp = ["nltk>=3.9,<4", "scikit-learn>=1.5,<2"]
+api = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "httpx>=0.27,<1"]
+onnx = ["onnx>=1.17,<2", "onnxruntime>=1.20,<2"]
+tensorflow = ["tensorflow-cpu>=2.20,<3"]
+industrial = ["pymodbus>=3.11,<4"]
+gdrive = ["google-api-python-client>=2,<3", "google-auth-oauthlib>=1,<2"]
+dev = ["pytest>=8,<10", "build>=1.2,<2", "twine>=6,<7"]
+
+[project.scripts]
+alfarouq = "alfarouqai.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+alfarouqai = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra"
+markers = ["model: actual pretrained weights needed, run with ALFAROUQ_RUN_MODELS=1", "system: installed external executable or OS transport needed", "optional: requires an optional dependency", "contract: transport contract without real model inference"]

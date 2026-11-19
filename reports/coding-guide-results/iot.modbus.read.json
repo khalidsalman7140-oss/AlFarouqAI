@@ -1,0 +1,32 @@
+{
+  "task": "iot.modbus.read",
+  "data": {
+    "address": 0,
+    "device_id": 1,
+    "registers": [
+      10,
+      20
+    ],
+    "rows": [
+      {
+        "address": 0,
+        "raw_uint16": 10
+      },
+      {
+        "address": 1,
+        "raw_uint16": 20
+      }
+    ]
+  },
+  "backend": "pymodbus.tcp-read-only",
+  "warnings": [
+    "Raw 16-bit registers; scaling, signedness, byte order and engineering units are device-specific. Local server verification is not physical PLC validation."
+  ],
+  "provenance": {
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.031397,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

@@ -1,0 +1,12 @@
+{
+  "scope": "project structure and offline links checked before archive; CRC/extracted hashes checked by package_delivery.py and validate_project.py",
+  "checks": {
+    "required_paths": 18,
+    "local_html_links_checked": 142,
+    "broken_links": 0,
+    "founder_photo_sha256": "ff8c7c185bf665880113a33a707afd631cd6d0084e2f3d65b100d34cef74dd87",
+    "wheel_crc_ok": true
+  },
+  "zip_crc_required": true,
+  "extracted_sha256_required": true
+}

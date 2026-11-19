@@ -1,0 +1,36 @@
+{
+  "backup_original_sha256": "d34900e720c459349346dbe5b573a4a0bb5246a6f5a1dc5e54a87642cb647cec",
+  "backup_original_bytes": 3030186,
+  "original_test_files": {
+    "tests/test_additional_verification.py": {
+      "original_test_functions": 4,
+      "preserved": true
+    },
+    "tests/test_core.py": {
+      "original_test_functions": 45,
+      "preserved": true
+    },
+    "tests/test_models.py": {
+      "original_test_functions": 5,
+      "preserved": true
+    },
+    "tests/test_optional.py": {
+      "original_test_functions": 12,
+      "preserved": true
+    },
+    "tests/test_system.py": {
+      "original_test_functions": 3,
+      "preserved": true
+    },
+    "tests/test_transport.py": {
+      "original_test_functions": 7,
+      "preserved": true
+    },
+    "tests/test_upgrade.py": {
+      "original_test_functions": 16,
+      "preserved": true
+    }
+  },
+  "all_original_test_names_preserved": true,
+  "scope": "Preserves original test names; execution success is separately evidenced by final installed-wheel suite."
+}

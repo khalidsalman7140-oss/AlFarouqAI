@@ -1,0 +1,33 @@
+{
+  "task": "rag.semantic",
+  "data": {
+    "query": "measuring temperature",
+    "rows": [
+      {
+        "id": 1,
+        "source": "temperature",
+        "start": 0,
+        "end": 42,
+        "text": "المستشعر يقيس درجة الحرارة ويرسل القراءات.",
+        "score": 0.6514427661895752
+      },
+      {
+        "id": 2,
+        "source": "software",
+        "start": 0,
+        "end": 45,
+        "text": "المكتبة البرمجية توحد أدوات الذكاء الاصطناعي.",
+        "score": -0.025246763601899147
+      }
+    ]
+  },
+  "backend": "sentence-transformers+faiss+sqlite",
+  "warnings": [
+    "Cosine score is not a calibrated confidence or truth probability."
+  ],
+  "provenance": {
+    "actual_weight_inference": true,
+    "model_path": "/home/user/alfarouq-models/minilm-multilingual"
+  },
+  "schema_version": "1.0"
+}

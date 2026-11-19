@@ -1,0 +1,30 @@
+{
+  "task": "rag.answer",
+  "data": {
+    "text": "[1] temperature: المستشعر يقيس درجة الحرارة ويرسل القراءات.",
+    "generated_tokens": 45,
+    "input_tokens": 112,
+    "sources": [
+      {
+        "id": 1,
+        "source": "temperature",
+        "start": 0,
+        "end": 42,
+        "text": "المستشعر يقيس درجة الحرارة ويرسل القراءات.",
+        "score": 0.6336187124252319
+      }
+    ],
+    "abstained": false
+  },
+  "backend": "transformers.local-causal-lm",
+  "warnings": [
+    "Generated content can be wrong. Default 135M model is English-first and limited; not a strongest-model or Arabic-quality claim. Input is truncated to 1024 tokens.",
+    "Citation presence and factual entailment are NOT guaranteed. Verify against returned sources."
+  ],
+  "provenance": {
+    "model_path": "/home/user/alfarouq-models/smollm2-135m",
+    "actual_weight_inference": true,
+    "device": "cpu"
+  },
+  "schema_version": "1.0"
+}

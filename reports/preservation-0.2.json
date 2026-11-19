@@ -1,0 +1,9 @@
+{
+  "founder_photo_sha256": "ff8c7c185bf665880113a33a707afd631cd6d0084e2f3d65b100d34cef74dd87",
+  "original_tests": {
+    "test_optional.py": true,
+    "test_core.py": true,
+    "test_transport.py": true
+  },
+  "identity_preserved": true
+}

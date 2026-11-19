@@ -1,0 +1,64 @@
+{
+  "version": "0.2.0",
+  "execution": "sequential isolated pytest workers; not a monolithic same-process run",
+  "installed_wheel": false,
+  "counts": {
+    "tests": 107,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "workers": [
+    {
+      "job": [
+        "-m",
+        "not model"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers/worker-0.log"
+    },
+    {
+      "job": [
+        "tests/test_additional_verification.py::test_new_public_dispatch_and_original_semantic_adapter"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers/worker-1.log"
+    },
+    {
+      "job": [
+        "tests/test_models.py::test_real_llm_generation_classification_and_code"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers/worker-2.log"
+    },
+    {
+      "job": [
+        "tests/test_models.py::test_real_torchvision_detection_classification_segmentation_and_video"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers/worker-3.log"
+    },
+    {
+      "job": [
+        "tests/test_models.py::test_real_tts_and_whisper_transcription"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers/worker-4.log"
+    },
+    {
+      "job": [
+        "tests/test_models.py::test_real_semantic_store_persistence_and_grounded_generation"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers/worker-5.log"
+    },
+    {
+      "job": [
+        "tests/test_models.py::test_real_local_llm_planner_and_reviewer"
+      ],
+      "returncode": 0,
+      "log": "reports/verification-workers/worker-6.log"
+    }
+  ],
+  "actual_model_tests_opted_in": true
+}

@@ -1,0 +1,21 @@
+{
+  "task": "tensorflow.predict",
+  "data": {
+    "outputs": [
+      [
+        5.0
+      ]
+    ]
+  },
+  "backend": "tensorflow.keras.cpu",
+  "warnings": [
+    "safe_mode is defense in depth, not permission to load hostile files. Reviewed models only; no custom objects or training API claimed."
+  ],
+  "provenance": {
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.0357,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

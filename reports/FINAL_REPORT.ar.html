@@ -1,0 +1,155 @@
+<!doctype html><html lang="ar" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FINAL_REPORT.ar | AlFarouq AI</title><style>body{font:17px/1.85 system-ui,sans-serif;max-width:1080px;margin:0 auto;padding:32px;background:#fafcff;color:#16243b}a{color:#075f94}pre,code{direction:ltr;text-align:left;font-family:monospace}pre{overflow:auto;padding:22px;border-radius:12px;background:#0d2235;color:#e0f4ff}code{font-size:.9em}table{border-collapse:collapse;width:100%;display:block;overflow:auto}td,th{border:1px solid #cbd5e1;padding:10px;text-align:start}th{background:#e2eef5}h1,h2{color:#073d57}img{max-width:100%}nav,footer{padding:16px 0;border-bottom:1px solid #cbd5e1}footer{font-size:13px;color:#475569}blockquote{border-inline-start:4px solid #079499;padding-inline-start:1em} @media print{body{font-size:12px}pre{white-space:pre-wrap}}</style><nav><a href="../docs/index.html">AlFarouq AI — Documentation / التوثيق</a></nav><main><h1 id="alfarouq-ai-020-alpha">تقرير تطوير وتسليم AlFarouq AI 0.2.0 Alpha</h1>
+<p><strong>2026-11-15 — تطوير إضافي للإصدار 0.1.0؛ لم ينشر المشروع علناً.</strong></p>
+<h2 id="1">1. ما الذي استمر وما الذي تغير</h2>
+<p>حوفظ على ملفات الاختبارات الأصلية الثلاثة دون تعديل، ونجحت اختباراتها الـ79.
+حوفظ على الأدوات والواجهة القديمة، وأضيفت وحدات جديدة وتوسعات للواجهة والاعتماديات
+وإدارة دورة حياة النماذج. الصورة الأصلية وبطاقتها لم تتغيرا، والاسم وبيانات المؤسس
+والبريد محفوظة. أضيف منع الاشتقاق صراحة إلى الترخيص الخاص، دون أي ترخيص استخدام
+عام للكود الأصلي. سجلات 0.1.0 محفوظة في reports/releases/0.1.0.</p>
+<p>أصبح السجل يضم <strong>40 قدرة</strong>، منها <strong>36 لها دليل تنفيذ محلي</strong> بين الأدوات القديمة
+والجديدة. الأربع الباقية موضحة أدناه. عدد الواجهات لا يساوي عدد نماذج مستقلة، ولا
+يثبت اكتمال كل أبحاث الذكاء الاصطناعي أو التفوق على المكتبات العالمية.</p>
+<h2 id="2">2. الاختبارات والأدلة</h2>
+<p><strong>107 اختبارات ناجحة، صفر فشل، صفر أخطاء، صفر متخطى.</strong> استعمل التحقق عمليات
+pytest متتابعة معزولة الذاكرة، لا عملية ضخمة تجمع كل النماذج. البيئة Linux وPython
+3.12 وCPU وذاكرة متاحة تقارب 2 جيجابايت. انظر <a href="verification-run-0.2.json">الملخص</a>،
+<a href="pytest-0.2.xml">JUnit XML</a>، وسجلات verification-workers. فحص wheel الكامل:
+<strong>True</strong> كما يسجله الاختبار، لا استنتاج من إنشاء ملف فقط.
+<a href="preservation-0.2.json">حفظ الميزات الأصلية</a> · <a href="capability-verification-0.2.json">جرد القدرات</a>.</p>
+<h2 id="3">3. نماذج مدربة شغلت فعلياً</h2>
+<table>
+<thead>
+<tr>
+<th>المجال</th>
+<th>النموذج/المحرك والدليل</th>
+<th>الحدود</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>نصوص وNLP وكود</td>
+<td>SmolLM2-135M-Instruct، توليد وتصنيف احتمالي واقتراح كود وإصلاح</td>
+<td>صغير وإنجليزي أساساً؛ لا جودة عربية متقدمة أو صحة كود مضمونة</td>
+</tr>
+<tr>
+<td>كشف أشياء</td>
+<td>SSDlite320/MobileNetV3 بأوزان COCO</td>
+<td>أصناف محدودة، لا هوية أشخاص</td>
+</tr>
+<tr>
+<td>تصنيف صور</td>
+<td>MobileNet V3 Small بأوزان ImageNet</td>
+<td>فئات ImageNet لا وصف شامل</td>
+</tr>
+<tr>
+<td>تقسيم صور</td>
+<td>LRASPP/MobileNetV3 بأوزان VOC</td>
+<td>class-ID mask فعلية؛ ليس instance segmentation</td>
+</tr>
+<tr>
+<td>فيديو وتتبع</td>
+<td>كشف مدرب + centroid IDs على مقطع مصدره الصورة المرفقة</td>
+<td>مؤقت ومعرض لتبديل الهوية عند التداخل؛ لا فهم أفعال</td>
+</tr>
+<tr>
+<td>صوت إلى نص</td>
+<td>Whisper tiny / CTranslate2 CPU-int8</td>
+<td>اختبر صوتاً إنجليزياً مولداً؛ أخطأ بعض الكلمات</td>
+</tr>
+<tr>
+<td>نص إلى صوت</td>
+<td>espeak-ng منفذ خارجي أنتج WAV فعلياً</td>
+<td>formant synthesis، ليس TTS عصبياً أو استنساخ صوت</td>
+</tr>
+<tr>
+<td>OCR</td>
+<td>Tesseract وحزم eng/ara على نصوص مطبوعة</td>
+<td>جودة المسح والخط اليدوي ليست مضمونة</td>
+</tr>
+<tr>
+<td>تضمين وبحث</td>
+<td>multilingual MiniLM-L12-v2 + FAISS IndexFlatIP + SQLite</td>
+<td>بحث عابر للغات فعلي؛ 10000 مقطع سقفاً، لا قاعدة موزعة</td>
+</tr>
+</tbody>
+</table>
+<p>الأوزان الستة نزلت فعلياً وحفظت مراجعات المصدر وبصمات الملفات في model-manifests.
+لا أوزان عشوائية سميت اختبار استدلال ناجحاً. مجموع أوزان التحقق نحو 847 MB خارج
+حزمة المصدر؛ لم تضخّم النواة أو الأرشيف. يتطلب أول استعمال على جهاز جديد تنزيل
+النموذج بموافقتك، ثم يمكن العمل من cache محلياً. لا API مدفوع إلزامي.</p>
+<h2 id="4">4. خدمات إضافية شغلت</h2>
+<ul>
+<li>شبكة PyTorch متعددة الطبقات: تصنيف وانحدار وتقييم وحفظ safetensors وJSON ثم
+استعادة النموذج ومقارنة التنبؤ. ليست API تدريب CNN/Transformer أو finetuning.</li>
+<li>تنبؤ خط اتجاه بتقسيم زمني، وتوصيات collaborative cosine، وIsolationForest
+دفاعي؛ baselines حقيقية محدودة، لا AutoML شامل ولا إثبات هجوم.</li>
+<li>RAG يعيد مصادر وإزاحات ويولّد جواباً من السياق؛ لا ضمان لصحة الإسناد أو منع
+الهلوسة. أضيفت هوية نموذج قابلة لنقل cache بين الأجهزة.</li>
+<li>وكيل لغوي اختار ونفذ <strong>1 أداة</strong> في عينة التحقق ثم ولّد مراجعة؛ مخطط ومراجع
+يشتركان في النموذج نفسه، لا عقول أو نماذج مستقلة. قائمة الأدوات ثابتة والمدخلات
+من المستخدم، ولا تنفيذ أكواد يكتبها النموذج. AgentTeam السابق محفوظ.</li>
+<li>Scheduler دائم في SQLite يشغّل المهام عند tick فقط؛ ليس خدمة دائمة ولا
+exactly-once بعد انهيار العملية. أتمتة محلية حقيقية لا تشغيل خلفي مخفي.</li>
+<li>MQTT نشر وقراءة مع وسيط Mosquitto محلي حقيقي وQoS1 ACK. Serial قراءة/كتابة
+على pseudo-terminal حقيقي بنواة Linux. لا أجهزة مادية أو روبوتات اختبرت.</li>
+<li>code.test شغّل unittest لمشروع اختبار موثوق. العملية والمهلة ليستا sandbox
+أمنياً، ولا يجوز تشغيل كود مجهول تلقائياً.</li>
+<li>اختبر مسار التثبيت الشبكي لإضافة iot في venv مُدارة واستيراد حزمها بمفسرها.
+اختبر skops save القديم فعلياً، وكذلك SemanticIndex القديم بأوزان تضمين فعلية.</li>
+</ul>
+<h2 id="5">5. جودة النتائج ليست ادعاءً تسويقياً</h2>
+<p>نطقت عينة الكلام: Hello world. This is a speech recognition test.
+أما التفريغ الفعلي فكان: <strong>The Long World. This is my speech recognition test.</strong>. احتفظنا بالخطأ ولم نستبدل الناتج بنص متوقع.
+عينات الرؤية والصوت والـOCR تعليمية صغيرة، لا benchmark علمي أو دليل دقة عامة.
+مقاييس التدريب المصطنع لا تثبت التعميم. لا ادعاء «أقوى نموذج» أو «الأفضل عالمياً».
+أزمنة Result تشمل التحميل غالباً، ولا تقارن مباشرة بقياس warm inference.</p>
+<h2 id="6">6. المشكلات التي ظهرت وعولجت وحدود الموارد</h2>
+<p>فشل faster-whisper مع PyAV 19 بسبب metadata_errors؛ عولج بتقييد av&gt;=11,&lt;16
+وأعيد الاختبار. أوقف النظام جولة تجمع نماذج كثيرة في عملية واحدة بسبب ضغط
+الذاكرة؛ أضيف إغلاق صريح للنماذج ومخازن المتجهات، ونص تحقق بعمليات متتابعة
+مستقلة. لهذا لا ندّعي أن تشغيل جميع النماذج معاً في 2GB آمن. لم يتم تدقيق أمان
+مستقل أو فحص ثغرات شامل أو اختبار GPU/Windows/macOS. ملفات متطلبات الاختبار
+جرد إصدارات لا lock محمولاً ولا ضمان أمان أبدي.</p>
+<h2 id="7">7. ما لم يكتمل أو لم يُختبر فعلياً</h2>
+<ol>
+<li><strong>image.generate وvideo.generate</strong>: تكامل Stable Diffusion/CogVideoX تجريبي،
+اختبرت بواباته فقط، ولم يشغل استدلال بأوزان فعلية. الذاكرة/العتاد المتاحان لا
+يكفيان للتحقق المسؤول من نماذج الفيديو؛ يلزم جهاز مناسب ونموذج وترخيص وتقييم.</li>
+<li>المساران القديمان <strong>llm.chat عبر Ollama</strong> و<strong>image.objects عبر Transformers</strong>
+لم يختبرا بأوزان فعلية هنا؛ البديلان الجديدان local.generate وvision.detect
+اختبرا فعلاً. لم نحذف المسارين أو نعد تسميتهما وكأنهما اختبرا.</li>
+<li>لا ROS/SLAM أو تحكم روبوت مادي أو حساسات فعلية؛ يلزم العتاد وبروتوكول
+وسلامة وموافقة خاصة. نجاح رسالة MQTT ليس إثبات حالة محرك.</li>
+<li>لا fine-tuning لنماذج كبيرة، ولا فيديو توليدي مختبر، ولا صوت عصبي طبيعي،
+ولا تقييم شامل للعربية أو اختبار RAG faithfulness أو تصحيح تلقائي مضمون للكود.</li>
+<li>أمثلة Colab/Kaggle/Jupyter وقالب Hugging Face وGitHub/PyPI مجهزة محلياً،
+لكن لم تشغل تلك المنصات أو الحاوية أو Gradio. الدفتر تحقق JSON وصياغة خلاياه
+محلياً فقط. لم يحجز اسم أو ينشأ مستودع خارجي أو تنشر حزمة أو Space أو Dataset.</li>
+</ol>
+<h2 id="8">8. التوثيق والملكية والانتشار</h2>
+<p>أضيف كتاب استخدام عربي وإنجليزي ومنهج تعليمي من 20 وحدة و9 أمثلة جديدة ودفتر
+محمول وقالب نشر اختياري، مع بقاء التوثيق والأمثلة القديمة ومراعاة سياق نسختها.
+<a href="../docs/ar/handbook-0.2.html">الكتاب العربي</a> · <a href="../docs/ar/curriculum.html">المنهج</a> ·
+<a href="../docs/research/SOURCES-0.2.html">مصادر القرارات</a>.</p>
+<p>الترخيص <strong>Proprietary / All Rights Reserved</strong> للأعمال الأصلية لخالد سلمان من
+اليمن. لا MIT/Apache/GPL يمنح الجمهور حقوقاً على كوده الأصلي. التراخيص المذكورة
+للمكتبات والأوزان تخص أصحابها وحدهم. espeak-ng برنامج خارجي GPL غير مضمّن أو
+مرتبط بالكود الأصلي؛ لا يشكل هذا الرأي ضماناً قانونياً لتركيب أو توزيع مشترك.
+راجع بيانات التدريب وشروط كل وزن قبل الاستخدام التجاري. لا تدقيق قانوني شامل.</p>
+<p>منع الاستخدام والاشتقاق العام يقيد التبني العالمي؛ لا يمكن ضمان انتشار مفتوح
+مع منع إعادة الاستخدام. يستطيع المالك إصدار أذونات تعليمية/تجارية مكتوبة، ولا
+أصدرها نيابة عنه. لا نشر تلقائي ينتهك شرط الموافقة. لا وعود بترتيب عالمي أول.</p>
+<h2 id="9">9. التشغيل والتسليم</h2>
+<p>ابدأ بـ docs/index.html ثم الكتاب. ثبّت من مجلدك أو wheel المرفق، لا تفترض
+ملكية اسم PyPI. الاستدعاء بعد الإعداد والموافقات يكون سطراً أو سطرين مثل:</p>
+<pre><code class="language-python">ai = Client(Config(allow_network=True, allow_model_download=True))
+r = ai.run('vision.detect', image='photo.jpg')
+</code></pre>
+<p>هذا لا يلغي تثبيت إضافة torchvision/vision أو متطلبات الجهاز. تعاد النتائج
+كـResult وتصدر JSON/CSV/MD/HTML/TXT؛ الملفات الحقيقية للصوت والـmask والتقارير
+في v0.2-model-results. الأرشيف يحتوي المصدر والوثائق والأمثلة والاختبارات
+والهوية وحزم التوزيع وأدلة التشغيل، لا أوزان النماذج أو بيئات venv.</p>
+<p>جُهز مسارا تسليم: أرشيف صغير ورابط ملف داخل AI Drive الخاص بالمالك. لا يمكن
+لهذه المكتبة أو لهذا التقرير إلغاء اشتراك المنصة أو ضمان سياسة تنزيلها؛ لم
+تنشر الملفات على مضيف عام دون موافقتك. تحقق ZIP وفك الضغط والبصمات يسجله نص
+validate_project.py، وبصمة الأرشيف في الملف المرافق.</p></main><footer>© 2026 Khalid Salman — Original code Apache-2.0. Identity and third-party rights are separate. Local alpha; not published.</footer></html>

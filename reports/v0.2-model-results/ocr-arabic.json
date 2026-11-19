@@ -1,0 +1,54 @@
+{
+  "task": "vision.ocr",
+  "data": {
+    "text": "الذكاء الاصطناعي يساعد الطلاب",
+    "rows": [
+      {
+        "text": "الذكاء",
+        "confidence": 92.164429,
+        "x": 586,
+        "y": 59,
+        "width": 109,
+        "height": 39
+      },
+      {
+        "text": "الاصطناعي",
+        "confidence": 90.628899,
+        "x": 342,
+        "y": 59,
+        "width": 219,
+        "height": 50
+      },
+      {
+        "text": "يساعد",
+        "confidence": 89.448296,
+        "x": 196,
+        "y": 59,
+        "width": 125,
+        "height": 45
+      },
+      {
+        "text": "الطلاب",
+        "confidence": 90.809853,
+        "x": 33,
+        "y": 59,
+        "width": 139,
+        "height": 47
+      }
+    ],
+    "language": "ara"
+  },
+  "backend": "tesseract.system",
+  "warnings": [
+    "Recognition depends on scan quality and installed language packs; Arabic quality not guaranteed."
+  ],
+  "provenance": {
+    "actual_model_inference": true,
+    "input_sha256": "4cab16fe7599505abad56949e75796d458a20b1dc39df77363f1e1c5437c9c93",
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.13293,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

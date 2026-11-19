@@ -1,0 +1,737 @@
+{
+  "task": "code.analyze",
+  "data": {
+    "parsed_files": 12,
+    "rows": [
+      {
+        "file": "__init__.py",
+        "lines": 12,
+        "imports": [
+          "agents",
+          "client",
+          "core",
+          "documents"
+        ],
+        "functions": [],
+        "classes": []
+      },
+      {
+        "file": "__main__.py",
+        "lines": 2,
+        "imports": [
+          "cli"
+        ],
+        "functions": [],
+        "classes": []
+      },
+      {
+        "file": "agents.py",
+        "lines": 116,
+        "imports": [
+          "__future__",
+          "client",
+          "concurrent.futures",
+          "core",
+          "dataclasses",
+          "json"
+        ],
+        "functions": [
+          {
+            "name": "references",
+            "line": 28,
+            "documented": false,
+            "branches": 5
+          },
+          {
+            "name": "resolve",
+            "line": 38,
+            "documented": false,
+            "branches": 7
+          },
+          {
+            "name": "__init__",
+            "line": 60,
+            "documented": false,
+            "branches": 2
+          },
+          {
+            "name": "plan",
+            "line": 68,
+            "documented": false,
+            "branches": 7
+          },
+          {
+            "name": "run",
+            "line": 92,
+            "documented": false,
+            "branches": 4
+          },
+          {
+            "name": "execute",
+            "line": 96,
+            "documented": false,
+            "branches": 0
+          }
+        ],
+        "classes": [
+          {
+            "name": "Ref",
+            "line": 14
+          },
+          {
+            "name": "Step",
+            "line": 20
+          },
+          {
+            "name": "AgentTeam",
+            "line": 57
+          }
+        ]
+      },
+      {
+        "file": "cli.py",
+        "lines": 57,
+        "imports": [
+          "__future__",
+          "argparse",
+          "client",
+          "core",
+          "dependencies",
+          "json",
+          "sys"
+        ],
+        "functions": [
+          {
+            "name": "main",
+            "line": 12,
+            "documented": false,
+            "branches": 12
+          }
+        ],
+        "classes": []
+      },
+      {
+        "file": "client.py",
+        "lines": 103,
+        "imports": [
+          "",
+          "__future__",
+          "core"
+        ],
+        "functions": [
+          {
+            "name": "default_registry",
+            "line": 8,
+            "documented": false,
+            "branches": 1
+          },
+          {
+            "name": "__init__",
+            "line": 31,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "capabilities",
+            "line": 35,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "run",
+            "line": 38,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "train",
+            "line": 41,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "plan",
+            "line": 44,
+            "documented": false,
+            "branches": 20
+          },
+          {
+            "name": "__call__",
+            "line": 92,
+            "documented": false,
+            "branches": 2
+          },
+          {
+            "name": "AI",
+            "line": 101,
+            "documented": true,
+            "branches": 0
+          }
+        ],
+        "classes": [
+          {
+            "name": "Client",
+            "line": 30
+          }
+        ]
+      },
+      {
+        "file": "core.py",
+        "lines": 239,
+        "imports": [
+          "__future__",
+          "csv",
+          "dataclasses",
+          "hashlib",
+          "html",
+          "importlib",
+          "importlib.metadata",
+          "inspect",
+          "io",
+          "json",
+          "math",
+          "os",
+          "pathlib",
+          "tempfile",
+          "time",
+          "typing"
+        ],
+        "functions": [
+          {
+            "name": "require",
+            "line": 36,
+            "documented": false,
+            "branches": 1
+          },
+          {
+            "name": "__post_init__",
+            "line": 57,
+            "documented": false,
+            "branches": 6
+          },
+          {
+            "name": "load",
+            "line": 70,
+            "documented": false,
+            "branches": 2
+          },
+          {
+            "name": "save",
+            "line": 79,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "atomic_write",
+            "line": 83,
+            "documented": true,
+            "branches": 3
+          },
+          {
+            "name": "input_file",
+            "line": 102,
+            "documented": false,
+            "branches": 2
+          },
+          {
+            "name": "fingerprint",
+            "line": 111,
+            "documented": false,
+            "branches": 1
+          },
+          {
+            "name": "clean_json",
+            "line": 119,
+            "documented": false,
+            "branches": 6
+          },
+          {
+            "name": "to_dict",
+            "line": 144,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "export",
+            "line": 147,
+            "documented": true,
+            "branches": 11
+          },
+          {
+            "name": "__init__",
+            "line": 197,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "register",
+            "line": 200,
+            "documented": false,
+            "branches": 1
+          },
+          {
+            "name": "get",
+            "line": 205,
+            "documented": false,
+            "branches": 1
+          },
+          {
+            "name": "list",
+            "line": 210,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "load_plugins",
+            "line": 213,
+            "documented": false,
+            "branches": 2
+          },
+          {
+            "name": "timed_result",
+            "line": 224,
+            "documented": false,
+            "branches": 4
+          }
+        ],
+        "classes": [
+          {
+            "name": "AlFarouqError",
+            "line": 20
+          },
+          {
+            "name": "ValidationError",
+            "line": 23
+          },
+          {
+            "name": "MissingDependency",
+            "line": 26
+          },
+          {
+            "name": "ConsentRequired",
+            "line": 29
+          },
+          {
+            "name": "UnsupportedTask",
+            "line": 32
+          },
+          {
+            "name": "Config",
+            "line": 44
+          },
+          {
+            "name": "Result",
+            "line": 136
+          },
+          {
+            "name": "Capability",
+            "line": 187
+          },
+          {
+            "name": "Registry",
+            "line": 196
+          }
+        ]
+      },
+      {
+        "file": "dependencies.py",
+        "lines": 69,
+        "imports": [
+          "__future__",
+          "core",
+          "importlib.metadata",
+          "json",
+          "pathlib",
+          "subprocess",
+          "sys",
+          "venv"
+        ],
+        "functions": [
+          {
+            "name": "doctor",
+            "line": 24,
+            "documented": false,
+            "branches": 3
+          },
+          {
+            "name": "installation_plan",
+            "line": 38,
+            "documented": false,
+            "branches": 2
+          },
+          {
+            "name": "install_extra",
+            "line": 46,
+            "documented": false,
+            "branches": 7
+          }
+        ],
+        "classes": []
+      },
+      {
+        "file": "documents.py",
+        "lines": 165,
+        "imports": [
+          "__future__",
+          "collections",
+          "core",
+          "json",
+          "local",
+          "math",
+          "pathlib",
+          "re",
+          "zipfile"
+        ],
+        "functions": [
+          {
+            "name": "document_read",
+            "line": 14,
+            "documented": false,
+            "branches": 17
+          },
+          {
+            "name": "__init__",
+            "line": 73,
+            "documented": false,
+            "branches": 1
+          },
+          {
+            "name": "add",
+            "line": 80,
+            "documented": false,
+            "branches": 4
+          },
+          {
+            "name": "search",
+            "line": 94,
+            "documented": false,
+            "branches": 4
+          },
+          {
+            "name": "vec",
+            "line": 104,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "save",
+            "line": 118,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "load",
+            "line": 122,
+            "documented": false,
+            "branches": 4
+          },
+          {
+            "name": "__init__",
+            "line": 142,
+            "documented": false,
+            "branches": 1
+          },
+          {
+            "name": "add",
+            "line": 153,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "search",
+            "line": 157,
+            "documented": false,
+            "branches": 2
+          }
+        ],
+        "classes": [
+          {
+            "name": "KnowledgeBase",
+            "line": 71
+          },
+          {
+            "name": "SemanticIndex",
+            "line": 140
+          }
+        ]
+      },
+      {
+        "file": "local.py",
+        "lines": 191,
+        "imports": [
+          "__future__",
+          "ast",
+          "collections",
+          "core",
+          "csv",
+          "math",
+          "pathlib",
+          "re",
+          "statistics"
+        ],
+        "functions": [
+          {
+            "name": "tokens",
+            "line": 14,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "text_analyze",
+            "line": 18,
+            "documented": false,
+            "branches": 1
+          },
+          {
+            "name": "read_csv",
+            "line": 30,
+            "documented": false,
+            "branches": 5
+          },
+          {
+            "name": "finite_number",
+            "line": 48,
+            "documented": false,
+            "branches": 2
+          },
+          {
+            "name": "data_profile",
+            "line": 56,
+            "documented": false,
+            "branches": 4
+          },
+          {
+            "name": "sensor_analyze",
+            "line": 71,
+            "documented": false,
+            "branches": 5
+          },
+          {
+            "name": "__init__",
+            "line": 86,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "add",
+            "line": 94,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "visit_Import",
+            "line": 97,
+            "documented": false,
+            "branches": 1
+          },
+          {
+            "name": "visit_ImportFrom",
+            "line": 102,
+            "documented": false,
+            "branches": 1
+          },
+          {
+            "name": "visit_FunctionDef",
+            "line": 107,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "visit_ClassDef",
+            "line": 113,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "visit_Call",
+            "line": 117,
+            "documented": false,
+            "branches": 4
+          },
+          {
+            "name": "full",
+            "line": 118,
+            "documented": false,
+            "branches": 2
+          },
+          {
+            "name": "visit_ExceptHandler",
+            "line": 131,
+            "documented": false,
+            "branches": 1
+          },
+          {
+            "name": "visit_Assign",
+            "line": 136,
+            "documented": false,
+            "branches": 2
+          },
+          {
+            "name": "code_analyze",
+            "line": 143,
+            "documented": false,
+            "branches": 13
+          },
+          {
+            "name": "security_logs",
+            "line": 181,
+            "documented": false,
+            "branches": 3
+          }
+        ],
+        "classes": [
+          {
+            "name": "SourceVisitor",
+            "line": 85
+          }
+        ]
+      },
+      {
+        "file": "media.py",
+        "lines": 112,
+        "imports": [
+          "__future__",
+          "core",
+          "pathlib",
+          "wave"
+        ],
+        "functions": [
+          {
+            "name": "image_analyze",
+            "line": 9,
+            "documented": false,
+            "branches": 4
+          },
+          {
+            "name": "video_motion",
+            "line": 28,
+            "documented": false,
+            "branches": 11
+          },
+          {
+            "name": "audio_info",
+            "line": 67,
+            "documented": false,
+            "branches": 1
+          },
+          {
+            "name": "transcribe",
+            "line": 78,
+            "documented": false,
+            "branches": 2
+          },
+          {
+            "name": "objects_detect",
+            "line": 92,
+            "documented": true,
+            "branches": 2
+          }
+        ],
+        "classes": []
+      },
+      {
+        "file": "ml.py",
+        "lines": 116,
+        "imports": [
+          "__future__",
+          "core",
+          "dataclasses",
+          "json",
+          "local",
+          "pathlib",
+          "sklearn",
+          "sklearn.compose",
+          "sklearn.ensemble",
+          "sklearn.impute",
+          "sklearn.metrics",
+          "sklearn.model_selection",
+          "sklearn.pipeline",
+          "sklearn.preprocessing"
+        ],
+        "functions": [
+          {
+            "name": "predict",
+            "line": 19,
+            "documented": false,
+            "branches": 2
+          },
+          {
+            "name": "save",
+            "line": 30,
+            "documented": false,
+            "branches": 3
+          },
+          {
+            "name": "train",
+            "line": 47,
+            "documented": false,
+            "branches": 18
+          },
+          {
+            "name": "train_report",
+            "line": 115,
+            "documented": false,
+            "branches": 0
+          }
+        ],
+        "classes": [
+          {
+            "name": "TrainedModel",
+            "line": 12
+          }
+        ]
+      },
+      {
+        "file": "providers.py",
+        "lines": 63,
+        "imports": [
+          "__future__",
+          "base64",
+          "core",
+          "json",
+          "urllib.error",
+          "urllib.parse",
+          "urllib.request"
+        ],
+        "functions": [
+          {
+            "name": "redirect_request",
+            "line": 13,
+            "documented": false,
+            "branches": 0
+          },
+          {
+            "name": "ollama_request",
+            "line": 17,
+            "documented": false,
+            "branches": 10
+          },
+          {
+            "name": "chat",
+            "line": 49,
+            "documented": false,
+            "branches": 4
+          }
+        ],
+        "classes": [
+          {
+            "name": "NoRedirect",
+            "line": 12
+          }
+        ]
+      }
+    ],
+    "findings": []
+  },
+  "backend": "stdlib.ast",
+  "warnings": [
+    "Static heuristic review; not a proof of security. Source code was not executed."
+  ],
+  "provenance": {
+    "library_version": "0.1.0",
+    "elapsed_seconds": 0.038392,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

@@ -1,0 +1,22 @@
+{
+  "task": "local.generate",
+  "data": {
+    "text": "Python is a high-level, interpreted programming language that is widely used for web development, data analysis, machine learning, and automation. It is a versatile language that can be used for a wide range",
+    "generated_tokens": 40,
+    "input_tokens": 29
+  },
+  "backend": "transformers.local-causal-lm",
+  "warnings": [
+    "Generated content can be wrong. Default 135M model is English-first and limited; not a strongest-model or Arabic-quality claim. Input is truncated to 1024 tokens."
+  ],
+  "provenance": {
+    "model_path": "/home/user/alfarouq-models/smollm2-135m",
+    "actual_weight_inference": true,
+    "device": "cpu",
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 5.080465,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

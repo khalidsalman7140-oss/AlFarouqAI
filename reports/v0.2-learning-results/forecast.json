@@ -1,0 +1,39 @@
+{
+  "task": "data.forecast",
+  "data": {
+    "holdout_mae": 9.716434782608696,
+    "rows": [
+      {
+        "step": 1,
+        "prediction": 28.236551724137925
+      },
+      {
+        "step": 2,
+        "prediction": 28.507942157953273
+      },
+      {
+        "step": 3,
+        "prediction": 28.779332591768622
+      },
+      {
+        "step": 4,
+        "prediction": 29.050723025583974
+      },
+      {
+        "step": 5,
+        "prediction": 29.322113459399326
+      }
+    ]
+  },
+  "backend": "numpy.linear-trend",
+  "warnings": [
+    "Linear trend baseline, not seasonal forecasting. Input CSV row order is treated as time. Chronological 80/20 holdout."
+  ],
+  "provenance": {
+    "library_version": "0.2.0",
+    "elapsed_seconds": 0.012219,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

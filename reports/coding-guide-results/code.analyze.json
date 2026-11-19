@@ -1,0 +1,36 @@
+{
+  "task": "code.analyze",
+  "data": {
+    "parsed_files": 1,
+    "rows": [
+      {
+        "file": "<inline>",
+        "lines": 2,
+        "imports": [
+          "os"
+        ],
+        "functions": [],
+        "classes": []
+      }
+    ],
+    "findings": [
+      {
+        "file": "<inline>",
+        "line": 2,
+        "rule": "dangerous-call",
+        "message": "Review os.system; untrusted input may execute code"
+      }
+    ]
+  },
+  "backend": "stdlib.ast",
+  "warnings": [
+    "Static heuristic review; not a proof of security. Source code was not executed."
+  ],
+  "provenance": {
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.000142,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

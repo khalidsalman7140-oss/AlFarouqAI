@@ -1,0 +1,6 @@
+{
+  "version": "0.3.0a1",
+  "scanned_text_files": 550,
+  "issues": [],
+  "scope": "static high-confidence secret patterns, syntax, version and license checks; not a complete audit"
+}

@@ -1,0 +1,73 @@
+{
+  "task": "data.profile",
+  "data": {
+    "row_count": 100,
+    "columns": {
+      "x": {
+        "missing": 0,
+        "unique": 10,
+        "type": "numeric",
+        "min": 0.0,
+        "max": 9.0,
+        "mean": 4.5,
+        "stdev": 2.8867513459481287
+      },
+      "y": {
+        "missing": 0,
+        "unique": 10,
+        "type": "numeric",
+        "min": 0.0,
+        "max": 9.0,
+        "mean": 4.5,
+        "stdev": 2.8867513459481287
+      },
+      "target": {
+        "missing": 0,
+        "unique": 2,
+        "type": "numeric",
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.5,
+        "stdev": 0.502518907629606
+      }
+    },
+    "rows": [
+      {
+        "x": "0",
+        "y": "0",
+        "target": "0"
+      },
+      {
+        "x": "1",
+        "y": "0",
+        "target": "0"
+      },
+      {
+        "x": "2",
+        "y": "0",
+        "target": "0"
+      },
+      {
+        "x": "3",
+        "y": "0",
+        "target": "0"
+      },
+      {
+        "x": "4",
+        "y": "0",
+        "target": "0"
+      }
+    ]
+  },
+  "backend": "stdlib.csv",
+  "warnings": [],
+  "provenance": {
+    "input_sha256": "556f100ca66c972744cb149b7e1c9f2583caded4abffa8fe625e0b411f579c58",
+    "preview_only": true,
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.001926,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

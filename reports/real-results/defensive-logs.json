@@ -1,0 +1,31 @@
+{
+  "task": "security.logs",
+  "data": {
+    "rows": [
+      {
+        "line": 1,
+        "rule": "authentication-failure",
+        "source": "192.0.2.10"
+      },
+      {
+        "line": 2,
+        "rule": "authentication-failure",
+        "source": "192.0.2.10"
+      }
+    ],
+    "failed_auth_by_source": {
+      "192.0.2.10": 2
+    }
+  },
+  "backend": "stdlib.rules",
+  "warnings": [
+    "Defensive, offline heuristic analysis only; no network scanning or exploitation."
+  ],
+  "provenance": {
+    "library_version": "0.1.0",
+    "elapsed_seconds": 0.000291,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

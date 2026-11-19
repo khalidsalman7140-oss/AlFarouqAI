@@ -1,0 +1,13 @@
+{
+  "max_input_bytes": 20000000,
+  "max_rows": 100000,
+  "max_video_frames": 300,
+  "max_agent_steps": 12,
+  "timeout": 60,
+  "ollama_url": "http://127.0.0.1:11434",
+  "model": null,
+  "allow_network": false,
+  "allow_remote": false,
+  "allow_model_download": false,
+  "verbose": false
+}

@@ -1,0 +1,262 @@
+{
+  "task": "iot.analyze",
+  "data": {
+    "mean": 23.425,
+    "std": 9.096393516113954,
+    "threshold": 3.0,
+    "rows": [
+      {
+        "row": 0,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      },
+      {
+        "row": 1,
+        "value": 22.0,
+        "z_score": -0.15665549181394375,
+        "anomaly": false
+      },
+      {
+        "row": 2,
+        "value": 23.0,
+        "z_score": -0.04672181334801837,
+        "anomaly": false
+      },
+      {
+        "row": 3,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      },
+      {
+        "row": 4,
+        "value": 22.0,
+        "z_score": -0.15665549181394375,
+        "anomaly": false
+      },
+      {
+        "row": 5,
+        "value": 23.0,
+        "z_score": -0.04672181334801837,
+        "anomaly": false
+      },
+      {
+        "row": 6,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      },
+      {
+        "row": 7,
+        "value": 22.0,
+        "z_score": -0.15665549181394375,
+        "anomaly": false
+      },
+      {
+        "row": 8,
+        "value": 23.0,
+        "z_score": -0.04672181334801837,
+        "anomaly": false
+      },
+      {
+        "row": 9,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      },
+      {
+        "row": 10,
+        "value": 22.0,
+        "z_score": -0.15665549181394375,
+        "anomaly": false
+      },
+      {
+        "row": 11,
+        "value": 23.0,
+        "z_score": -0.04672181334801837,
+        "anomaly": false
+      },
+      {
+        "row": 12,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      },
+      {
+        "row": 13,
+        "value": 22.0,
+        "z_score": -0.15665549181394375,
+        "anomaly": false
+      },
+      {
+        "row": 14,
+        "value": 23.0,
+        "z_score": -0.04672181334801837,
+        "anomaly": false
+      },
+      {
+        "row": 15,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      },
+      {
+        "row": 16,
+        "value": 22.0,
+        "z_score": -0.15665549181394375,
+        "anomaly": false
+      },
+      {
+        "row": 17,
+        "value": 23.0,
+        "z_score": -0.04672181334801837,
+        "anomaly": false
+      },
+      {
+        "row": 18,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      },
+      {
+        "row": 19,
+        "value": 22.0,
+        "z_score": -0.15665549181394375,
+        "anomaly": false
+      },
+      {
+        "row": 20,
+        "value": 23.0,
+        "z_score": -0.04672181334801837,
+        "anomaly": false
+      },
+      {
+        "row": 21,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      },
+      {
+        "row": 22,
+        "value": 22.0,
+        "z_score": -0.15665549181394375,
+        "anomaly": false
+      },
+      {
+        "row": 23,
+        "value": 23.0,
+        "z_score": -0.04672181334801837,
+        "anomaly": false
+      },
+      {
+        "row": 24,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      },
+      {
+        "row": 25,
+        "value": 80.0,
+        "z_score": 6.21949785920973,
+        "anomaly": true
+      },
+      {
+        "row": 26,
+        "value": 23.0,
+        "z_score": -0.04672181334801837,
+        "anomaly": false
+      },
+      {
+        "row": 27,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      },
+      {
+        "row": 28,
+        "value": 22.0,
+        "z_score": -0.15665549181394375,
+        "anomaly": false
+      },
+      {
+        "row": 29,
+        "value": 23.0,
+        "z_score": -0.04672181334801837,
+        "anomaly": false
+      },
+      {
+        "row": 30,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      },
+      {
+        "row": 31,
+        "value": 22.0,
+        "z_score": -0.15665549181394375,
+        "anomaly": false
+      },
+      {
+        "row": 32,
+        "value": 23.0,
+        "z_score": -0.04672181334801837,
+        "anomaly": false
+      },
+      {
+        "row": 33,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      },
+      {
+        "row": 34,
+        "value": 22.0,
+        "z_score": -0.15665549181394375,
+        "anomaly": false
+      },
+      {
+        "row": 35,
+        "value": 23.0,
+        "z_score": -0.04672181334801837,
+        "anomaly": false
+      },
+      {
+        "row": 36,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      },
+      {
+        "row": 37,
+        "value": 22.0,
+        "z_score": -0.15665549181394375,
+        "anomaly": false
+      },
+      {
+        "row": 38,
+        "value": 23.0,
+        "z_score": -0.04672181334801837,
+        "anomaly": false
+      },
+      {
+        "row": 39,
+        "value": 21.0,
+        "z_score": -0.26658917027986917,
+        "anomaly": false
+      }
+    ]
+  },
+  "backend": "stdlib.zscore",
+  "warnings": [
+    "Offline sensor analytics; no device is connected and no actuator commands are sent."
+  ],
+  "provenance": {
+    "input_sha256": "f424b8dc50eac7bfacae5e03387dc1d6933f289d6415de89a0ee9104ca78c90b",
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.00071,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

@@ -1,0 +1,2036 @@
+<!doctype html><html lang="en" dir="ltr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ALFAROUQ_AI_COMPLETE_CODING_GUIDE | AlFarouq AI</title><style>body{font:17px/1.85 system-ui,sans-serif;max-width:1080px;margin:0 auto;padding:32px;background:#fafcff;color:#16243b}a{color:#075f94}pre,code{direction:ltr;text-align:left;font-family:monospace}pre{overflow:auto;padding:22px;border-radius:12px;background:#0d2235;color:#e0f4ff}code{font-size:.9em}table{border-collapse:collapse;width:100%;display:block;overflow:auto}td,th{border:1px solid #cbd5e1;padding:10px;text-align:start}th{background:#e2eef5}h1,h2{color:#073d57}img{max-width:100%}nav,footer{padding:16px 0;border-bottom:1px solid #cbd5e1}footer{font-size:13px;color:#475569}blockquote{border-inline-start:4px solid #079499;padding-inline-start:1em} @media print{body{font-size:12px}pre{white-space:pre-wrap}}</style><nav><a href="docs/index.html">AlFarouq AI — Documentation / التوثيق</a></nav><main><h1 id="alfarouq-ai-complete-coding-guide">ALFAROUQ AI COMPLETE CODING GUIDE</h1>
+<h2 id="030a1">الدليل العملي الشامل — 0.3.0a1</h2>
+<p>تاريخ التحقق: 2026-11-19. الكود الحالي Apache-2.0؛ حقوق المؤلف لخالد سلمان من اليمن.</p>
+<h3 id="_1">ما المكتبة وما حدودها؟</h3>
+<p>بوابة Python محلية أولاً لأدوات AI وتحليل البيانات وخدمات عملية. تعيد نتائج
+حقيقية مع backend وتحذيرات ومصدر، ولا تخلق عتاداً أو دقة أو صلاحية قانونية.
+كل مثال خدمة قابل للتشغيل أدناه نُفذ من النص نفسه، وسجله ومخرجاته في
+reports/coding-guide-results. ثلاثة موصلات غير مختبرة مفصولة بلا مثال نجاح وهمي.</p>
+<h2 id="_2">التثبيت والإعداد</h2>
+<p>من المجلد المفكوك أنشئ بيئة: <code>python -m venv .venv</code> ثم فعلها بالطريقة المناسبة
+لنظامك: <code>.venv\Scripts\Activate.ps1</code> في PowerShell أو <code>source .venv/bin/activate</code>
+في Linux/macOS. ثبّت من المصدر <code>python -m pip install .</code> أو wheel المرفق في dist.
+لا تفترض أن الاسم العام على PyPI محجوز للمشروع قبل التحقق من النشر الفعلي.</p>
+<p>النواة بلا اعتماديات تشغيل إلزامية. أضف فقط ما تحتاجه، مثل
+<code>python -m pip install '.[nlp,ml]'</code>. الإضافات الفعلية: ml، vision، documents،
+speech، semantic، objects، persistence، local، torchvision، deep، vector، iot،
+diffusion، nlp، api، onnx، tensorflow، industrial، gdrive، dev. المحركات الثقيلة
+اختيارية؛ قد تحتاج برامج نظام مستقلة مثل Tesseract وحزم eng/ara وespeak-ng وMosquitto.
+PyTorch CPU wheels تقلل تنزيل CUDA غير المطلوبة؛ اتبع إرشادات نظامك الرسمية.
+Python 3.10+ مستهدف، والتنفيذ المحلي هنا Python 3.12/Linux/CPU. لا تدّعي مصفوفة CI
+أن Windows/macOS أو Colab/Kaggle/Hugging Face قد اختبرت فعلياً في هذه المهمة.</p>
+<h3 id="_3">الشبكة والأوزان والمفاتيح</h3>
+<p>لا تنزيل أو تثبيت خفي عند import. config.allow_network وallow_model_download
+موافقتان صريحتان. models تحت ~/.cache/alfarouqai/models أو ALFAROUQ_MODEL_HOME.
+راجع الرخصة والحجم والمراجعة المثبتة قبل الموافقة. لا أوزان ضخمة داخل ZIP.
+api_key_env يستقبل اسم متغير البيئة لا قيمة المفتاح. لا تضع الأسرار في المصدر
+أو notebook؛ استعمل مدير أسرار بيئتك. Remote endpoints تحتاج allow_remote وHTTPS.
+سكربت Google Drive يحتاج OAuth منك؛ لم يُربط حساب Google أثناء التسليم.</p>
+<h2 id="_4">بوابة سطر واحد وموديل كبير حسب الموارد</h2>
+<p>اختبر المثال التالي بأوزان حقيقية مخزنة محلياً:</p>
+<pre><code class="language-python">from alfarouqai import AI
+result = AI('What is the capital of France?', model='smollm2-135m', max_new_tokens=24)
+</code></pre>
+<p>كما اختبر AI على prompt عام بلا model؛ هذا افتراض محلي للتوليد النصي، لا إذن
+بتنفيذ أوامر النظام أو تحكم صناعي. التحليل ذو الملفات أو الهدف الواضح يختار
+الخدمة المدعومة؛ الغموض أو نقص target/reference لا يملآن بالتخمين.</p>
+<p>Model جلسة قابلة للاستعمال المتكرر مع close/with. backend local يقبل النموذج
+المختار أو مجلد causal-LM محلياً متوافقاً مع Transformers، لا كل معمارية.
+backend ollama أو compatible يمرر اسم النموذج إلى خادمك، وهو الذي يتحمل العتاد.
+Model/AI model gateway يدعمان device=auto/cpu/cuda؛ اختبر CPU ورفض CUDA غير المتاح،
+ولم يختبر استدلال GPU فعلي. environment وmodel_plan أدوات تقدير لا ضمان fit.
+تقدير weights لا يحسب KV cache والسياق والدفعات والتكميم كاملاً. لا وعد بتشغيل
+أكبر نموذج على الهاتف؛ اقرأ الدليل فيه وشغّل الحساب على عتاد مناسب أو endpoint.</p>
+<h2 id="_5">التهيئة المشتركة للأمثلة</h2>
+<p>نفّذ التالي مرة من جذر AlFarouqAI المفكوك ثم كتلة الخدمة. أدوات fixtures من
+المصدر المرفق وتولد بيانات تعليمية مصطنعة؛ ليست قراءات مصنع أو مرضى حقيقية.
+لا يتم تشغيل خادم عند الاستيراد. الملفات المؤقتة تمنع استبدال بياناتك.</p>
+<pre><code class="language-python">from pathlib import Path
+import tempfile, threading
+from alfarouqai import AI, Client, Config, Scheduler, prepare_model
+from examples.guide_support import make_fixtures, media_fixtures, model_server, broker, modbus_server, create_onnx
+ROOT = Path.cwd()  # run from the unpacked AlFarouqAI directory
+PHOTO = ROOT/'identity/founder/khalid-salman-original.jpg'
+workspace = tempfile.TemporaryDirectory()
+DATA, OUT = make_fixtures(workspace.name)
+ai = Client()
+
+</code></pre>
+<p>كل مثال كامل محفوظ أيضاً تحت examples/guide، ويمكن تشغيله من Terminal من جذر
+المشروع. في Jupyter/Colab/Kaggle ثبّت wheel ثم ارفع المصدر لأدوات الأمثلة واضبط
+current directory إلى جذر المشروع، ثم شغّل التهيئة والكتلة نفسها. هذا تعليم
+تشغيل، لا ادعاء أن المنصات السحابية نفذت في التحقق المحلي. لملفاتك الخاصة
+استبدل DATA/PHOTO بالمسارات التي تملك حق معالجتها؛ الخدمة نفسها غالباً سطر واحد.</p>
+<h2 id="_6">جميع الخدمات الفعلية</h2>
+<h3 id="1-textanalyze">1. <code>text.analyze</code></h3>
+<p>Extractive Arabic/English text statistics and summary</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>text</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('text.analyze', text='الذكاء الاصطناعي يساعد الطلاب. Python helps researchers.')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.frequency&quot;,
+  &quot;data&quot;: {
+    &quot;characters&quot;: 56,
+    &quot;words&quot;: 7,
+    &quot;sentences&quot;: 2,
+    &quot;keywords&quot;: [
+      [
+        &quot;الذكاء&quot;,
+        1
+      ],
+      [
+        &quot;الاصطناعي&quot;,
+        1
+      ]
+    ],
+    &quot;extractive_summary&quot;: &quot;الذكاء الاصطناعي يساعد الطلاب. Python helps researchers.&quot;
+  },
+  &quot;warnings&quot;: [
+    &quot;Extractive statistics only; not an LLM or sentiment model.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/text_analyze.py</code> من جذر المشروع.</p>
+<h3 id="2-dataprofile">2. <code>data.profile</code></h3>
+<p>Profile a UTF-8 CSV with missing values and numeric statistics</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>data</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('data.profile', data=DATA/'numeric.csv')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.csv&quot;,
+  &quot;data&quot;: {
+    &quot;row_count&quot;: 100,
+    &quot;columns&quot;: {
+      &quot;x&quot;: {
+        &quot;missing&quot;: 0,
+        &quot;unique&quot;: 10,
+        &quot;type&quot;: &quot;numeric&quot;,
+        &quot;min&quot;: 0.0,
+        &quot;max&quot;: 9.0
+      },
+      &quot;y&quot;: {
+        &quot;missing&quot;: 0,
+        &quot;unique&quot;: 10,
+        &quot;type&quot;: &quot;numeric&quot;,
+        &quot;min&quot;: 0.0,
+        &quot;max&quot;: 9.0
+      },
+      &quot;target&quot;: {
+        &quot;missing&quot;: 0,
+        &quot;unique&quot;: 2,
+        &quot;type&quot;: &quot;numeric&quot;,
+        &quot;min&quot;: 0.0,
+        &quot;max&quot;: 1.0
+      }
+    },
+    &quot;rows&quot;: [
+      {
+        &quot;x&quot;: &quot;0&quot;,
+        &quot;y&quot;: &quot;0&quot;,
+        &quot;target&quot;: &quot;0&quot;
+      },
+      {
+        &quot;x&quot;: &quot;1&quot;,
+        &quot;y&quot;: &quot;0&quot;,
+        &quot;target&quot;: &quot;0&quot;
+      }
+    ]
+  },
+  &quot;warnings&quot;: []
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/data_profile.py</code> من جذر المشروع.</p>
+<h3 id="3-mltrain">3. <code>ml.train</code></h3>
+<p>Train/test a RandomForest with explicit target/problem</p>
+<p><strong>المتطلبات:</strong> <code>ml</code>. <strong>المدخلات:</strong> <code>data, target, problem</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('ml.train', data=DATA/'numeric.csv', target='target', problem='classification')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;scikit-learn.RandomForest&quot;,
+  &quot;data&quot;: {
+    &quot;problem&quot;: &quot;classification&quot;,
+    &quot;target&quot;: &quot;target&quot;,
+    &quot;features&quot;: [
+      &quot;x&quot;,
+      &quot;y&quot;
+    ],
+    &quot;numeric_features&quot;: [
+      &quot;x&quot;,
+      &quot;y&quot;
+    ],
+    &quot;train_rows&quot;: 75
+  },
+  &quot;warnings&quot;: [
+    &quot;Held-out split, not cross-validation. Not suitable evidence for time-series, grouped or causal claims; use domain-specific splits in future versions.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/ml_train.py</code> من جذر المشروع.</p>
+<h3 id="4-imageanalyze">4. <code>image.analyze</code></h3>
+<p>Local image statistics and frontal face detection</p>
+<p><strong>المتطلبات:</strong> <code>vision</code>. <strong>المدخلات:</strong> <code>image</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('image.analyze', image=PHOTO)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;opencv.HaarCascade&quot;,
+  &quot;data&quot;: {
+    &quot;width&quot;: 720,
+    &quot;height&quot;: 1600,
+    &quot;channels&quot;: 3,
+    &quot;mean_rgb&quot;: [
+      64.36682725694445,
+      57.51885243055556
+    ],
+    &quot;faces&quot;: [
+      {
+        &quot;x&quot;: 129,
+        &quot;y&quot;: 601,
+        &quot;width&quot;: 506,
+        &quot;height&quot;: 506
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Face detection only, not identity recognition or general object detection. Detections can be wrong.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/image_analyze.py</code> من جذر المشروع.</p>
+<h3 id="5-imageobjects">5. <code>image.objects</code></h3>
+<p>General object detection using reviewed local model weights</p>
+<p><strong>المتطلبات:</strong> <code>objects</code>. <strong>المدخلات:</strong> <code>image, model_path</code>.</p>
+<p><strong>غير مثبت باستدلال فعلي:</strong> الموصل القديم يتطلب نموذج Transformers محلياً متوافقاً؛ لم يختبر بأوزان فعلية في هذا الإصدار. البديل vision.detect مختبر ولا يحذف المسار القديم.</p>
+<h3 id="6-videomotion">6. <code>video.motion</code></h3>
+<p>Bounded frame-difference motion regions</p>
+<p><strong>المتطلبات:</strong> <code>vision</code>. <strong>المدخلات:</strong> <code>video</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.run('video.motion', video=DATA/'clip.avi', max_frames=3)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;opencv.frame-difference&quot;,
+  &quot;data&quot;: {
+    &quot;fps&quot;: 5.0,
+    &quot;processed_frames&quot;: 3,
+    &quot;truncated&quot;: false,
+    &quot;rows&quot;: [
+      {
+        &quot;frame&quot;: 0,
+        &quot;time_seconds&quot;: 0.0,
+        &quot;changed_fraction&quot;: 0.0,
+        &quot;boxes&quot;: []
+      },
+      {
+        &quot;frame&quot;: 1,
+        &quot;time_seconds&quot;: 0.2,
+        &quot;changed_fraction&quot;: 0.0,
+        &quot;boxes&quot;: []
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Motion regions only, not action understanding, person identification or persistent tracking. Camera movement can trigger detections.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/video_motion.py</code> من جذر المشروع.</p>
+<h3 id="7-audioinfo">7. <code>audio.info</code></h3>
+<p>PCM WAV metadata</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>audio</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.run('audio.info', audio=DATA/'silence.wav')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.wave&quot;,
+  &quot;data&quot;: {
+    &quot;channels&quot;: 1,
+    &quot;sample_rate&quot;: 16000,
+    &quot;sample_width_bytes&quot;: 2,
+    &quot;frames&quot;: 16000,
+    &quot;duration_seconds&quot;: 1.0
+  },
+  &quot;warnings&quot;: []
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/audio_info.py</code> من جذر المشروع.</p>
+<h3 id="8-speechtranscribe">8. <code>speech.transcribe</code></h3>
+<p>Whisper transcription with an explicit local model</p>
+<p><strong>المتطلبات:</strong> <code>speech</code>. <strong>المدخلات:</strong> <code>audio</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">ai.run('speech.synthesize', text='Hello world. A speech recognition test.', output=OUT/'speech.wav')
+result = ai.run('speech.transcribe', audio=OUT/'speech.wav', model_path=str(prepare_model('whisper-tiny')), language='en')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;faster-whisper.cpu-int8&quot;,
+  &quot;data&quot;: {
+    &quot;language&quot;: &quot;en&quot;,
+    &quot;text&quot;: &quot;The Long World, a speech recognition test.&quot;,
+    &quot;rows&quot;: [
+      {
+        &quot;start&quot;: 0.0,
+        &quot;end&quot;: 3.0,
+        &quot;text&quot;: &quot; The Long World, a speech recognition test.&quot;
+      }
+    ]
+  },
+  &quot;warnings&quot;: []
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/speech_transcribe.py</code> من جذر المشروع.</p>
+<h3 id="9-documentread">9. <code>document.read</code></h3>
+<p>Extract text from TXT/PDF/DOCX/XLSX</p>
+<p><strong>المتطلبات:</strong> <code>documents</code>. <strong>المدخلات:</strong> <code>document</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('document.read', document=DATA/'note.txt')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.text&quot;,
+  &quot;data&quot;: {
+    &quot;text&quot;: &quot;AlFarouq AI helps students use Python. Temperature sensors measure heat.\nخالد سلمان مؤسس المشروع. التاريخ 2026-11-16.&quot;,
+    &quot;characters&quot;: 117,
+    &quot;rows&quot;: []
+  },
+  &quot;warnings&quot;: [
+    &quot;Text extraction only; scanned PDFs need OCR, formulas are not recalculated, complex layout may be lost.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/document_read.py</code> من جذر المشروع.</p>
+<h3 id="10-codeanalyze">10. <code>code.analyze</code></h3>
+<p>Non-executing Python AST and project review</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>راجع الوظيفة</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('code.analyze', code='import os\nos.system(command)\n')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.ast&quot;,
+  &quot;data&quot;: {
+    &quot;parsed_files&quot;: 1,
+    &quot;rows&quot;: [
+      {
+        &quot;file&quot;: &quot;&lt;inline&gt;&quot;,
+        &quot;lines&quot;: 2,
+        &quot;imports&quot;: [
+          &quot;os&quot;
+        ],
+        &quot;functions&quot;: [],
+        &quot;classes&quot;: []
+      }
+    ],
+    &quot;findings&quot;: [
+      {
+        &quot;file&quot;: &quot;&lt;inline&gt;&quot;,
+        &quot;line&quot;: 2,
+        &quot;rule&quot;: &quot;dangerous-call&quot;,
+        &quot;message&quot;: &quot;Review os.system; untrusted input may execute code&quot;
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Static heuristic review; not a proof of security. Source code was not executed.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/code_analyze.py</code> من جذر المشروع.</p>
+<h3 id="11-securitylogs">11. <code>security.logs</code></h3>
+<p>Defensive authentication log analysis</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>path</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('security.logs', path=DATA/'auth.log')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.rules&quot;,
+  &quot;data&quot;: {
+    &quot;rows&quot;: [
+      {
+        &quot;line&quot;: 1,
+        &quot;rule&quot;: &quot;authentication-failure&quot;,
+        &quot;source&quot;: &quot;192.0.2.10&quot;
+      }
+    ],
+    &quot;failed_auth_by_source&quot;: {
+      &quot;192.0.2.10&quot;: 1
+    }
+  },
+  &quot;warnings&quot;: [
+    &quot;Defensive, offline heuristic analysis only; no network scanning or exploitation.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/security_logs.py</code> من جذر المشروع.</p>
+<h3 id="12-iotanalyze">12. <code>iot.analyze</code></h3>
+<p>Offline sensor time-series z-score anomaly flags</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>data, column</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('iot.analyze', data=DATA/'sensors.csv', column='temperature')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.zscore&quot;,
+  &quot;data&quot;: {
+    &quot;mean&quot;: 23.425,
+    &quot;std&quot;: 9.096393516113954,
+    &quot;threshold&quot;: 3.0,
+    &quot;rows&quot;: [
+      {
+        &quot;row&quot;: 0,
+        &quot;value&quot;: 21.0,
+        &quot;z_score&quot;: -0.26658917027986917,
+        &quot;anomaly&quot;: false
+      },
+      {
+        &quot;row&quot;: 1,
+        &quot;value&quot;: 22.0,
+        &quot;z_score&quot;: -0.15665549181394375,
+        &quot;anomaly&quot;: false
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Offline sensor analytics; no device is connected and no actuator commands are sent.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/iot_analyze.py</code> من جذر المشروع.</p>
+<h3 id="13-llmchat">13. <code>llm.chat</code></h3>
+<p>Opt-in Ollama text and supported vision chat</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>prompt</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">with model_server() as origin:
+    result = Client(Config(allow_network=True, ollama_url=origin, model='reference-smollm')).run('llm.chat', prompt='What is the capital of France?')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;ollama&quot;,
+  &quot;data&quot;: {
+    &quot;text&quot;: &quot;The capital of France is Paris.&quot;,
+    &quot;model&quot;: &quot;reference-smollm&quot;,
+    &quot;done&quot;: true
+  },
+  &quot;warnings&quot;: [
+    &quot;Generated content may be incorrect. Verify citations and code. Ollama must be configured to avoid cloud-backed aliases.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/llm_chat.py</code> من جذر المشروع.</p>
+<h3 id="14-localgenerate">14. <code>local.generate</code></h3>
+<p>Generate text with a local trained causal language model</p>
+<p><strong>المتطلبات:</strong> <code>local</code>. <strong>المدخلات:</strong> <code>prompt</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai('Explain Python briefly.', task='local.generate', max_new_tokens=40)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;transformers.local-causal-lm&quot;,
+  &quot;data&quot;: {
+    &quot;text&quot;: &quot;Python is a high-level, interpreted programming language that is widely used for web development, data analysis, machine learning, and automation. It is a versatile language that c …&quot;,
+    &quot;generated_tokens&quot;: 40,
+    &quot;input_tokens&quot;: 29
+  },
+  &quot;warnings&quot;: [
+    &quot;Generated content can be wrong. Default 135M model is English-first and limited; not a strongest-model or Arabic-quality claim. Input is truncated to 1024 tokens.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/local_generate.py</code> من جذر المشروع.</p>
+<h3 id="15-nlpclassify">15. <code>nlp.classify</code></h3>
+<p>Classify supplied text by model likelihood of candidate labels</p>
+<p><strong>المتطلبات:</strong> <code>local</code>. <strong>المدخلات:</strong> <code>text, labels</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('nlp.classify', text='The service was excellent.', labels=['positive','negative'])
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;local-llm.label-likelihood&quot;,
+  &quot;data&quot;: {
+    &quot;label&quot;: &quot;positive&quot;,
+    &quot;rows&quot;: [
+      {
+        &quot;label&quot;: &quot;positive&quot;,
+        &quot;relative_score&quot;: 0.5228655338287354,
+        &quot;mean_log_likelihood&quot;: -12.288873672485352
+      },
+      {
+        &quot;label&quot;: &quot;negative&quot;,
+        &quot;relative_score&quot;: 0.47713443636894226,
+        &quot;mean_log_likelihood&quot;: -12.380399703979492
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Relative scores are not calibrated probabilities; labels are ranked by a small LLM, not a task-finetuned classifier.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/nlp_classify.py</code> من جذر المشروع.</p>
+<h3 id="16-codegenerate">16. <code>code.generate</code></h3>
+<p>Generate untrusted Python code suggestions with a local LLM</p>
+<p><strong>المتطلبات:</strong> <code>local</code>. <strong>المدخلات:</strong> <code>prompt</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('code.generate', prompt='Write a Python function add(a,b).', max_new_tokens=60)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;transformers.local-causal-lm&quot;,
+  &quot;data&quot;: {
+    &quot;text&quot;: &quot;```python\ndef add(a, b):\n    return a + b\n```\n\nThis function uses the built-in `+` operator to add two numbers.&quot;,
+    &quot;generated_tokens&quot;: 36,
+    &quot;input_tokens&quot;: 42
+  },
+  &quot;warnings&quot;: [
+    &quot;Generated content can be wrong. Default 135M model is English-first and limited; not a strongest-model or Arabic-quality claim. Input is truncated to 1024 tokens.&quot;,
+    &quot;Code is untrusted, not executed or proven correct. Review and test in a separate environment.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/code_generate.py</code> من جذر المشروع.</p>
+<h3 id="17-coderepair">17. <code>code.repair</code></h3>
+<p>Suggest a code repair from supplied code and error</p>
+<p><strong>المتطلبات:</strong> <code>local</code>. <strong>المدخلات:</strong> <code>code, error</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('code.repair', code='def add(a,b)\n return a+b', error='missing colon', max_new_tokens=60)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;transformers.local-causal-lm&quot;,
+  &quot;data&quot;: {
+    &quot;text&quot;: &quot;def add(a,b):\n    return a+b\n\nprint(add(1,2))&quot;,
+    &quot;generated_tokens&quot;: 23,
+    &quot;input_tokens&quot;: 58
+  },
+  &quot;warnings&quot;: [
+    &quot;Generated content can be wrong. Default 135M model is English-first and limited; not a strongest-model or Arabic-quality claim. Input is truncated to 1024 tokens.&quot;,
+    &quot;Suggested repair only; original files are not modified and correctness is not guaranteed.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/code_repair.py</code> من جذر المشروع.</p>
+<h3 id="18-codetest">18. <code>code.test</code></h3>
+<p>Run trusted unittest files with explicit OS-execution consent</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>path</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('code.test', path=DATA/'trusted_tests', consent=True)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;python.unittest.subprocess&quot;,
+  &quot;data&quot;: {
+    &quot;returncode&quot;: 0,
+    &quot;passed&quot;: true,
+    &quot;timed_out&quot;: false,
+    &quot;log&quot;: &quot;test_add (test_math.T.test_add) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n&quot;
+  },
+  &quot;warnings&quot;: [
+    &quot;Trusted-code runner only. Isolation flag and timeout do NOT block network/filesystem access or child-process side effects.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/code_test.py</code> من جذر المشروع.</p>
+<h3 id="19-documentsummarize">19. <code>document.summarize</code></h3>
+<p>Summarize extracted document text with a local trained LLM</p>
+<p><strong>المتطلبات:</strong> <code>local</code>. <strong>المدخلات:</strong> <code>document</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('document.summarize', document=DATA/'note.txt', max_new_tokens=50)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;transformers.local-causal-lm&quot;,
+  &quot;data&quot;: {
+    &quot;text&quot;: &quot;AlFarouq AI helps students use Python. Temperature sensors measure heat.\nخالد سلمان مؤسس المشروع. التاريخ 2026&quot;,
+    &quot;generated_tokens&quot;: 50,
+    &quot;input_tokens&quot;: 109
+  },
+  &quot;warnings&quot;: [
+    &quot;Generated content can be wrong. Default 135M model is English-first and limited; not a strongest-model or Arabic-quality claim. Input is truncated to 1024 tokens.&quot;,
+    &quot;Only first 12000 characters supplied; LLM token cap can truncate further. Not guaranteed faithful.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/document_summarize.py</code> من جذر المشروع.</p>
+<h3 id="20-visiondetect">20. <code>vision.detect</code></h3>
+<p>Detect COCO objects with pretrained TorchVision SSDlite</p>
+<p><strong>المتطلبات:</strong> <code>torchvision</code>. <strong>المدخلات:</strong> <code>image</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('vision.detect', image=PHOTO)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;torchvision.ssdlite320-coco&quot;,
+  &quot;data&quot;: {
+    &quot;rows&quot;: [
+      {
+        &quot;label&quot;: &quot;person&quot;,
+        &quot;label_id&quot;: 1,
+        &quot;score&quot;: 0.90146404504776,
+        &quot;box_xyxy&quot;: [
+          4.11,
+          417.11
+        ]
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Object detections are uncertain, not identity recognition. COCO category coverage is limited.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/vision_detect.py</code> من جذر المشروع.</p>
+<h3 id="21-visionclassify">21. <code>vision.classify</code></h3>
+<p>Classify images with pretrained MobileNet V3</p>
+<p><strong>المتطلبات:</strong> <code>torchvision</code>. <strong>المدخلات:</strong> <code>image</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('vision.classify', image=PHOTO, top_k=3)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;torchvision.mobilenet-v3-small&quot;,
+  &quot;data&quot;: {
+    &quot;rows&quot;: [
+      {
+        &quot;label&quot;: &quot;sunglass&quot;,
+        &quot;score&quot;: 0.33679741621017456
+      },
+      {
+        &quot;label&quot;: &quot;sunglasses&quot;,
+        &quot;score&quot;: 0.18979160487651825
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;ImageNet labels are not a universal image understanding vocabulary.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/vision_classify.py</code> من جذر المشروع.</p>
+<h3 id="22-visionsegment">22. <code>vision.segment</code></h3>
+<p>Export a semantic class mask with pretrained LRASPP</p>
+<p><strong>المتطلبات:</strong> <code>torchvision</code>. <strong>المدخلات:</strong> <code>image, output</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('vision.segment', image=PHOTO, output=OUT/'mask.png')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;torchvision.lraspp-voc&quot;,
+  &quot;data&quot;: {
+    &quot;mask_path&quot;: &quot;/tmp/tmp6hvgesbh/outputs/mask.png&quot;,
+    &quot;width&quot;: 720,
+    &quot;height&quot;: 1600,
+    &quot;rows&quot;: [
+      {
+        &quot;class_id&quot;: 0,
+        &quot;label&quot;: &quot;__background__&quot;,
+        &quot;pixels&quot;: 713433
+      },
+      {
+        &quot;class_id&quot;: 15,
+        &quot;label&quot;: &quot;person&quot;,
+        &quot;pixels&quot;: 438567
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Semantic class mask (pixel values are class IDs), not individual-instance segmentation.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/vision_segment.py</code> من جذر المشروع.</p>
+<h3 id="23-visionocr">23. <code>vision.ocr</code></h3>
+<p>Recognize printed text with installed Tesseract language models</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>image</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.run('vision.ocr', image=DATA/'ocr.png', language='eng')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;tesseract.system&quot;,
+  &quot;data&quot;: {
+    &quot;text&quot;: &quot;ALFAROUQ Al 2026&quot;,
+    &quot;rows&quot;: [
+      {
+        &quot;text&quot;: &quot;ALFAROUQ&quot;,
+        &quot;confidence&quot;: 92.66124,
+        &quot;x&quot;: 20,
+        &quot;y&quot;: 47,
+        &quot;width&quot;: 225
+      },
+      {
+        &quot;text&quot;: &quot;Al&quot;,
+        &quot;confidence&quot;: 95.619019,
+        &quot;x&quot;: 261,
+        &quot;y&quot;: 48,
+        &quot;width&quot;: 36
+      }
+    ],
+    &quot;language&quot;: &quot;eng&quot;
+  },
+  &quot;warnings&quot;: [
+    &quot;Recognition depends on scan quality and installed language packs; Arabic quality not guaranteed.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/vision_ocr.py</code> من جذر المشروع.</p>
+<h3 id="24-videotrack">24. <code>video.track</code></h3>
+<p>Detect objects and associate temporary track IDs across video</p>
+<p><strong>المتطلبات:</strong> <code>torchvision</code>. <strong>المدخلات:</strong> <code>video</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.run('video.track', video=DATA/'clip.avi', max_frames=3)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;torchvision.ssdlite+centroid-tracker&quot;,
+  &quot;data&quot;: {
+    &quot;rows&quot;: [
+      {
+        &quot;frame&quot;: 0,
+        &quot;time_seconds&quot;: 0.0,
+        &quot;objects&quot;: [
+          {
+            &quot;label&quot;: &quot;person&quot;,
+            &quot;label_id&quot;: 1,
+            &quot;score&quot;: 0.9135314226150513,
+            &quot;box_xyxy&quot;: [
+              2.08,
+              206.75
+            ],
+            &quot;track_id&quot;: 1
+          }
+        ]
+      },
+      {
+        &quot;frame&quot;: 1,
+        &quot;time_seconds&quot;: 0.2,
+        &quot;objects&quot;: [
+          {
+            &quot;label&quot;: &quot;person&quot;,
+            &quot;label_id&quot;: 1,
+            &quot;score&quot;: 0.9398543238639832,
+            &quot;box_xyxy&quot;: [
+              1.73,
+              207.22
+            ],
+            &quot;track_id&quot;: 1
+          }
+        ]
+      }
+    ],
+    &quot;truncated&quot;: false,
+    &quot;processed_frames&quot;: 3
+  },
+  &quot;warnings&quot;: [
+    &quot;Temporary same-class centroid tracks; can swap IDs under occlusion/crossing. Not action recognition or identity.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/video_track.py</code> من جذر المشروع.</p>
+<h3 id="25-speechrecognize">25. <code>speech.recognize</code></h3>
+<p>Transcribe speech with local CTranslate2 Whisper weights</p>
+<p><strong>المتطلبات:</strong> <code>speech</code>. <strong>المدخلات:</strong> <code>audio</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">ai.run('speech.synthesize', text='Hello world. A speech recognition test.', output=OUT/'speech.wav')
+result = ai.run('speech.recognize', audio=OUT/'speech.wav', language='en')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;faster-whisper.cpu-int8&quot;,
+  &quot;data&quot;: {
+    &quot;language&quot;: &quot;en&quot;,
+    &quot;text&quot;: &quot;The Long World, a speech recognition test.&quot;,
+    &quot;rows&quot;: [
+      {
+        &quot;start&quot;: 0.0,
+        &quot;end&quot;: 3.0,
+        &quot;text&quot;: &quot; The Long World, a speech recognition test.&quot;
+      }
+    ]
+  },
+  &quot;warnings&quot;: []
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/speech_recognize.py</code> من جذر المشروع.</p>
+<h3 id="26-speechsynthesize">26. <code>speech.synthesize</code></h3>
+<p>Synthesize an audible WAV using external espeak-ng</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>text, output</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('speech.synthesize', text='Hello world.', output=OUT/'speech.wav', voice='en-us')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;espeak-ng.system&quot;,
+  &quot;data&quot;: {
+    &quot;audio_path&quot;: &quot;/tmp/tmplj86bmcy/outputs/speech.wav&quot;,
+    &quot;voice&quot;: &quot;en-us&quot;,
+    &quot;channels&quot;: 1,
+    &quot;sample_rate&quot;: 22050,
+    &quot;sample_width_bytes&quot;: 2
+  },
+  &quot;warnings&quot;: [
+    &quot;Classical speech synthesis, not neural natural-voice cloning. Voice availability/languages depend on installed executable. External executable license remains independent.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/speech_synthesize.py</code> من جذر المشروع.</p>
+<h3 id="27-deeptrain">27. <code>deep.train</code></h3>
+<p>Train and evaluate a real multilayer PyTorch network</p>
+<p><strong>المتطلبات:</strong> <code>deep</code>. <strong>المدخلات:</strong> <code>data, target, problem</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('deep.train', data=DATA/'numeric.csv', target='target', problem='classification', epochs=30)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;pytorch.cpu-mlp&quot;,
+  &quot;data&quot;: {
+    &quot;problem&quot;: &quot;classification&quot;,
+    &quot;features&quot;: [
+      &quot;x&quot;,
+      &quot;y&quot;
+    ],
+    &quot;hidden_layers&quot;: [
+      32,
+      16
+    ],
+    &quot;epochs&quot;: 30,
+    &quot;initial_loss&quot;: 0.6771047115325928
+  },
+  &quot;warnings&quot;: [
+    &quot;Small tabular MLP, not universal deep-learning/finetuning. Random split, not time/group aware.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/deep_train.py</code> من جذر المشروع.</p>
+<h3 id="28-dataforecast">28. <code>data.forecast</code></h3>
+<p>Fit a linear time trend with chronological validation</p>
+<p><strong>المتطلبات:</strong> <code>ml</code>. <strong>المدخلات:</strong> <code>data, column</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('data.forecast', data=DATA/'sensors.csv', column='temperature', horizon=3)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;numpy.linear-trend&quot;,
+  &quot;data&quot;: {
+    &quot;holdout_mae&quot;: 5.861162023460413,
+    &quot;rows&quot;: [
+      {
+        &quot;step&quot;: 1,
+        &quot;prediction&quot;: 24.676923076923067
+      },
+      {
+        &quot;step&quot;: 2,
+        &quot;prediction&quot;: 24.737992495309562
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Linear trend baseline, not seasonal forecasting. Input CSV row order is treated as time. Chronological 80/20 holdout.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/data_forecast.py</code> من جذر المشروع.</p>
+<h3 id="29-datarecommend">29. <code>data.recommend</code></h3>
+<p>Recommend unseen items using collaborative cosine similarity</p>
+<p><strong>المتطلبات:</strong> <code>ml</code>. <strong>المدخلات:</strong> <code>data, user, user_column, item_column, rating_column</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('data.recommend', data=DATA/'ratings.csv', user='u1', user_column='user', item_column='item', rating_column='rating')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;numpy.user-cosine-collaborative-filtering&quot;,
+  &quot;data&quot;: {
+    &quot;rows&quot;: [
+      {
+        &quot;item&quot;: &quot;c&quot;,
+        &quot;score&quot;: 4.999999999993657
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Small-data collaborative baseline, no cold-start or fairness guarantees.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/data_recommend.py</code> من جذر المشروع.</p>
+<h3 id="30-securityanomalies">30. <code>security.anomalies</code></h3>
+<p>Detect multivariate anomalies with IsolationForest</p>
+<p><strong>المتطلبات:</strong> <code>ml</code>. <strong>المدخلات:</strong> <code>data, columns</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('security.anomalies', data=DATA/'sensors.csv', columns=['time','temperature'])
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;sklearn.IsolationForest&quot;,
+  &quot;data&quot;: {
+    &quot;rows&quot;: [
+      {
+        &quot;row&quot;: 0,
+        &quot;anomaly&quot;: true,
+        &quot;decision_score&quot;: -0.03739177628545154
+      },
+      {
+        &quot;row&quot;: 1,
+        &quot;anomaly&quot;: false,
+        &quot;decision_score&quot;: 0.0012024764228415474
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Unsupervised anomalies are not proof of a cyberattack.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/security_anomalies.py</code> من جذر المشروع.</p>
+<h3 id="31-ragindex">31. <code>rag.index</code></h3>
+<p>Extract a document and persist multilingual semantic embeddings</p>
+<p><strong>المتطلبات:</strong> <code>vector</code>. <strong>المدخلات:</strong> <code>document, store</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('rag.index', document=DATA/'note.txt', store=OUT/'knowledge.sqlite')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;sentence-transformers+sqlite&quot;,
+  &quot;data&quot;: {
+    &quot;chunks_added&quot;: 1,
+    &quot;store&quot;: &quot;/tmp/tmpsvhkvm96/outputs/knowledge.sqlite&quot;
+  },
+  &quot;warnings&quot;: []
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/rag_index.py</code> من جذر المشروع.</p>
+<h3 id="32-ragsearchsemantic">32. <code>rag.search.semantic</code></h3>
+<p>Search persisted semantic vectors with FAISS and source offsets</p>
+<p><strong>المتطلبات:</strong> <code>vector</code>. <strong>المدخلات:</strong> <code>query, store</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">ai.run('rag.index', document=DATA/'note.txt', store=OUT/'knowledge.sqlite')
+result = ai.run('rag.search.semantic', query='measuring temperature', store=OUT/'knowledge.sqlite')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;sentence-transformers+faiss+sqlite&quot;,
+  &quot;data&quot;: {
+    &quot;query&quot;: &quot;measuring temperature&quot;,
+    &quot;rows&quot;: [
+      {
+        &quot;id&quot;: 1,
+        &quot;source&quot;: &quot;/tmp/tmp250puhr0/data/note.txt&quot;,
+        &quot;start&quot;: 0,
+        &quot;end&quot;: 117,
+        &quot;text&quot;: &quot;AlFarouq AI helps students use Python. Temperature sensors measure heat.\nخالد سلمان مؤسس المشروع. التاريخ 2026-11-16.&quot;
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Cosine score is not a calibrated confidence or truth probability.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/rag_search_semantic.py</code> من جذر المشروع.</p>
+<h3 id="33-raganswer">33. <code>rag.answer</code></h3>
+<p>Generate a source-returning answer from semantic retrieval</p>
+<p><strong>المتطلبات:</strong> <code>vector</code>. <strong>المدخلات:</strong> <code>question, store</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">ai.run('rag.index', document=DATA/'note.txt', store=OUT/'knowledge.sqlite')
+result = ai.run('rag.answer', question='What measures heat?', store=OUT/'knowledge.sqlite', min_score=.1)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;transformers.local-causal-lm&quot;,
+  &quot;data&quot;: {
+    &quot;text&quot;: &quot;خالد سلمان مؤسس المشروع. التاريخ 2026-11-16.&quot;,
+    &quot;generated_tokens&quot;: 42,
+    &quot;input_tokens&quot;: 144,
+    &quot;sources&quot;: [
+      {
+        &quot;id&quot;: 1,
+        &quot;source&quot;: &quot;/tmp/tmp1ppknzdd/data/note.txt&quot;,
+        &quot;start&quot;: 0,
+        &quot;end&quot;: 117,
+        &quot;text&quot;: &quot;AlFarouq AI helps students use Python. Temperature sensors measure heat.\nخالد سلمان مؤسس المشروع. التاريخ 2026-11-16.&quot;
+      }
+    ],
+    &quot;abstained&quot;: false
+  },
+  &quot;warnings&quot;: [
+    &quot;Generated content can be wrong. Default 135M model is English-first and limited; not a strongest-model or Arabic-quality claim. Input is truncated to 1024 tokens.&quot;,
+    &quot;Citation presence and factual entailment are NOT guaranteed. Verify against returned sources.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/rag_answer.py</code> من جذر المشروع.</p>
+<h3 id="34-agentsllm">34. <code>agents.llm</code></h3>
+<p>Use a local LLM to rank allowed tools and review actual results</p>
+<p><strong>المتطلبات:</strong> <code>local</code>. <strong>المدخلات:</strong> <code>goal, inputs_by_task</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('agents.llm', goal='Analyze text statistics.', inputs_by_task={'text.analyze':{'text':'Python helps students.'}})
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;local-llm-constrained-planner+tools+reviewer&quot;,
+  &quot;data&quot;: {
+    &quot;results&quot;: {
+      &quot;text.analyze&quot;: {
+        &quot;task&quot;: &quot;text.analyze&quot;,
+        &quot;data&quot;: {
+          &quot;characters&quot;: 22,
+          &quot;words&quot;: 3,
+          &quot;sentences&quot;: 1,
+          &quot;keywords&quot;: [
+            [
+              &quot;python&quot;,
+              1
+            ],
+            [
+              &quot;helps&quot;,
+              1
+            ]
+          ],
+          &quot;extractive_summary&quot;: &quot;Python helps students.&quot;
+        },
+        &quot;backend&quot;: &quot;stdlib.frequency&quot;,
+        &quot;warnings&quot;: [
+          &quot;Extractive statistics only; not an LLM or sentiment model.&quot;
+        ],
+        &quot;provenance&quot;: {
+          &quot;library_version&quot;: &quot;0.3.0a1&quot;,
+          &quot;elapsed_seconds&quot;: 0.000581,
+          &quot;network_policy&quot;: &quot;explicit opt-in&quot;,
+          &quot;executed&quot;: true
+        }
+      }
+    },
+    &quot;trace&quot;: [
+      {
+        &quot;role&quot;: &quot;llm-planner&quot;,
+        &quot;ranking&quot;: {
+          &quot;label&quot;: &quot;Extractive Arabic/English text statistics and summary&quot;,
+          &quot;rows&quot;: [
+            {
+              &quot;label&quot;: &quot;Extractive Arabic/English text statistics and summary&quot;,
+              &quot;relative_score&quot;: 0.5684041380882263,
+              &quot;mean_log_likelihood&quot;: -5.793736934661865
+            },
+            {
+              &quot;label&quot;: &quot;Finish without using another tool&quot;,
+              &quot;relative_score&quot;: 0.43159589171409607,
+              &quot;mean_log_likelihood&quot;: -6.069079875946045
+            }
+          ]
+        },
+        &quot;step&quot;: 0
+      },
+      {
+        &quot;role&quot;: &quot;specialist&quot;,
+        &quot;task&quot;: &quot;text.analyze&quot;,
+        &quot;executed&quot;: true
+      }
+    ],
+    &quot;review&quot;: &quot;\&quot;Text.analyze\&quot; analyzes text statistics and provides a summary of the results.\n\n\&quot;backend\&quot; is a synonym for \&quot;standard library.\&quot;\n\n\&quot;verification\&quot; is not a valid term in this context.\n …&quot;,
+    &quot;completed_tools&quot;: 1
+  },
+  &quot;warnings&quot;: [
+    &quot;Planner and reviewer share one small local model. Roles are not independent trained agents. No arbitrary tool generation/execution; review can be wrong.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/agents_llm.py</code> من جذر المشروع.</p>
+<h3 id="35-automationtick">35. <code>automation.tick</code></h3>
+<p>Run due persisted local jobs once when the caller ticks</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>store</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">scheduler = Scheduler(OUT/'jobs.sqlite')
+scheduler.add('one','text.analyze',{'text':'Hello'},run_at=0)
+scheduler.close()
+result = ai.run('automation.tick', store=OUT/'jobs.sqlite')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;sqlite.caller-driven-scheduler&quot;,
+  &quot;data&quot;: {
+    &quot;rows&quot;: [
+      {
+        &quot;id&quot;: &quot;one&quot;,
+        &quot;status&quot;: &quot;completed&quot;,
+        &quot;result&quot;: {
+          &quot;task&quot;: &quot;text.analyze&quot;,
+          &quot;data&quot;: {
+            &quot;characters&quot;: 5,
+            &quot;words&quot;: 1,
+            &quot;sentences&quot;: 1,
+            &quot;keywords&quot;: [
+              [
+                &quot;hello&quot;,
+                1
+              ]
+            ],
+            &quot;extractive_summary&quot;: &quot;Hello&quot;
+          },
+          &quot;backend&quot;: &quot;stdlib.frequency&quot;,
+          &quot;warnings&quot;: [
+            &quot;Extractive statistics only; not an LLM or sentiment model.&quot;
+          ],
+          &quot;provenance&quot;: {
+            &quot;library_version&quot;: &quot;0.3.0a1&quot;,
+            &quot;elapsed_seconds&quot;: 0.000465,
+            &quot;network_policy&quot;: &quot;explicit opt-in&quot;,
+            &quot;executed&quot;: true
+          }
+        }
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;At-most-once job claiming; a crash can leave running jobs unresolved. No daemon, recurrence or background execution is implied.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/automation_tick.py</code> من جذر المشروع.</p>
+<h3 id="36-iotmqttpublish">36. <code>iot.mqtt.publish</code></h3>
+<p>Publish an explicitly approved MQTT message and await broker ACK</p>
+<p><strong>المتطلبات:</strong> <code>iot</code>. <strong>المدخلات:</strong> <code>host, topic, message</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">with broker() as port:
+    result = Client(Config(allow_network=True)).run('iot.mqtt.publish', host='127.0.0.1', port=port, topic='demo/readings', message={'temperature':24}, consent=True)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;paho-mqtt.qos1&quot;,
+  &quot;data&quot;: {
+    &quot;topic&quot;: &quot;demo/readings&quot;,
+    &quot;bytes&quot;: 19,
+    &quot;acknowledged&quot;: true
+  },
+  &quot;warnings&quot;: [
+    &quot;Broker acknowledgement is NOT evidence that a physical device acted successfully.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/iot_mqtt_publish.py</code> من جذر المشروع.</p>
+<h3 id="37-iotmqttread">37. <code>iot.mqtt.read</code></h3>
+<p>Read real MQTT messages from an explicitly configured broker</p>
+<p><strong>المتطلبات:</strong> <code>iot</code>. <strong>المدخلات:</strong> <code>host, topic</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">with broker() as port:
+    def publish():
+        import time
+        time.sleep(.5)
+        Client(Config(allow_network=True)).run('iot.mqtt.publish', host='127.0.0.1', port=port, topic='demo/readings', message='24', consent=True)
+    thread = threading.Thread(target=publish); thread.start()
+    result = Client(Config(allow_network=True)).run('iot.mqtt.read', host='127.0.0.1', port=port, topic='demo/readings', duration=4)
+    thread.join()
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;paho-mqtt.subscribe&quot;,
+  &quot;data&quot;: {
+    &quot;rows&quot;: [
+      {
+        &quot;topic&quot;: &quot;demo/readings&quot;,
+        &quot;payload&quot;: &quot;24&quot;,
+        &quot;qos&quot;: 1
+      }
+    ],
+    &quot;timed_out&quot;: false
+  },
+  &quot;warnings&quot;: [
+    &quot;Only messages actually received are returned. Local broker tests do not prove physical sensor integration.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/iot_mqtt_read.py</code> من جذر المشروع.</p>
+<h3 id="38-roboticsserial">38. <code>robotics.serial</code></h3>
+<p>Exchange bounded data on a caller-approved local serial port</p>
+<p><strong>المتطلبات:</strong> <code>iot</code>. <strong>المدخلات:</strong> <code>port</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">import os, select
+master, slave = os.openpty()
+def device_side():
+    if select.select([master],[],[],4)[0]:
+        os.read(master,128); os.write(master,b'PONG')
+thread=threading.Thread(target=device_side); thread.start()
+try:
+    result=Client(Config(timeout=2)).run('robotics.serial',port=os.ttyname(slave),command='PING',read_bytes=4,consent=True)
+    thread.join()
+finally:
+    os.close(master); os.close(slave)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;pyserial.local-port&quot;,
+  &quot;data&quot;: {
+    &quot;port&quot;: &quot;/dev/pts/0&quot;,
+    &quot;written_bytes&quot;: 4,
+    &quot;received_hex&quot;: &quot;504f4e47&quot;,
+    &quot;text&quot;: &quot;PONG&quot;
+  },
+  &quot;warnings&quot;: [
+    &quot;Raw serial transport only, not robot kinematics/navigation or safety certification. A successful write does not prove an actuator state.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/robotics_serial.py</code> من جذر المشروع.</p>
+<h3 id="39-imagegenerate">39. <code>image.generate</code></h3>
+<p>Experimental local Stable Diffusion integration</p>
+<p><strong>المتطلبات:</strong> <code>diffusion</code>. <strong>المدخلات:</strong> <code>prompt, model_path, output</code>.</p>
+<p><strong>غير مثبت باستدلال فعلي:</strong> مسار Stable Diffusion تجريبي غير مختبر بأوزان فعلية ضمن هذه الموارد. لا ندرج مثال توليد تحت وصف مختبر.</p>
+<h3 id="40-videogenerate">40. <code>video.generate</code></h3>
+<p>Experimental local CogVideoX integration</p>
+<p><strong>المتطلبات:</strong> <code>diffusion</code>. <strong>المدخلات:</strong> <code>prompt, model_path, output</code>.</p>
+<p><strong>غير مثبت باستدلال فعلي:</strong> مسار CogVideoX يتطلب موارد ونموذجاً مناسباً؛ لم يجر استدلال فعلي، لذلك لا يوجد مثال تشغيل مثبت هنا.</p>
+<h3 id="41-arabicprocess">41. <code>arabic.process</code></h3>
+<p>Normalize, tokenize and optionally stem Arabic text</p>
+<p><strong>المتطلبات:</strong> <code>nlp</code>. <strong>المدخلات:</strong> <code>text</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.ar('يكتب الطلاب دروس اللغة العربية في المدارس')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;unicode+nltk.ISRI&quot;,
+  &quot;data&quot;: {
+    &quot;normalized&quot;: &quot;يكتب الطلاب دروس اللغة العربية في المدارس&quot;,
+    &quot;tokens&quot;: [
+      &quot;يكتب&quot;,
+      &quot;الطلاب&quot;
+    ],
+    &quot;filtered_tokens&quot;: [
+      &quot;يكتب&quot;,
+      &quot;الطلاب&quot;
+    ],
+    &quot;stems&quot;: [
+      &quot;كتب&quot;,
+      &quot;طلب&quot;
+    ],
+    &quot;word_count&quot;: 7
+  },
+  &quot;warnings&quot;: [
+    &quot;ISRI is heuristic stemming, not context-aware lemmatization, POS, NER or dialect understanding. Normalization can merge distinct spellings; preserve original source.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/arabic_process.py</code> من جذر المشروع.</p>
+<h3 id="42-nlptrain">42. <code>nlp.train</code></h3>
+<p>Train and evaluate a labeled Arabic/multilingual text classifier</p>
+<p><strong>المتطلبات:</strong> <code>ml</code>. <strong>المدخلات:</strong> <code>data, text_column, target</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">model = ai.text_train(data=DATA/'corpus.csv', text_column='text', target='label')
+result = model.report
+print(model.predict(['خدمة ممتازة رائعة']).to_dict())
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;sklearn.char-tfidf+logistic&quot;,
+  &quot;data&quot;: {
+    &quot;classes&quot;: [
+      &quot;negative&quot;,
+      &quot;positive&quot;
+    ],
+    &quot;train_rows&quot;: 36,
+    &quot;test_rows&quot;: 12,
+    &quot;duplicates_removed&quot;: 0,
+    &quot;accuracy&quot;: 1.0
+  },
+  &quot;warnings&quot;: [
+    &quot;Character n-gram baseline for labeled Arabic/multilingual text. No pretrained sentiment/medical model. Exact duplicates are removed, but author/topic/group leakage still needs domain-aware splitting.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/nlp_train.py</code> من جذر المشروع.</p>
+<h3 id="43-nlptopics">43. <code>nlp.topics</code></h3>
+<p>Discover exploratory corpus topics using LDA</p>
+<p><strong>المتطلبات:</strong> <code>ml</code>. <strong>المدخلات:</strong> <code>data, text_column</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('nlp.topics', data=DATA/'corpus.csv', text_column='text', n_topics=2)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;sklearn.LDA&quot;,
+  &quot;data&quot;: {
+    &quot;rows&quot;: [
+      {
+        &quot;topic&quot;: 0,
+        &quot;words&quot;: [
+          &quot;تجربة&quot;,
+          &quot;خدمة&quot;
+        ]
+      },
+      {
+        &quot;topic&quot;: 1,
+        &quot;words&quot;: [
+          &quot;رقم&quot;,
+          &quot;خدمة&quot;
+        ]
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Unsupervised topics are exploratory, not known ground-truth categories. Arabic morphology/dialects require appropriate preprocessing and evaluation.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/nlp_topics.py</code> من جذر المشروع.</p>
+<h3 id="44-nlpsimilarity">44. <code>nlp.similarity</code></h3>
+<p>Rank text passages by lexical character TF-IDF similarity</p>
+<p><strong>المتطلبات:</strong> <code>ml</code>. <strong>المدخلات:</strong> <code>texts, query</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('nlp.similarity', texts=['تعلم بايثون','صيانة مضخة'], query='بايثون')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;sklearn.lexical-char-tfidf&quot;,
+  &quot;data&quot;: {
+    &quot;rows&quot;: [
+      {
+        &quot;index&quot;: 0,
+        &quot;text&quot;: &quot;تعلم بايثون&quot;,
+        &quot;score&quot;: 0.7745966692414835
+      },
+      {
+        &quot;index&quot;: 1,
+        &quot;text&quot;: &quot;صيانة مضخة&quot;,
+        &quot;score&quot;: 0.0
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Lexical similarity, NOT semantic embeddings. Use rag.search.semantic for trained semantic retrieval.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/nlp_similarity.py</code> من جذر المشروع.</p>
+<h3 id="45-salesforecast">45. <code>sales.forecast</code></h3>
+<p>Aggregate calendar months and forecast sales using temporal baselines</p>
+<p><strong>المتطلبات:</strong> <code>ml</code>. <strong>المدخلات:</strong> <code>data</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.sales(DATA/'sales.csv', horizon=1)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;pandas.monthly-aggregation+numpy.temporal-baseline&quot;,
+  &quot;data&quot;: {
+    &quot;date_column&quot;: &quot;date&quot;,
+    &quot;value_column&quot;: &quot;sales&quot;,
+    &quot;history_months&quot;: 24,
+    &quot;holdout_months&quot;: 3,
+    &quot;holdout_mae&quot;: 0.0
+  },
+  &quot;warnings&quot;: [
+    &quot;Forecasts are estimates, not guaranteed revenue. No calibrated uncertainty interval, promotion/exogenous or causal model. Negative forecasts are not silently clipped.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/sales_forecast.py</code> من جذر المشروع.</p>
+<h3 id="46-dataclean">46. <code>data.clean</code></h3>
+<p>Trim fields and remove exact duplicate CSV rows for review</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>data</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('data.clean', data=DATA/'appointments.csv')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.explicit-dedup&quot;,
+  &quot;data&quot;: {
+    &quot;input_rows&quot;: 3,
+    &quot;duplicates_removed&quot;: 0,
+    &quot;missing_by_column&quot;: {
+      &quot;department&quot;: 0,
+      &quot;waiting_minutes&quot;: 0
+    },
+    &quot;rows&quot;: [
+      {
+        &quot;department&quot;: &quot;Lab&quot;,
+        &quot;waiting_minutes&quot;: &quot;10&quot;
+      },
+      {
+        &quot;department&quot;: &quot;Clinic&quot;,
+        &quot;waiting_minutes&quot;: &quot;20&quot;
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Whitespace and exact duplicates only. No arbitrary imputation or destructive in-place overwrite. Review missing-value semantics before modeling.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/data_clean.py</code> من جذر المشروع.</p>
+<h3 id="47-datagroup">47. <code>data.group</code></h3>
+<p>Aggregate operational records by an explicit grouping column</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>data, group_column</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('data.group', data=DATA/'appointments.csv', group_column='department', value_column='waiting_minutes')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.grouped-aggregation&quot;,
+  &quot;data&quot;: {
+    &quot;rows&quot;: [
+      {
+        &quot;group&quot;: &quot;Clinic&quot;,
+        &quot;count&quot;: 1,
+        &quot;total&quot;: 20.0,
+        &quot;mean&quot;: 20.0
+      },
+      {
+        &quot;group&quot;: &quot;Lab&quot;,
+        &quot;count&quot;: 2,
+        &quot;total&quot;: 22.0,
+        &quot;mean&quot;: 11.0
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Operational grouping only; use appropriate anonymization and authorization for patient/customer records. No clinical or credit decisions.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/data_group.py</code> من جذر المشروع.</p>
+<h3 id="48-privacyredact">48. <code>privacy.redact</code></h3>
+<p>Mask email/phone patterns without pretending full anonymization</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>text</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('privacy.redact', text='Contact person@example.org +967 700 123 456')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.regex&quot;,
+  &quot;data&quot;: {
+    &quot;text&quot;: &quot;Contact [EMAIL] [PHONE]&quot;,
+    &quot;counts&quot;: {
+      &quot;EMAIL&quot;: 1,
+      &quot;PHONE&quot;: 1
+    }
+  },
+  &quot;warnings&quot;: [
+    &quot;Limited email/phone masking, not comprehensive PII anonymization or HIPAA/GDPR compliance. Numbers can be false positives; names/medical identifiers may remain.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/privacy_redact.py</code> من جذر المشروع.</p>
+<h3 id="49-financereconcile">49. <code>finance.reconcile</code></h3>
+<p>Reconcile two keyed ledgers using exact decimal amounts</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>left, right, key, amount_column</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('finance.reconcile', left=DATA/'left.csv', right=DATA/'right.csv', key='id', amount_column='amount')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;decimal.keyed-reconciliation&quot;,
+  &quot;data&quot;: {
+    &quot;counts&quot;: {
+      &quot;matched&quot;: 1,
+      &quot;missing-right&quot;: 1,
+      &quot;missing-left&quot;: 1
+    },
+    &quot;rows&quot;: [
+      {
+        &quot;key&quot;: &quot;a&quot;,
+        &quot;status&quot;: &quot;matched&quot;,
+        &quot;difference&quot;: &quot;0.00&quot;
+      },
+      {
+        &quot;key&quot;: &quot;b&quot;,
+        &quot;status&quot;: &quot;missing-right&quot;,
+        &quot;difference&quot;: null
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Operational reconciliation only, not fraud detection, investment advice or automated payment approval. Currency/unit must already match.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/finance_reconcile.py</code> من جذر المشروع.</p>
+<h3 id="50-industrysensors">50. <code>industry.sensors</code></h3>
+<p>Extract vibration/sensor statistics and explicitly sampled spectra</p>
+<p><strong>المتطلبات:</strong> <code>ml</code>. <strong>المدخلات:</strong> <code>data, columns</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('industry.sensors', data=DATA/'sensors.csv', columns=['temperature'], sample_rate=1)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;numpy.signal-features&quot;,
+  &quot;data&quot;: {
+    &quot;rows&quot;: [
+      {
+        &quot;sensor&quot;: &quot;temperature&quot;,
+        &quot;samples&quot;: 40,
+        &quot;mean&quot;: 23.425,
+        &quot;std&quot;: 9.096393516113956,
+        &quot;rms&quot;: 25.129166321229203
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Frequency estimates assume uniform sampling at the explicitly supplied Hz. Features alone do not diagnose bearing faults or predict remaining useful life.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/industry_sensors.py</code> من جذر المشروع.</p>
+<h3 id="51-industrycontrol">51. <code>industry.control</code></h3>
+<p>Screen measurements against separate baseline control limits</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>data, column, baseline</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('industry.control', data=DATA/'sensors.csv', baseline=DATA/'baseline.csv', column='temperature')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;statistics.phase-II-shewhart&quot;,
+  &quot;data&quot;: {
+    &quot;mean&quot;: 21.975,
+    &quot;baseline_std&quot;: 0.83166499665831,
+    &quot;lower_control_limit&quot;: 19.48000501002507,
+    &quot;upper_control_limit&quot;: 24.469994989974932,
+    &quot;rows&quot;: [
+      {
+        &quot;row&quot;: 0,
+        &quot;value&quot;: 21.0,
+        &quot;out_of_control&quot;: false
+      },
+      {
+        &quot;row&quot;: 1,
+        &quot;value&quot;: 22.0,
+        &quot;out_of_control&quot;: false
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Baseline-estimated statistical control limits are NOT engineering specification limits. Check baseline stability, autocorrelation, stationarity and sampling before action.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/industry_control.py</code> من جذر المشروع.</p>
+<h3 id="52-industryproduction">52. <code>industry.production</code></h3>
+<p>Compute production yield, rejects and optional hourly throughput</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>data, total_column, good_column</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('industry.production', data=DATA/'production.csv', total_column='total', good_column='good', operating_hours=3)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.production-accounting&quot;,
+  &quot;data&quot;: {
+    &quot;total_units&quot;: 300.0,
+    &quot;good_units&quot;: 285.0,
+    &quot;rejected_units&quot;: 15.0,
+    &quot;yield_fraction&quot;: 0.95,
+    &quot;reject_fraction&quot;: 0.05
+  },
+  &quot;warnings&quot;: [
+    &quot;No OEE is claimed without planned time, availability, ideal cycle time and consistent definitions. Check units, duplicate shifts and count provenance.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/industry_production.py</code> من جذر المشروع.</p>
+<h3 id="53-industrymaintenance">53. <code>industry.maintenance</code></h3>
+<p>Evaluate a supervised maintenance-label classifier on historical data</p>
+<p><strong>المتطلبات:</strong> <code>ml</code>. <strong>المدخلات:</strong> <code>data, target</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('industry.maintenance', data=DATA/'numeric.csv', target='target')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;scikit-learn.RandomForest&quot;,
+  &quot;data&quot;: {
+    &quot;problem&quot;: &quot;classification&quot;,
+    &quot;target&quot;: &quot;target&quot;,
+    &quot;features&quot;: [
+      &quot;x&quot;,
+      &quot;y&quot;
+    ],
+    &quot;numeric_features&quot;: [
+      &quot;x&quot;,
+      &quot;y&quot;
+    ],
+    &quot;train_rows&quot;: 75
+  },
+  &quot;warnings&quot;: [
+    &quot;Held-out split, not cross-validation. Not suitable evidence for time-series, grouped or causal claims; use domain-specific splits in future versions.&quot;,
+    &quot;Supervised historical-label classifier, not calibrated failure probability or remaining useful life. Random split is a teaching baseline; asset/time grouped validation is required before production maintenance decisions. No automatic shutdown or actuation.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/industry_maintenance.py</code> من جذر المشروع.</p>
+<h3 id="54-industrydefects">54. <code>industry.defects</code></h3>
+<p>Locate aligned-reference image differences for quality screening</p>
+<p><strong>المتطلبات:</strong> <code>vision</code>. <strong>المدخلات:</strong> <code>image, reference</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">media_fixtures(DATA, PHOTO)
+result = ai.inspect(DATA/'bad.png', reference=DATA/'good.png', output=OUT/'difference.png')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;opencv.aligned-reference-difference&quot;,
+  &quot;data&quot;: {
+    &quot;candidate_count&quot;: 1,
+    &quot;changed_fraction&quot;: 0.05865478515625,
+    &quot;rows&quot;: [
+      {
+        &quot;x&quot;: 35,
+        &quot;y&quot;: 45,
+        &quot;width&quot;: 31,
+        &quot;height&quot;: 31
+      }
+    ],
+    &quot;mask_path&quot;: &quot;/tmp/tmpmz8qvmm3/outputs/difference.png&quot;
+  },
+  &quot;warnings&quot;: [
+    &quot;Difference candidates, NOT a semantic defect diagnosis or validated factory acceptance rule. Lighting, pose and alignment changes can cause false alarms. Requires a representative known-good reference.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/industry_defects.py</code> من جذر المشروع.</p>
+<h3 id="55-databaseprofile">55. <code>database.profile</code></h3>
+<p>Read SQLite schema and row counts without modifying the database</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>database</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('database.profile', database=DATA/'factory.sqlite')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;sqlite.read-only&quot;,
+  &quot;data&quot;: {
+    &quot;rows&quot;: [
+      {
+        &quot;table&quot;: &quot;readings&quot;,
+        &quot;row_count&quot;: 1,
+        &quot;columns&quot;: [
+          {
+            &quot;name&quot;: &quot;id&quot;,
+            &quot;type&quot;: &quot;INTEGER&quot;,
+            &quot;not_null&quot;: false,
+            &quot;primary_key_position&quot;: 1
+          },
+          {
+            &quot;name&quot;: &quot;value&quot;,
+            &quot;type&quot;: &quot;REAL&quot;,
+            &quot;not_null&quot;: false,
+            &quot;primary_key_position&quot;: 0
+          }
+        ]
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Schema and row counts only; no row values disclosed, SQL repairs, writes or remote DB access. This is not a vulnerability audit.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/database_profile.py</code> من جذر المشروع.</p>
+<h3 id="56-codetestsgenerate">56. <code>code.tests.generate</code></h3>
+<p>Generate untrusted unittest suggestions with syntax diagnostics</p>
+<p><strong>المتطلبات:</strong> <code>local</code>. <strong>المدخلات:</strong> <code>code</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('code.tests.generate', code='def add(a,b):\n    return a+b\n', max_new_tokens=80)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;transformers.local-causal-lm&quot;,
+  &quot;data&quot;: {
+    &quot;text&quot;: &quot;```python\ndef add(a,b):\n    return a+b\n```\n\nThis function takes two arguments `a` and `b`, adds them together, and returns the result. It does not execute the function.&quot;,
+    &quot;generated_tokens&quot;: 48,
+    &quot;input_tokens&quot;: 58,
+    &quot;syntax_valid&quot;: true
+  },
+  &quot;warnings&quot;: [
+    &quot;Generated content can be wrong. Default 135M model is English-first and limited; not a strongest-model or Arabic-quality claim. Input is truncated to 1024 tokens.&quot;,
+    &quot;LLM-generated test suggestions, not validated test coverage or guaranteed assertions. Never execute untrusted suggestions automatically.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/code_tests_generate.py</code> من جذر المشروع.</p>
+<h3 id="57-apischema">57. <code>api.schema</code></h3>
+<p>Build the authenticated text API OpenAPI schema</p>
+<p><strong>المتطلبات:</strong> <code>api</code>. <strong>المدخلات:</strong> <code>راجع الوظيفة</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('api.schema')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;fastapi.openapi&quot;,
+  &quot;data&quot;: {
+    &quot;openapi&quot;: {
+      &quot;openapi&quot;: &quot;3.1.0&quot;,
+      &quot;info&quot;: {
+        &quot;title&quot;: &quot;AlFarouq AI&quot;,
+        &quot;description&quot;: &quot;Authenticated local text services; not a clinical/financial decision system.&quot;,
+        &quot;version&quot;: &quot;0.3.0a1&quot;
+      },
+      &quot;paths&quot;: {
+        &quot;/health&quot;: {
+          &quot;get&quot;: {
+            &quot;summary&quot;: &quot;Health&quot;,
+            &quot;operationId&quot;: &quot;health_health_get&quot;,
+            &quot;responses&quot;: {
+              &quot;200&quot;: {
+                &quot;description&quot;: &quot;Successful Response&quot;,
+                &quot;content&quot;: {
+                  &quot;application/json&quot;: {
+                    &quot;schema&quot;: {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        &quot;/v1/run&quot;: {
+          &quot;post&quot;: {
+            &quot;summary&quot;: &quot;Run&quot;,
+            &quot;operationId&quot;: &quot;run_v1_run_post&quot;,
+            &quot;responses&quot;: {
+              &quot;200&quot;: {
+                &quot;description&quot;: &quot;Successful Response&quot;,
+                &quot;content&quot;: {
+                  &quot;application/json&quot;: {
+                    &quot;schema&quot;: {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  &quot;warnings&quot;: [
+    &quot;TestClient/schema validation is not public deployment, TLS, rate limiting or a production security audit.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/api_schema.py</code> من جذر المشروع.</p>
+<h3 id="58-onnxpredict">58. <code>onnx.predict</code></h3>
+<p>Run reviewed local ONNX tensors with the CPU runtime</p>
+<p><strong>المتطلبات:</strong> <code>onnx</code>. <strong>المدخلات:</strong> <code>model_path, inputs</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">create_onnx(DATA/'double.onnx')
+result = ai.run('onnx.predict', model_path=DATA/'double.onnx', inputs={'x':[[2.],[3.]]})
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;onnxruntime.CPUExecutionProvider&quot;,
+  &quot;data&quot;: {
+    &quot;outputs&quot;: {
+      &quot;y&quot;: [
+        [
+          4.0
+        ],
+        [
+          6.0
+        ]
+      ]
+    }
+  },
+  &quot;warnings&quot;: [
+    &quot;Only reviewed local models; native runtime is not an OS sandbox. External tensor data and custom-op libraries are not loaded by this adapter.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/onnx_predict.py</code> من جذر المشروع.</p>
+<h3 id="59-tensorflowpredict">59. <code>tensorflow.predict</code></h3>
+<p>Run a reviewed local single-output Keras model</p>
+<p><strong>المتطلبات:</strong> <code>tensorflow</code>. <strong>المدخلات:</strong> <code>model_path, inputs</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">import tensorflow as tf
+model=tf.keras.Sequential([tf.keras.layers.Input(shape=(1,)),tf.keras.layers.Dense(1)])
+import numpy as np
+model.layers[0].set_weights([np.array([[2.]],dtype='float32'),np.array([1.],dtype='float32')])
+model.save(DATA/'linear.keras')
+result = ai.run('tensorflow.predict', model_path=DATA/'linear.keras', inputs=[[2.]])
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;tensorflow.keras.cpu&quot;,
+  &quot;data&quot;: {
+    &quot;outputs&quot;: [
+      [
+        5.0
+      ]
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;safe_mode is defense in depth, not permission to load hostile files. Reviewed models only; no custom objects or training API claimed.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/tensorflow_predict.py</code> من جذر المشروع.</p>
+<h3 id="60-llmcompatible">60. <code>llm.compatible</code></h3>
+<p>Call an explicitly approved OpenAI-compatible optional inference endpoint</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>prompt, endpoint, model</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">with model_server() as origin:
+    result = Client(Config(allow_network=True)).run('llm.compatible', prompt='What is the capital of France?', endpoint=origin+'/v1', model='reference-smollm')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;openai-compatible-http&quot;,
+  &quot;data&quot;: {
+    &quot;text&quot;: &quot;The capital of France is Paris.&quot;,
+    &quot;model&quot;: &quot;reference-smollm&quot;
+  },
+  &quot;warnings&quot;: [
+    &quot;Protocol compatible with vLLM-like endpoints; no claim that a particular third-party server or cloud model was deployed/tested. Provider terms/costs remain user responsibility.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/llm_compatible.py</code> من جذر المشروع.</p>
+<h3 id="61-iotmodbusread">61. <code>iot.modbus.read</code></h3>
+<p>Read bounded holding registers from an approved local gateway</p>
+<p><strong>المتطلبات:</strong> <code>industrial</code>. <strong>المدخلات:</strong> <code>host, address, count</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">with modbus_server() as port:
+    result = Client(Config(allow_network=True)).run('iot.modbus.read', host='127.0.0.1', port=port, address=0, count=2)
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;pymodbus.tcp-read-only&quot;,
+  &quot;data&quot;: {
+    &quot;address&quot;: 0,
+    &quot;device_id&quot;: 1,
+    &quot;registers&quot;: [
+      10,
+      20
+    ],
+    &quot;rows&quot;: [
+      {
+        &quot;address&quot;: 0,
+        &quot;raw_uint16&quot;: 10
+      },
+      {
+        &quot;address&quot;: 1,
+        &quot;raw_uint16&quot;: 20
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Raw 16-bit registers; scaling, signedness, byte order and engineering units are device-specific. Local server verification is not physical PLC validation.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/iot_modbus_read.py</code> من جذر المشروع.</p>
+<h3 id="62-documentinsights">62. <code>document.insights</code></h3>
+<p>Extract text, keywords, dates and an extractive summary from a file</p>
+<p><strong>المتطلبات:</strong> <code>documents</code>. <strong>المدخلات:</strong> <code>document</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = AI('حلل هذا الملف واستخرج أهم المعلومات', file=DATA/'note.txt')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.text+extractive-statistics&quot;,
+  &quot;data&quot;: {
+    &quot;characters&quot;: 117,
+    &quot;words&quot;: 18,
+    &quot;summary&quot;: &quot;AlFarouq AI helps students use Python. Temperature sensors measure heat. خالد سلمان مؤسس المشروع.&quot;,
+    &quot;keywords&quot;: [
+      [
+        &quot;alfarouq&quot;,
+        1
+      ],
+      [
+        &quot;ai&quot;,
+        1
+      ]
+    ],
+    &quot;dates_found&quot;: [
+      &quot;2026-11-16&quot;
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Text extraction only; scanned PDFs need OCR, formulas are not recalculated, complex layout may be lost.&quot;,
+    &quot;Extractive information only, not legal/clinical interpretation or automatic scanned-PDF OCR.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/document_insights.py</code> من جذر المشروع.</p>
+<h3 id="63-documentsearch">63. <code>document.search</code></h3>
+<p>Search document passages lexically with source references</p>
+<p><strong>المتطلبات:</strong> <code>documents</code>. <strong>المدخلات:</strong> <code>document, query</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = ai.run('document.search', document=DATA/'note.txt', query='Python')
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.lexical-tfidf-cosine&quot;,
+  &quot;data&quot;: {
+    &quot;query&quot;: &quot;Python&quot;,
+    &quot;rows&quot;: [
+      {
+        &quot;id&quot;: 0,
+        &quot;source&quot;: &quot;/tmp/tmp55yahpq5/data/note.txt&quot;,
+        &quot;start&quot;: 0,
+        &quot;end&quot;: 117,
+        &quot;text&quot;: &quot;AlFarouq AI helps students use Python. Temperature sensors measure heat.\nخالد سلمان مؤسس المشروع. التاريخ 2026-11-16.&quot;
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Lexical retrieval, not semantic embeddings. No generated answer was fabricated.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/document_search.py</code> من جذر المشروع.</p>
+<h3 id="64-aisearch">64. <code>ai.search</code></h3>
+<p>Solve a bounded unit-cost grid shortest path with A-star</p>
+<p><strong>المتطلبات:</strong> <code>core/system</code>. <strong>المدخلات:</strong> <code>grid, start, goal</code>.</p>
+<p><strong>نص نُفّذ بنجاح</strong> بعد التهيئة المشتركة:</p>
+<pre><code class="language-python">result = AI('astar', grid=[[0,0,0],[0,1,0]], start=[0,0], goal=[1,2])
+print(result.to_dict())
+</code></pre>
+<p><strong>مقتطف ناتج فعلي للعينة، لا وعد بتطابق النص أو المسارات:</strong></p>
+<pre><code class="language-json">{
+  &quot;backend&quot;: &quot;stdlib.A-star-Manhattan&quot;,
+  &quot;data&quot;: {
+    &quot;found&quot;: true,
+    &quot;cost&quot;: 3,
+    &quot;path&quot;: [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    &quot;expanded&quot;: 5,
+    &quot;rows&quot;: [
+      {
+        &quot;step&quot;: 0,
+        &quot;row&quot;: 0,
+        &quot;column&quot;: 0
+      },
+      {
+        &quot;step&quot;: 1,
+        &quot;row&quot;: 0,
+        &quot;column&quot;: 1
+      }
+    ]
+  },
+  &quot;warnings&quot;: [
+    &quot;Four-neighbor unit-cost grid exercise, not autonomous navigation or robot safety.&quot;
+  ]
+}
+</code></pre>
+<p><strong>Terminal:</strong> <code>python examples/guide/ai_search.py</code> من جذر المشروع.</p>
+<h2 id="_7">النتائج والتصدير والأخطاء</h2>
+<p>Result.to_dict يعرض البيانات والمحرك والتحذيرات. export يدعم JSON/CSV/MD/HTML/TXT؛
+هذه الصيغ اختبرت. CSV يصدّر rows إن وجدت وإلا مفاتيح/قيماً؛ HTML يهرب النصوص.
+الكتابة ترفض الملف القائم إلا overwrite=True. أعد تهيئة OUT عند تكرار مثال
+ينشئ ملفاً جديداً. زمن المثال يتضمن التحميل ولا يصلح وحده لمقارنة أداء النماذج.
+Config(verbose=True) يعرض start/done/backend/error type في stderr دون طباعة
+المفاتيح أو المحتوى الخاص. لا ادعاء نسبة تقدم داخل كل نموذج خارجي.</p>
+<p>MissingDependency: ثبت extra في المفسر الذي تستعمله. ConsentRequired: لم تمنح
+صلاحية الشبكة/التنزيل/الأجهزة/تشغيل الكود. ValidationError: مدخل ناقص أو غير صالح.
+أخطاء المحرك الأصلية قد تنتقل كذلك. Config.timeout يحد HTTP وبعض أدوات النظام،
+وليس sandbox عاماً أو حداً مضموناً لكل CPU/RAM. code.test يختبر كوداً موثوقاً فقط؛
+-I والمهلة لا تمنعان وصوله إلى الملفات والشبكة. لا تنفذ اقتراح LLM تلقائياً.</p>
+<h2 id="_8">مشاريع تجمع الخدمات</h2>
+<ul>
+<li>طالب NLP: arabic.process للاحتفاظ بالنص المنظف، nlp.train للتصنيف المسمي، ثم
+TextModel.predict. إزالة التكرار لا تمنع تسرب المؤلف/الموضوع/الزمن؛ قيّم تقسيماً
+مناسباً. ISRI اشتقاق تقريبي لا lemmatizer سياقي، وTF-IDF لفظي لا دلالي.</li>
+<li>مصنع: اجمع industry.sensors ثم industry.control على baseline مستقلة، وفحص
+industry.defects بصورة مرجعية مصطفة، ثم industry.production. لا تساوِ control
+limits مع specification limits، ولا تدّعِ OEE دون مدخلاته. الصيانة مصنف labels
+تاريخي لا عمر متبقٍ أو shutdown آلياً؛ يلزم تقييم مجمّع حسب الآلة والزمن.</li>
+<li>شركة: sales.forecast يجمع شهوراً مكتملة بصيغة ISO ويتحقق زمنياً. ليس وعد مبيعات
+ولا سببياً. finance.reconcile Decimal لمطابقة الدفاتر لا موافقة تحويل مالي أو
+كشف احتيال مثبت. database.profile يقرأ المخطط والعد دون تعديل قاعدة البيانات.</li>
+<li>مستشفى: data.group لبيانات مواعيد مجهولة الهوية وزمن الانتظار؛ privacy.redact
+يخفي بريد/هاتف تقريبياً وليس امتثال HIPAA/GDPR أو تعمية كاملة. لا تشخيص أو علاج.</li>
+<li>مستندات: document.read -&gt; rag.index -&gt; rag.search.semantic -&gt; rag.answer. المصادر
+والإزاحات متاحة، لكن entailment وصحة الاستشهاد غير مضمونين. PDF مصور يحتاج OCR
+غير موصول تلقائياً بكل الصفحات. لا تعتبر جواب النموذج مرجع حقيقة.</li>
+<li>وكلاء: AgentTeam حتمي وLLMAgent يختار من قائمة آمنة؛ الأدوار تشترك في نموذج
+لا عقول مستقلة. Scheduler ينفذ عند tick ولا يعمل وجهازك مغلق. MQTT ACK ليس
+إثبات فعل جهاز. Serial/Modbus اختبرا بوسيط/خادم محلي وPTY، لا PLC/روبوت مادي.</li>
+</ul>
+<h2 id="_9">سياق أمثلة الاتصالات</h2>
+<p>model_server يشغّل LLM حقيقياً عبر بروتوكول مرجعي؛ لا يعني تثبيت vLLM/Ollama.
+broker يحتاج Mosquitto محلياً؛ modbus_server خادم محلي للاختبار. مثال PTY خاص
+بـLinux/POSIX، وعلى Windows تحتاج منفذ COM حقيقياً وبروتوكولاً مصرحاً. لا مسح
+شبكات أو إرسال أوامر أجهزة دون موافقة. API النصية محكومة بمفتاح وقائمة صغيرة؛
+لا يغني هذا عن TLS وحدود موارد ومراقبة وتدقيق أمان إنتاجي.</p>
+<h2 id="_10">إضافة قدرة وتطوير مشروعك</h2>
+<p>Capability اسم + handler keyword + required + extra؛ أعد Result، واستورد المحرك
+عند الطلب واحترم الموافقات والحدود. اختبر النجاح والفشل والرخصة والموارد، ثم
+حدّث tests وguide_catalog وشغّل verify_coding_guide قبل إضافة مثال «مختبر».
+حافظ على أسماء الخدمات القديمة وعقود schema_version. راجع دليل المالك لملفات
+المشروع والبناء والإصدار. الدليل الحالي لا يعرض دقة مضمونة أو أفضلية عالمية.</p>
+<h2 id="_11">النشر والتنزيل</h2>
+<p>راجع PUBLICATION_GUIDE.ar.md. زرا النشر يطلبان أدوات وحساباً مخولاً وتأكيداً؛
+Trusted Publishing يحتاج إعداد مالك PyPI/GitHub مرة واحدة. لا رفع عام تم هنا.
+Google Drive يحتاج Desktop OAuth من صاحب الحساب؛ التخطيط اختبر دون ربط حسابك.
+AI Drive مختلف. لا رابط أو سكربت يلغي سياسة الاشتراك؛ نسخة المشروع صغيرة،
+والأوزان اختيارية من مصادرها. الرخصة الحالية Apache-2.0 مع نسبة العمل لخالد
+سلمان؛ الصورة والهوية والأطر والأوزان تحت شروطها المستقلة.</p></main><footer>© 2026 Khalid Salman — Original code Apache-2.0. Identity and third-party rights are separate. Local alpha; not published.</footer></html>

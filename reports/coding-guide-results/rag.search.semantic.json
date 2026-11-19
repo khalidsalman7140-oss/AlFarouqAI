@@ -1,0 +1,29 @@
+{
+  "task": "rag.search.semantic",
+  "data": {
+    "query": "measuring temperature",
+    "rows": [
+      {
+        "id": 1,
+        "source": "/tmp/tmp250puhr0/data/note.txt",
+        "start": 0,
+        "end": 117,
+        "text": "AlFarouq AI helps students use Python. Temperature sensors measure heat.\nخالد سلمان مؤسس المشروع. التاريخ 2026-11-16.",
+        "score": 0.6118597984313965
+      }
+    ]
+  },
+  "backend": "sentence-transformers+faiss+sqlite",
+  "warnings": [
+    "Cosine score is not a calibrated confidence or truth probability."
+  ],
+  "provenance": {
+    "actual_weight_inference": true,
+    "model_path": "/home/user/alfarouq-models/minilm-multilingual",
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 1.44007,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

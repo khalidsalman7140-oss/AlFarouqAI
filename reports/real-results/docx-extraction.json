@@ -1,0 +1,20 @@
+{
+  "task": "document.read",
+  "data": {
+    "text": "خالد سلمان — AlFarouq AI document fixture",
+    "characters": 41,
+    "rows": []
+  },
+  "backend": "python-docx",
+  "warnings": [
+    "Text extraction only; scanned PDFs need OCR, formulas are not recalculated, complex layout may be lost."
+  ],
+  "provenance": {
+    "input_sha256": "e99b9bfb3b99ff9eb1db0bfc05902c9822206a8b4ed0752a6fee9109ffa15638",
+    "library_version": "0.1.0",
+    "elapsed_seconds": 0.008932,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

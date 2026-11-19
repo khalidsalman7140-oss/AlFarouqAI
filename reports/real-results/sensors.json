@@ -1,0 +1,202 @@
+{
+  "task": "iot.analyze",
+  "data": {
+    "mean": 24.03,
+    "std": 10.39368879015851,
+    "threshold": 3.0,
+    "rows": [
+      {
+        "row": 0,
+        "value": 22.0,
+        "z_score": -0.19531083150403258,
+        "anomaly": false
+      },
+      {
+        "row": 1,
+        "value": 22.1,
+        "z_score": -0.18568960827723283,
+        "anomaly": false
+      },
+      {
+        "row": 2,
+        "value": 22.2,
+        "z_score": -0.1760683850504334,
+        "anomaly": false
+      },
+      {
+        "row": 3,
+        "value": 22.0,
+        "z_score": -0.19531083150403258,
+        "anomaly": false
+      },
+      {
+        "row": 4,
+        "value": 22.1,
+        "z_score": -0.18568960827723283,
+        "anomaly": false
+      },
+      {
+        "row": 5,
+        "value": 22.2,
+        "z_score": -0.1760683850504334,
+        "anomaly": false
+      },
+      {
+        "row": 6,
+        "value": 22.0,
+        "z_score": -0.19531083150403258,
+        "anomaly": false
+      },
+      {
+        "row": 7,
+        "value": 22.1,
+        "z_score": -0.18568960827723283,
+        "anomaly": false
+      },
+      {
+        "row": 8,
+        "value": 22.2,
+        "z_score": -0.1760683850504334,
+        "anomaly": false
+      },
+      {
+        "row": 9,
+        "value": 22.0,
+        "z_score": -0.19531083150403258,
+        "anomaly": false
+      },
+      {
+        "row": 10,
+        "value": 22.1,
+        "z_score": -0.18568960827723283,
+        "anomaly": false
+      },
+      {
+        "row": 11,
+        "value": 22.2,
+        "z_score": -0.1760683850504334,
+        "anomaly": false
+      },
+      {
+        "row": 12,
+        "value": 22.0,
+        "z_score": -0.19531083150403258,
+        "anomaly": false
+      },
+      {
+        "row": 13,
+        "value": 22.1,
+        "z_score": -0.18568960827723283,
+        "anomaly": false
+      },
+      {
+        "row": 14,
+        "value": 22.2,
+        "z_score": -0.1760683850504334,
+        "anomaly": false
+      },
+      {
+        "row": 15,
+        "value": 22.0,
+        "z_score": -0.19531083150403258,
+        "anomaly": false
+      },
+      {
+        "row": 16,
+        "value": 22.1,
+        "z_score": -0.18568960827723283,
+        "anomaly": false
+      },
+      {
+        "row": 17,
+        "value": 22.2,
+        "z_score": -0.1760683850504334,
+        "anomaly": false
+      },
+      {
+        "row": 18,
+        "value": 22.0,
+        "z_score": -0.19531083150403258,
+        "anomaly": false
+      },
+      {
+        "row": 19,
+        "value": 22.1,
+        "z_score": -0.18568960827723283,
+        "anomaly": false
+      },
+      {
+        "row": 20,
+        "value": 22.2,
+        "z_score": -0.1760683850504334,
+        "anomaly": false
+      },
+      {
+        "row": 21,
+        "value": 22.0,
+        "z_score": -0.19531083150403258,
+        "anomaly": false
+      },
+      {
+        "row": 22,
+        "value": 22.1,
+        "z_score": -0.18568960827723283,
+        "anomaly": false
+      },
+      {
+        "row": 23,
+        "value": 22.2,
+        "z_score": -0.1760683850504334,
+        "anomaly": false
+      },
+      {
+        "row": 24,
+        "value": 22.0,
+        "z_score": -0.19531083150403258,
+        "anomaly": false
+      },
+      {
+        "row": 25,
+        "value": 80.0,
+        "z_score": 5.384998640039752,
+        "anomaly": true
+      },
+      {
+        "row": 26,
+        "value": 22.2,
+        "z_score": -0.1760683850504334,
+        "anomaly": false
+      },
+      {
+        "row": 27,
+        "value": 22.0,
+        "z_score": -0.19531083150403258,
+        "anomaly": false
+      },
+      {
+        "row": 28,
+        "value": 22.1,
+        "z_score": -0.18568960827723283,
+        "anomaly": false
+      },
+      {
+        "row": 29,
+        "value": 22.2,
+        "z_score": -0.1760683850504334,
+        "anomaly": false
+      }
+    ]
+  },
+  "backend": "stdlib.zscore",
+  "warnings": [
+    "Offline sensor analytics; no device is connected and no actuator commands are sent."
+  ],
+  "provenance": {
+    "input_sha256": "559175f03f6b35ac55becba450e4d901965477a2f3eaa9ebbc5b41fe1ef00d0a",
+    "library_version": "0.1.0",
+    "elapsed_seconds": 0.000316,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

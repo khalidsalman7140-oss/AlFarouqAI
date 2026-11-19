@@ -1,0 +1,140 @@
+<!doctype html><html lang="ar" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>capabilities | AlFarouq AI</title><style>body{font:17px/1.85 system-ui,sans-serif;max-width:1080px;margin:0 auto;padding:32px;background:#fafcff;color:#16243b}a{color:#075f94}pre,code{direction:ltr;text-align:left;font-family:monospace}pre{overflow:auto;padding:22px;border-radius:12px;background:#0d2235;color:#e0f4ff}code{font-size:.9em}table{border-collapse:collapse;width:100%;display:block;overflow:auto}td,th{border:1px solid #cbd5e1;padding:10px;text-align:start}th{background:#e2eef5}h1,h2{color:#073d57}img{max-width:100%}nav,footer{padding:16px 0;border-bottom:1px solid #cbd5e1}footer{font-size:13px;color:#475569}blockquote{border-inline-start:4px solid #079499;padding-inline-start:1em} @media print{body{font-size:12px}pre{white-space:pre-wrap}}</style><nav><a href="../index.html">AlFarouq AI — Documentation / التوثيق</a></nav><main><blockquote>
+<p>هذا المحتوى محفوظ من 0.1.0. الحالة الحالية في <a href="handbook-0.2.html">كتاب 0.2</a> و<a href="capabilities-0.2.html">مصفوفة 0.2</a>.</p>
+</blockquote>
+<h1 id="_1">حالة القدرات وخارطة المجالات</h1>
+<p><a href="guide.html">الدليل</a> · <a href="../en/capabilities.html">English</a></p>
+<p>«مُختبر» يعني تنفيذ المحرك فعلياً في بيئة التسليم المحلية على عينات اختبار، لا
+ضمان جودة مطلقة أو قابلية تعميم. راجع reports/pytest.xml وFINAL_REPORT.</p>
+<table>
+<thead>
+<tr>
+<th>المجال</th>
+<th>المنفذ في 0.1.0</th>
+<th>الحالة / الحد</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NLP</td>
+<td>إحصاءات وكلمات وتلخيص استخراجي</td>
+<td>مختبر؛ لا ترجمة أو تصنيف مشاعر عصبي</td>
+</tr>
+<tr>
+<td>LLM</td>
+<td>Ollama chat وvision input</td>
+<td>عقد HTTP مختبر؛ لا استدلال فعلي</td>
+</tr>
+<tr>
+<td>Computer Vision</td>
+<td>إحصاءات صور ووجوه Haar</td>
+<td>مختبر على الصورة المقدمة؛ لا تحديد هوية</td>
+</tr>
+<tr>
+<td>IoT</td>
+<td>تحليل CSV لمستشعرات وz-score</td>
+<td>مختبر؛ لا أجهزة متصلة</td>
+</tr>
+<tr>
+<td>تطوير التطبيقات</td>
+<td>Python API وCLI وملفات تقارير</td>
+<td>مختبر؛ لا خادم ويب إنتاجي</td>
+</tr>
+<tr>
+<td>الشبكات العصبية</td>
+<td>موصلات أطر فقط</td>
+<td>لا واجهة إنشاء/تدريب شبكة في هذا الإصدار</td>
+</tr>
+<tr>
+<td>Deep Learning</td>
+<td>موصلات inference اختيارية</td>
+<td>لا تدريب عميق أو finetuning</td>
+</tr>
+<tr>
+<td>Machine Learning</td>
+<td>تصنيف وانحدار RandomForest</td>
+<td>تدريب/تقييم/تنبؤ مختبر</td>
+</tr>
+<tr>
+<td>Generative AI</td>
+<td>موصل لغوي محلي</td>
+<td>لا توليد صور/فيديو/صوت؛ لا استدلال مولد مختبر</td>
+</tr>
+<tr>
+<td>Multimodal</td>
+<td>مدخل صورة لموصل Ollama</td>
+<td>يحتاج نموذجاً متوافقاً؛ غير مختبر فعلياً</td>
+</tr>
+<tr>
+<td>صور وفيديو</td>
+<td>وجوه + مناطق حركة؛ موصل كشف عام</td>
+<td>الحركة مختبرة؛ الكشف العام بأوزان غير مختبر؛ لا تتبع</td>
+</tr>
+<tr>
+<td>Speech AI</td>
+<td>WAV metadata + faster-whisper</td>
+<td>WAV مختبر؛ التفريغ غير مختبر بأوزان؛ لا TTS</td>
+</tr>
+<tr>
+<td>Agents</td>
+<td>مخطط DAG وتخصصات ومراجع ومراجع بنية</td>
+<td>مختبر؛ لا مناظرة LLM مستقلة</td>
+</tr>
+<tr>
+<td>علم البيانات</td>
+<td>CSV وتنبؤ جدولي</td>
+<td>مختبر؛ لا منصة AutoML شاملة</td>
+</tr>
+<tr>
+<td>مستندات</td>
+<td>TXT/PDF/DOCX/XLSX</td>
+<td>استخراج مختبر؛ لا OCR أو DOC/XLS قديم</td>
+</tr>
+<tr>
+<td>أكواد</td>
+<td>AST ومشروع ومخاطر نمطية</td>
+<td>مختبر؛ لا تنفيذ/تصحيح تلقائي أو تشغيل اختبارات مشروع مجهول</td>
+</tr>
+<tr>
+<td>RAG وذاكرة</td>
+<td>JSON وTF-IDF؛ موصل semantic</td>
+<td>اللفظي مختبر؛ الدلالي غير مختبر بأوزان؛ لا RAG توليدي جاهز</td>
+</tr>
+<tr>
+<td>أتمتة</td>
+<td>DAG محلي يستدعى عند الطلب</td>
+<td>مختبر؛ لا جدولة دائمة أو مراقبة أحداث</td>
+</tr>
+<tr>
+<td>روبوتات</td>
+<td>لا تحكم منفذ</td>
+<td>خارطة مستقبل؛ أمان العتاد شرط</td>
+</tr>
+<tr>
+<td>أمن دفاعي</td>
+<td>تحليل فشل المصادقة وAST</td>
+<td>مختبر؛ ليس SIEM أو ماسح ثغرات</td>
+</tr>
+<tr>
+<td>خدمات إضافية</td>
+<td>تصدير/إعداد/إضافات/سياسات</td>
+<td>مختبر جزئياً كما يحدد تقرير التسليم</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_2">مراحل التطوير المقترحة ومعايير قبولها</h2>
+<ol>
+<li><strong>0.2 جودة وتوزيع:</strong> قرار ترخيص، تشغيل CI فعلي عبر الأنظمة، lock/hash لكل
+منصة، تجارب بيانات عربية وواقعية دون تسرب، اختبارات نصب extras وskops.</li>
+<li><strong>0.3 ذكاء محلي مقاس:</strong> نموذج نصي وبصري وصوتي وتضمين موثقة الأوزان والترخيص
+والحجم والـhash، اختبارات استدلال على CPU/GPU، مخطط JSON مقيد بالصلاحيات.</li>
+<li><strong>0.4 فهم محتوى:</strong> OCR عربي، PDF مع layout، متتبع متعدد أهداف بمعرّفات
+مؤقتة لا تعرف هوية، TTS بأوزان تسمح بالاستخدام المطلوب، RAG موثّق مع رفض الإجابة.</li>
+<li><strong>0.5 نظم متقدمة:</strong> adapters لـMQTT/ONNX/edge/robotics وعمليات sandbox وasync
+وإلغاء؛ ممنوع تشغيل أجهزة حقيقية دون موافقات وحواجز أمان واختبار عتاد.</li>
+<li><strong>1.0 استقرار:</strong> عقود API ثابتة، تقييمات منشورة قابلة لإعادة الإنتاج، تدقيق
+أمان وترخيص مستقل، سياسة إصدار وترقية وعيوب معروفة وتجارب تكامل مؤسسي.</li>
+</ol>
+<p>مجالات إضافية اكتشفها التحليل: MLOps وتتبع التجارب، تقييم النماذج والانحياز،
+الخصوصية والتنقيح، explainability، بيانات زمنية وتقسيم مجموعات، edge quantization،
+التيسير لذوي الإعاقة، وقياس جودة العربية. هذه متطلبات مستقبلية وليست أسماء
+وظائف وهمية داخل المكتبة الحالية.</p></main><footer>© 2026 Khalid Salman — Original code Apache-2.0. Identity and third-party rights are separate. Local alpha; not published.</footer></html>

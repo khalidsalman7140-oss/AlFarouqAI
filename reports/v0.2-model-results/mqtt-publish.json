@@ -1,0 +1,19 @@
+{
+  "task": "iot.mqtt.publish",
+  "data": {
+    "topic": "alfarouq/test",
+    "bytes": 19,
+    "acknowledged": true
+  },
+  "backend": "paho-mqtt.qos1",
+  "warnings": [
+    "Broker acknowledgement is NOT evidence that a physical device acted successfully."
+  ],
+  "provenance": {
+    "library_version": "0.3.0a1",
+    "elapsed_seconds": 0.002381,
+    "network_policy": "explicit opt-in",
+    "executed": true
+  },
+  "schema_version": "1.0"
+}

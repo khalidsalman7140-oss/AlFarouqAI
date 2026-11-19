@@ -1,0 +1,5 @@
+usage: 05_ollama.py [-h] --model MODEL
+
+options:
+  -h, --help     show this help message and exit
+  --model MODEL
